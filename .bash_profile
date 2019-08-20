@@ -1,3 +1,6 @@
+# Bash helpers
+alias reload="source ~/.bash_profile"
+
 # Git helpers
 alias gitversion="git tag --sort=version:refname | tail -1"
 
