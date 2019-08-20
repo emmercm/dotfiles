@@ -14,8 +14,10 @@ function backup() {
 
 
 # For each dotfile in the current directory
-for FILE in $(find . -type f -name ".*"); do
-    LINK="${HOME}/${FILE}"
+find "$(pwd)" -type f -name ".*" | while read -r FILE; do
+    LINK="${HOME}/$(basename "${FILE}")"
+    echo ${FILE}
+    echo ${LINK}
 
     # Assume symlinked files are ok
     if [ -h "${LINK}" ]; then
@@ -24,7 +26,7 @@ for FILE in $(find . -type f -name ".*"); do
 
     # Back up the existing file
     if [ -f "${LINK}" ]; then
-        mv "${LINK}" $(backup "${LINK}")
+        mv "${LINK}" "$(backup "${LINK}")"
     fi
 
     # Symlink the file
