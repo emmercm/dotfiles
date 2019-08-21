@@ -26,6 +26,8 @@ fi
 if [[ -x "$(command -v helm)" ]]; then
     source <(helm completion bash)
 fi
+function kubels()   { kubectl get pods ${1:+-l app="$1"}; }
+function kubehist() { kubectl rollout history "deployment/$1" ${2:+--revision "$2"}; }
 function kubename() { kubectl get pods -l app="$1" --field-selector=status.phase=Running --sort-by=".metadata.creationTimestamp" | tail -n +2 | tail -1 | awk '{print $1}'; }
 function kubesh()   { kubectl exec -it $(kubename "$1") -- sh; }
 function kubebash() { kubectl exec -it $(kubename "$1") -- bash; }
