@@ -29,3 +29,14 @@ fi
 function kubename() { kubectl get pods -l app="$1" --field-selector=status.phase=Running --sort-by=".metadata.creationTimestamp" | tail -n +2 | tail -1 | awk '{print $1}'; }
 function kubesh()   { kubectl exec -it $(kubename "$1") -- sh; }
 function kubebash() { kubectl exec -it $(kubename "$1") -- bash; }
+
+# Golang
+if [[ -x "$(command -v go)" ]]; then
+    export GOPATH=$(go env GOPATH)
+    if [[ ! -d "${GOPATH}" ]]; then
+        mkdir "${GOPATH}"
+        mkdir "${GOPATH}/bin"
+        mkdir "${GOPATH}/src"
+    fi
+    export PATH=$PATH:$(go env GOPATH)/bin
+fi
