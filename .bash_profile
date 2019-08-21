@@ -14,16 +14,16 @@ function dockkillall() { docker kill $(docker ps -q) 2> /dev/null || true; }
 function dockprune()   { dockkillall && docker system prune --all --force && docker images purge; }
 
 # Kubernetes
-if [ -x "$(command -v kubectl)" ]; then
+if [[ -x "$(command -v kubectl)" ]]; then
     source <(kubectl completion bash)
 fi
-if [ -x "$(command -v kops)" ]; then
+if [[ -x "$(command -v kops)" ]]; then
     source <(kops completion bash)
 fi
-if [ -x "$(command -v minikube)" ]; then
+if [[ -x "$(command -v minikube)" ]]; then
     source <(minikube completion bash)
 fi
-if [ -x "$(command -v helm)" ]; then
+if [[ -x "$(command -v helm)" ]]; then
     source <(helm completion bash)
 fi
 function kubename() { kubectl get pods -l app="$1" --field-selector=status.phase=Running --sort-by=".metadata.creationTimestamp" | tail -n +2 | tail -1 | awk '{print $1}'; }
