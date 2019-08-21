@@ -1,4 +1,7 @@
 # Bash helpers
+if [[ -x "$(command -v brew)" && -f "$(brew --prefix)/etc/bash_completion" ]]; then
+    source "$(brew --prefix)/etc/bash_completion"
+fi
 alias reload="source ~/.bash_profile"
 
 # Git helpers
