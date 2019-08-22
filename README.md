@@ -20,4 +20,8 @@ Some additional completions are loaded:
 
 ### Aliases & Functions
 
-A number of helpers are written in [`.bash_profile`](./bash_profile).
+A number of helpers are written in [`.profile`](./profile).
+
+## Extending
+
+[`.profile`](./profile). sources all `.*.bash` files in the same directory so aliases and functions can be nicely grouped.
