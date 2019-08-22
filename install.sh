@@ -14,7 +14,7 @@ function backup() {
 
 # Given a path and expression, safely link all files to the home directory
 function link() {
-    find "$1" -maxdepth 1 -type f -name "$2" ! -iname ".gitignore" | while read -r FILE; do
+    while read -r FILE; do
         LINK="${HOME}/$(basename "${FILE}")"
 
         # Ensure symlink is actually a dotfile
@@ -34,7 +34,7 @@ function link() {
 
         # Symlink the file
         ln -s "${FILE}" "${LINK}"
-    done
+    done <<< "$(find "$1" -maxdepth 1 -type f -name "$2" ! -iname ".gitignore")"
 }
 
 
