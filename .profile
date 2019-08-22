@@ -20,30 +20,30 @@ alias reload=". ~/.bash_profile"
 
 # Get the most recent version from Git tags
 # @returns {string} Git tag
-alias gitversion="git tag --sort=-version:refname | head -1"
+alias gversion="git tag --sort=-version:refname | head -1"
 
 
 ##### Docker #####
 
 # Execute `sh` interactively in the Docker container
 # @param {string} $1 Container name
-docksh() {
+dsh() {
     docker exec -it "$1" -- sh
 }
 
 # Execute `bash` interactively in the Docker container
 # @param {string} $1 Container name
-dockbash() {
+dbash() {
     docker exec -it "$1" -- bash
 }
 
 # Kill all running Docker containers
-dockkillall() {
+dkillall() {
     docker kill $(docker ps --quiet) 2> /dev/null || true
 }
 
 # Kill all running Docker containers and delete all container data
-alias dockprune="dockkillall && docker system prune --all --force && docker images purge"
+alias dprune="dockkillall && docker system prune --all --force && docker images purge"
 
 
 ##### Kubernetes #####
@@ -64,39 +64,39 @@ fi
 
 # List all Kubernetes pods, optionally filtering to an application
 # @param {string=} $1 App label
-kubels() {
+kls() {
     kubectl get pods --output=wide ${1:+--selector="app=$1"}
 }
 
 # Get the name of the newest running Kubernetes pod given an app label
 # @param {string=} $1 App label
 # @returns {string} Pod name
-kubename() {
+kname() {
     kubectl get pods --selector="app=$1" --field-selector=status.phase=Running --sort-by=".metadata.creationTimestamp" | tail -n +2 | tail -1 | awk '{print $1}'
 }
 
 # Describe a Kubernetes service to get info such as labels, IP, and load balancer ingress
 # @param {string} $1 Service name
-kubedescribe() {
+kservice() {
     kubectl describe service "$1"
 }
 
 # Show the Kubernetes rollout history for a deployment
 # @param {string} $1 Deployment name
 # @param {number=} $2 Revision number
-kubehist() {
+khist() {
     kubectl rollout history "deployment/$1" ${2:+--revision "$2"}
 }
 
 # Execute `sh` interactively in the Kubernetes pod
 # @param {string} $1 Container name
-kubesh() {
+ksh() {
     kubectl exec -it $(kubename "$1") -- sh
 }
 
 # Execute `bash` interactively in the Kubernetes pod
 # @param {string} $1 Container name
-kubebash() {
+kbash() {
     kubectl exec -it $(kubename "$1") -- bash
 }
 
