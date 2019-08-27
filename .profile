@@ -131,6 +131,13 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
+##### Python #####
+
+while read -r DIR; do
+    export PATH="${DIR}:${PATH}"
+done <<< "$(find ~/Library/Python -type d -name bin)"
+
+
 ##### Everything Else #####
 
 while read -r FILE; do
