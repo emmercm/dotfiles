@@ -1,4 +1,4 @@
-# .bash_profile (Ubuntu) -> .profile (OS X) -> .bashrc
+# .bash_profile (OS X Default) -> .profile (Ubuntu Default) -> .bashrc
 
 ##### Bash #####
 
