@@ -6,10 +6,6 @@
 				"priority": 10
 			},
 			{
-				"function": "powerline.segments.common.env.user",
-				"priority": 30
-			},
-			{
 				"function": "powerline.segments.common.env.virtualenv",
 				"priority": 50
 			},
@@ -19,7 +15,11 @@
 			},
 			{
 				"function": "powerline.segments.shell.cwd",
-				"priority": 10
+				"priority": 10,
+				"args": {
+					"dir_limit_depth": 7,
+					"use_path_separator": true
+				}
 			},
 			{
 				"function": "powerline.segments.shell.jobnum",
