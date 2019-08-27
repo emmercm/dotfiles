@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 # Given a filename, echo the first rotated name that does not exist
 function backup() {
     NUM=1
-    while [[ -f "$1.${NUM}" ]]; do
+    while [[ -e "$1.${NUM}" ]]; do
         NUM=$(expr ${NUM} + 1)
     done
     echo "$1.${NUM}"
@@ -22,19 +22,19 @@ function link() {
             LINK="$(dirname "${LINK}")/.$(basename "${LINK}")"
         fi
 
-        # Assume symlinked files are ok
+        # Assume symlinks are ok
         if [[ -h "${LINK}" ]]; then
             continue
         fi
 
         # Back up the existing file
-        if [[ -f "${LINK}" ]]; then
+        if [[ -e "${LINK}" ]]; then
             mv "${LINK}" "$(backup "${LINK}")"
         fi
 
         # Symlink the file
         ln -s "${FILE}" "${LINK}"
-    done <<< "$(find "$1" -maxdepth 1 -type f -name "$2" ! -iname ".gitignore")"
+    done <<< "$(find "$1" -maxdepth 1 -name "$2" ! -name ".git" ! -name ".gitignore")"
 }
 
 
@@ -59,6 +59,11 @@ fi
 link "$(pwd)" ".*"
 
 # Add global .gitignore if git is installed
-if [[ -x "$(command -v git)" ]]; then
+if [[ -x "$(command -v git)" && -s ~/.gitignore_global ]]; then
     git config --global core.excludesfile ~/.gitignore_global
+fi
+
+# Reload powerline if installed
+if [[ -x "$(command -v powerline-daemon)" ]]; then
+    powerline-daemon --quiet --replace
 fi
