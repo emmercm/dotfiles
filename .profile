@@ -141,5 +141,5 @@ done <<< "$(find ~/Library/Python -type d -name bin)"
 ##### Everything Else #####
 
 while read -r FILE; do
-    source "${FILE}"
-done <<< "$(find "$(pwd)" -maxdepth 1 -follow -type f -name ".*.bash")"
+    . "${FILE}"
+done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.bash")"
