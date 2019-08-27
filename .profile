@@ -118,8 +118,8 @@ fi
 ##### MySQL #####
 
 # Set path environment variables
-if [[ -x "$(command -v brew)" && -d "$(brew --prefix)/opt/mysql-client/bin" ]]; then
-    export PATH="$(brew --prefix)/opt/mysql-client/bin:$PATH"
+if [[ -d "$(brew --prefix)/opt/mysql-client/bin" ]]; then
+    export PATH="$(brew --prefix)/opt/mysql-client/bin:${PATH}"
 fi
 
 
