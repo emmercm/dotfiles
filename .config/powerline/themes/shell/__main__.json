@@ -1,0 +1,27 @@
+{
+    "segment_data": {
+        "cwd": {
+            "args": {
+                "dir_shorten_len": 3,
+                "dir_limit_depth": 5,
+                "use_path_separator": true
+            }
+        },
+        "gitstatus": {
+            "args": {
+                "show_tag": "exact",
+                "formats": {
+                    "branch": "\ue0a0 {}",
+                    "tag": " ★ {}",
+                    "behind": " ↓ {}",
+                    "ahead": " ↑ {}",
+                    "staged": " ● {}",
+                    "unmerged": " ✖ {}",
+                    "changed": "",
+                    "untracked": "",
+                    "stashed": " ⚑ {}"
+                }
+            }
+        }
+    }
+}
