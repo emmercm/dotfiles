@@ -91,13 +91,13 @@ khist() {
 # Execute `sh` interactively in the Kubernetes pod
 # @param {string} $1 Container name
 ksh() {
-    kubectl exec -it $(kubename "$1") -- sh
+    kubectl exec -it $(kname "$1") -- sh
 }
 
 # Execute `bash` interactively in the Kubernetes pod
 # @param {string} $1 Container name
 kbash() {
-    kubectl exec -it $(kubename "$1") -- bash
+    kubectl exec -it $(kname "$1") -- bash
 }
 
 
