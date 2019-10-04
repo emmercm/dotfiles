@@ -28,13 +28,13 @@ alias gversion="git tag --sort=-version:refname | head -1"
 # Execute `sh` interactively in the Docker container
 # @param {string} $1 Container name
 dsh() {
-    docker exec -it "$1" -- sh
+    docker exec --interactive --tty "$1" -- sh
 }
 
 # Execute `bash` interactively in the Docker container
 # @param {string} $1 Container name
 dbash() {
-    docker exec -it "$1" -- bash
+    docker exec --interactive --tty "$1" -- bash
 }
 
 # Kill all running Docker containers
@@ -43,7 +43,7 @@ dkillall() {
 }
 
 # Kill all running Docker containers and delete all container data
-alias dprune="dockkillall && docker system prune --all --force && docker images purge"
+alias dprune="dkillall && docker system prune --all --force && docker images purge"
 
 
 ##### Kubernetes #####
@@ -78,26 +78,32 @@ kname() {
 # Describe a Kubernetes service to get info such as labels, IP, and load balancer ingress
 # @param {string} $1 Service name
 kservice() {
-    kubectl describe service "$1"
+    kubectl get service -l "app=$1"
 }
 
 # Show the Kubernetes rollout history for a deployment
 # @param {string} $1 Deployment name
 # @param {number=} $2 Revision number
-khist() {
+khistory() {
     kubectl rollout history "deployment/$1" ${2:+--revision "$2"}
+}
+
+# List all Kubernetes ingresses, optionally filtering to an application
+# @param {string=} $1 App label
+kingress() {
+    kubectl get ingress ${1:+-l "app=$1"}
 }
 
 # Execute `sh` interactively in the Kubernetes pod
 # @param {string} $1 Container name
 ksh() {
-    kubectl exec -it $(kname "$1") -- sh
+    kubectl exec --interactive --tty $(kname "$1") -- sh
 }
 
 # Execute `bash` interactively in the Kubernetes pod
 # @param {string} $1 Container name
 kbash() {
-    kubectl exec -it $(kname "$1") -- bash
+    kubectl exec --interactive --tty $(kname "$1") -- bash
 }
 
 
