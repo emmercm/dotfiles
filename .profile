@@ -18,9 +18,27 @@ alias reload=". ~/.bash_profile"
 
 ##### Git #####
 
+# Short alias
+alias g="git"
+if type _git &> /dev/null; then
+	complete -o default -o nospace -F _git g
+fi
+
+# Git config aliases
+for al in $(git config --get-regexp '^alias\.' | cut -f 1 -d ' ' | cut -f 2 -d '.'); do
+    alias g${al}="git ${al}"
+    complete_func=_git_$(__git_aliased_command ${al})
+    function_exists ${complete_fnc} && __git_complete g${al} ${complete_func}
+done
+
+# Get the most recent versions from Git tags
+# @param {number=10} $1 Number of versions to show
+# @returns {string} Git tag
+alias gvs="git tag --sort=-version:refname | head -${1:-10}"
+
 # Get the most recent version from Git tags
 # @returns {string} Git tag
-alias gversion="git tag --sort=-version:refname | head -1"
+alias gv="gvs | head -1"
 
 
 ##### Docker #####
