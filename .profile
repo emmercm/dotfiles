@@ -33,35 +33,10 @@ done
 
 # Get the most recent versions from Git tags
 # @param {number=10} $1 Number of versions to show
-# @returns {string} Git tag
 alias gvs="git tag --sort=-version:refname | head -${1:-10}"
 
 # Get the most recent version from Git tags
-# @returns {string} Git tag
 alias gv="gvs | head -1"
-
-
-##### Docker #####
-
-# Execute `sh` interactively in the Docker container
-# @param {string} $1 Container name
-dsh() {
-    docker exec --interactive --tty "$1" -- sh
-}
-
-# Execute `bash` interactively in the Docker container
-# @param {string} $1 Container name
-dbash() {
-    docker exec --interactive --tty "$1" -- bash
-}
-
-# Kill all running Docker containers
-dkillall() {
-    docker kill $(docker ps --quiet) 2> /dev/null || true
-}
-
-# Kill all running Docker containers and delete all container data
-alias dprune="dkillall && docker system prune --all --force && docker images purge"
 
 
 ##### Golang #####
