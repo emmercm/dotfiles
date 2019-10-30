@@ -1,3 +1,5 @@
 .config/configstore/nodemon.json
 .config/configstore/update-notifier-npm.json
 .config/filezilla/
+
+.secrets.bash
