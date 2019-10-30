@@ -25,3 +25,7 @@ A number of helpers are written in [`.profile`](./profile).
 ## Extending
 
 [`.profile`](./profile). sources all `.*.bash` files in the same directory so aliases and functions can be nicely grouped.
+
+## Inspiration
+
+- Mathias Bynens' [aliases](https://github.com/mathiasbynens/dotfiles/blob/master/.aliases)

@@ -64,67 +64,6 @@ dkillall() {
 alias dprune="dkillall && docker system prune --all --force && docker images purge"
 
 
-##### Kubernetes #####
-
-# Load bash-completions
-if [[ -x "$(command -v kubectl)" ]]; then
-    . <(kubectl completion bash)
-fi
-if [[ -x "$(command -v kops)" ]]; then
-    . <(kops completion bash)
-fi
-if [[ -x "$(command -v minikube)" ]]; then
-    . <(minikube completion bash)
-fi
-if [[ -x "$(command -v helm)" ]]; then
-    . <(helm completion bash)
-fi
-
-# List all Kubernetes pods, optionally filtering to an application
-# @param {string=} $1 App label
-kls() {
-    kubectl get pods --output=wide ${1:+--selector="app=$1"}
-}
-
-# Get the name of the newest running Kubernetes pod given an app label
-# @param {string=} $1 App label
-# @returns {string} Pod name
-kname() {
-    kubectl get pods --selector="app=$1" --field-selector=status.phase=Running --sort-by=".metadata.creationTimestamp" | tail -n +2 | tail -1 | awk '{print $1}'
-}
-
-# Describe a Kubernetes service to get info such as labels, IP, and load balancer ingress
-# @param {string} $1 Service name
-kservice() {
-    kubectl get service -l "app=$1"
-}
-
-# Show the Kubernetes rollout history for a deployment
-# @param {string} $1 Deployment name
-# @param {number=} $2 Revision number
-khistory() {
-    kubectl rollout history "deployment/$1" ${2:+--revision "$2"}
-}
-
-# List all Kubernetes ingresses, optionally filtering to an application
-# @param {string=} $1 App label
-kingress() {
-    kubectl get ingress ${1:+-l "app=$1"}
-}
-
-# Execute `sh` interactively in the Kubernetes pod
-# @param {string} $1 Container name
-ksh() {
-    kubectl exec --interactive --tty $(kname "$1") -- sh
-}
-
-# Execute `bash` interactively in the Kubernetes pod
-# @param {string} $1 Container name
-kbash() {
-    kubectl exec --interactive --tty $(kname "$1") -- bash
-}
-
-
 ##### Golang #####
 
 # Set path environment variables
