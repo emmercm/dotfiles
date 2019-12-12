@@ -1,30 +1,56 @@
 {
 	"segments": {
+		"above": [
+			{
+				"left": [
+					{
+						"function": "powerline.segments.shell.mode"
+					},
+					{
+						"function": "powerline.segments.common.net.hostname",
+						"priority": 10
+					},
+					{
+						"function": "powerline.segments.common.env.virtualenv",
+						"priority": 50
+					},
+					{
+						"function": "powerline.segments.shell.cwd",
+						"priority": 10
+					},
+					{
+						"function": "powerline_gitstatus.gitstatus",
+						"priority": 40
+					},
+					{
+						"function": "powerline_svnstatus.svnstatus",
+						"priority": 40
+					},
+					{
+						"function": "powerline_docker.docker",
+						"priority": 30,
+						"args": {
+							"ignore_statuses": ["exited"]
+						}
+					},
+					{
+						"function": "powerline.segments.shell.jobnum",
+						"priority": 20
+					},
+					{
+						"function": "powerline.segments.shell.last_pipe_status",
+						"priority": 10
+					}
+				]
+			}
+		],
 		"left": [
 			{
-				"function": "powerline.segments.common.net.hostname",
-				"priority": 10
-			},
-			{
-				"function": "powerline.segments.common.env.virtualenv",
-				"priority": 50
-			},
-			{
-				"function": "powerline.segments.shell.cwd",
-				"priority": 10
-			},
-			{
-                "function": "powerline_gitstatus.gitstatus",
-				"priority": 40
-            },
-			{
-				"function": "powerline.segments.shell.jobnum",
-				"priority": 20
-			},
-			{
-				"function": "powerline.segments.shell.last_pipe_status",
-				"priority": 10
-            }
+				"function": "powerline.segments.common.time.date",
+				"args": {
+					"format": ""
+				}
+			}
 		]
 	}
 }

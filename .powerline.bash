@@ -1,4 +1,4 @@
-# pip3 install --user powerline-status powerline-gitstatus
+# pip3 install --user powerline-status powerline-gitstatus powerline-svnstatus powerline-kubernetes powerline-docker
 
 # Install
 if [[ -d ~/Library/Fonts && "$(find ~/Library/Fonts -maxdepth 1 -follow -type f -name "*Powerline*")" == "" ]]; then
