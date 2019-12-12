@@ -1,5 +1,7 @@
 {
     "groups": {
+        "shell": "information:additional",
+
         "gitstatus":                 { "fg": "gray8",           "bg": "gray2", "attrs": [] },
         "gitstatus_branch":          { "fg": "gray8",           "bg": "gray2", "attrs": [] },
         "gitstatus_branch_clean":    { "fg": "green",           "bg": "gray2", "attrs": [] },
@@ -13,6 +15,33 @@
         "gitstatus_changed":         { "fg": "mediumorange",    "bg": "gray2", "attrs": [] },
         "gitstatus_untracked":       { "fg": "brightestorange", "bg": "gray2", "attrs": [] },
         "gitstatus_stashed":         { "fg": "darkblue",        "bg": "gray2", "attrs": [] },
-        "gitstatus:divider":         { "fg": "gray8",           "bg": "gray2", "attrs": [] }
+        "gitstatus:divider":         { "fg": "gray8",           "bg": "gray2", "attrs": [] },
+
+        "svnstatus_clean":   { "bg": "brightgreen", "fg": "black", "attrs": [] },
+        "svnstatus_dirty":   { "bg": "brightorange", "fg": "black", "attrs": [] },
+        "svnstatus_unknown": { "bg": "brightred", "fg": "white", "attrs": [] },
+        "svnstatus_A":       { "bg": "brightgreen", "fg": "black", "attrs": [] },
+        "svnstatus_A+":      { "bg": "mediumgreen", "fg": "black", "attrs": [] },
+        "svnstatus_C":       { "bg": "brightestred", "fg": "black", "attrs": [] },
+        "svnstatus_D":       { "bg": "mediumorange", "fg": "white", "attrs": [] },
+        "svnstatus_I":       { "bg": "gray9", "fg": "black", "attrs": [] },
+        "svnstatus_M":       { "bg": "brightyellow", "fg": "black", "attrs": [] },
+        "svnstatus_R":       { "bg": "mediumgreen", "fg": "black", "attrs": [] },
+        "svnstatus_S":       { "bg": "mediumcyan", "fg": "black", "attrs": [] },
+        "svnstatus_X":       { "bg": "mediumpurple", "fg": "black", "attrs": [] },
+        "svnstatus_?":       { "bg": "brightestorange", "fg": "black", "attrs": [] },
+
+        "kubernetes_cluster":         { "fg": "gray10", "bg": "darkestblue", "attrs": [] },
+        "kubernetes_cluster:alert":   { "fg": "gray10", "bg": "darkestred",  "attrs": [] },
+        "kubernetes_namespace":       { "fg": "gray10", "bg": "darkestblue", "attrs": [] },
+        "kubernetes_namespace:alert": { "fg": "gray10", "bg": "darkred",     "attrs": [] },
+        "kubernetes:divider":         { "fg": "gray4",  "bg": "darkestblue", "attrs": [] },
+
+        "docker":                    { "fg": "gray8",           "bg": "darkestblue", "attrs": [] },
+        "docker_running":            { "fg": "green",           "bg": "darkestblue", "attrs": [] },
+        "docker_paused":             { "fg": "brightestorange", "bg": "darkestblue", "attrs": [] },
+        "docker_exited":             { "fg": "brightred",       "bg": "darkestblue", "attrs": [] },
+        "docker_restarting":         { "fg": "gray10",          "bg": "darkestblue", "attrs": [] },
+        "docker:divider":            { "fg": "gray4",           "bg": "darkestblue", "attrs": [] }
     }
 }
