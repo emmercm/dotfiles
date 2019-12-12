@@ -43,6 +43,12 @@ kdcontainers() {
     kubectl get deployment --output=jsonpath="{.spec.template.spec.containers[*].name}" "$1" | tr -s '[[:space:]]' '\n' | sort -u
 }
 
+# Delete a Kubernetes pod
+# @param {string} $1 Pod name
+kdel() {
+    kubectl delete pod "$1"
+}
+
 # List all Kubernetes deployment names, optionally filtering to an application
 # @param {string=} $1 App label
 kdeployments() {
@@ -74,6 +80,18 @@ kimages() {
 # @param {string=} $1 App label
 kingress() {
     kubectl get ingress ${1:+--selector="app=$1"}
+}
+
+# List all Kubernetes jobs, optionally filtering to an application
+# @param {string=} $1 App label
+kjobs() {
+    kubectl get jobs ${1:+--selector="app=$1"} --label-columns="app" ${1:+--selector="app=$1"}
+}
+
+# Follow the logs from all Kubernetes containers with a given app label
+# @param {string} $1 App label
+klogs() {
+    kubectl logs --all-containers --follow --max-log-requests=1000 --selector="app=$1"
 }
 
 # List all Kubernetes nodes
