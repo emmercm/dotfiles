@@ -4,7 +4,7 @@ A collection of personal dotfiles.
 
 ## Installing
 
-`git clone` this repository and then run `./install.sh`.
+`git clone` this repository and then run [`./install.sh`](./install.sh).
 
 All dotfiles are symlinked to the user's home directory to keep them up to date with this repo. Files that would be overwritten are backed-up first.
 
@@ -20,11 +20,16 @@ Some additional completions are loaded:
 
 ### Aliases & Functions
 
-A number of helpers are written in [`.profile`](./profile).
+A number of helpers are written in:
+
+- [`.profile`](./profile).
+- [`.docker.bash`](./docker.bash).
+- [`.kubernetes.bash`](./kubernetes.bash).
+- [`.osx.bash`](./osx.bash).
 
 ## Extending
 
-[`.profile`](./profile). sources all `.*.bash` files in the same directory so aliases and functions can be nicely grouped.
+[`.profile`](./profile) sources all `.*.bash` files in the same directory so aliases and functions can be nicely grouped.
 
 ## Inspiration
 
