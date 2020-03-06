@@ -99,8 +99,13 @@ kjobs() {
 
 # Follow the logs from all Kubernetes containers with a given app label
 # @param {string} $1 App label
+# @param {number=} $2 Tail length
 klogs() {
-    kubectl logs --all-containers --follow --max-log-requests=1000 --selector="app=$1"
+    if [[ -x "$(command -v stern)" ]]; then
+        stern --timestamps --tail ${2:-0} --selector "app=$1"
+    else
+        kubectl logs --all-containers --timestamps --follow --max-log-requests=${2:-0} --tail=0 --selector="app=$1"
+    fi
 }
 
 # List all Kubernetes nodes
