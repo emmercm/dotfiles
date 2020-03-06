@@ -28,6 +28,12 @@ kbash() {
     kubectl exec --stdin --tty $(kpod "$1" | head -1) -- bash
 }
 
+# List all Kubernetes config maps, optionally filtering to an application
+# @param {string=} $1 App label
+kconfigmaps() {
+    kubectl get configmaps ${1:+--selector="app=$1"}
+}
+
 # List all Kubernetes container names, optionally filtering to an application
 # @param {string=} $1 App label
 kcontainers() {
@@ -93,8 +99,13 @@ kjobs() {
 
 # Follow the logs from all Kubernetes containers with a given app label
 # @param {string} $1 App label
+# @param {number=} $2 Tail length
 klogs() {
-    kubectl logs --all-containers --follow --max-log-requests=1000 --selector="app=$1"
+    if [[ -x "$(command -v stern)" ]]; then
+        stern --timestamps --tail ${2:-0} --selector "app=$1"
+    else
+        kubectl logs --all-containers --timestamps --follow --max-log-requests=${2:-0} --tail=0 --selector="app=$1"
+    fi
 }
 
 # List all Kubernetes nodes
@@ -130,6 +141,12 @@ kreboot() {
 # @param {string=} $1 App label
 krs() {
     kubectl get rs ${1:+--selector="app=$1"}
+}
+
+# List all Kubernetes secrets, optionally filtering to an application
+# @param {string=} $1 App label
+ksecrets() {
+    kubectl get secrets ${1:+--selector="app=$1"}
 }
 
 # Describe a Kubernetes service to get info such as labels, IP, and load balancer ingress
