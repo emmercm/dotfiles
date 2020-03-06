@@ -28,6 +28,12 @@ kbash() {
     kubectl exec --stdin --tty $(kpod "$1" | head -1) -- bash
 }
 
+# List all Kubernetes config maps, optionally filtering to an application
+# @param {string=} $1 App label
+kconfigmaps() {
+    kubectl get configmaps ${1:+--selector="app=$1"}
+}
+
 # List all Kubernetes container names, optionally filtering to an application
 # @param {string=} $1 App label
 kcontainers() {
