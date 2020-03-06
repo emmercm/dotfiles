@@ -16,6 +16,32 @@ fi
 alias reload=". ~/.bash_profile"
 
 
+##### Misc #####
+
+# Navigation helpers
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
+# Colorize various commands
+alias ls="command ls $(if ls --color &> /dev/null; then echo "--color"; else echo "-G"; fi)"
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# ls shortcuts
+ll() {
+    ls -alF "$@"
+}
+lsd() {
+    ls -l "$@" | grep --color=never '^d'
+}
+lsf() {
+    ls -l "$@" | grep --color=never '^-'
+}
+
+
 ##### Git #####
 
 # Short alias

@@ -1,5 +1,7 @@
-.config/configstore/nodemon.json
-.config/configstore/update-notifier-npm.json
-.config/filezilla/
+.config/configstore/*nodemon*.json
+.config/configstore/*npm*.json
+.config/filezilla
+.config/gtk*
+.config/karabiner
 
 .secrets.bash
