@@ -9,7 +9,7 @@ fi
 
 # Load bash-completion
 if [[ -x "$(command -v brew)" && -s "$(brew --prefix)/etc/bash_completion" ]]; then
-    . "$(brew --prefix)/etc/bash_completion"
+    source "$(brew --prefix)/etc/bash_completion"
 fi
 
 # Reload this file after change
@@ -65,8 +65,8 @@ fi
 
 # Set path environment variables
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
 ##### Python #####
@@ -79,5 +79,5 @@ done <<< "$(find ~/Library/Python -type d -name bin)"
 ##### Everything Else #####
 
 while read -r FILE; do
-    . "${FILE}"
+    source "${FILE}"
 done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.bash")"

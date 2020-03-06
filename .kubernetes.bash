@@ -5,17 +5,20 @@ fi
 
 
 # Load bash-completions
-if [[ -x "$(command -v kubectl)" ]]; then
-    . <(kubectl completion bash)
+if [[ -x "$(command -v helm)" ]]; then
+    source <(helm completion bash)
 fi
 if [[ -x "$(command -v kops)" ]]; then
-    . <(kops completion bash)
+    source <(kops completion bash)
+fi
+if [[ -x "$(command -v kubectl)" ]]; then
+    source <(kubectl completion bash)
 fi
 if [[ -x "$(command -v minikube)" ]]; then
-    . <(minikube completion bash)
+    source <(minikube completion bash)
 fi
-if [[ -x "$(command -v helm)" ]]; then
-    . <(helm completion bash)
+if [[ -x "$(command -v stern)" ]]; then
+    source <(stern --completion=bash)
 fi
 
 
