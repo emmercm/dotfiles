@@ -138,6 +138,12 @@ krs() {
     kubectl get rs ${1:+--selector="app=$1"}
 }
 
+# List all Kubernetes secrets, optionally filtering to an application
+# @param {string=} $1 App label
+ksecrets() {
+    kubectl get secrets ${1:+--selector="app=$1"}
+}
+
 # Describe a Kubernetes service to get info such as labels, IP, and load balancer ingress
 # @param {string=} $1 App label
 kservice() {
