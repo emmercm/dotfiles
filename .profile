@@ -72,6 +72,10 @@ alias gv="gvs | head -1"
 
 # Set path environment variables
 if [[ -x "$(command -v go)" ]]; then
+    if [[ ! -d "${GOROOT}" ]]; then
+        export GOROOT=$(realpath "$(which go)" | sed 's/\/bin\/go$//')
+    fi
+
     export GOPATH=$(go env GOPATH)
     if [[ ! -d "${GOPATH}" ]]; then
         mkdir "${GOPATH}"
