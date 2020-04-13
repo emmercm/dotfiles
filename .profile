@@ -41,6 +41,9 @@ lsf() {
     ls -l "$@" | grep --color=never '^-'
 }
 
+# OS X aliases
+source ".osx.bash"
+
 
 ##### Git #####
 
