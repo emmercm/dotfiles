@@ -1,5 +1,4 @@
-.config/configstore/*nodemon*.json
-.config/configstore/*npm*.json
+.config/configstore
 .config/filezilla
 .config/gtk*
 .config/karabiner
