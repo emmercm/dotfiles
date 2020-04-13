@@ -16,7 +16,7 @@ Some additional completions are loaded:
 
 - Git
 - Docker
-- Kubernetes (`kubectl`, `kops`, `minikube`, and `helm`)
+- Kubernetes (`helm`, `kops`, `kubectl`, `minikube`, and `stern`)
 
 ### Aliases & Functions
 
