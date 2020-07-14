@@ -133,15 +133,14 @@ kpods() {
     kubectl get pods --label-columns="app" ${1:+--selector="app=$1"}
 }
 
-# Reboot all Kubernetes pods with a given app label
+# Reboot all Kubernetes deployments with a given app label
 # @param {string} $1 App label
 kreboot() {
     if [[ -z "$1" ]]; then
         return 1
     fi
     for DEPLOYMENT in $(kdeployments "$1"); do
-        CONTAINER=$(kdcontainers "${DEPLOYMENT}" | head -1)
-        kubectl patch deployment "${DEPLOYMENT}" --patch="{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"${CONTAINER}\",\"env\":[{\"name\":\"LAST_MANUAL_RESTART\",\"value\":\"$(date +%s)\"}]}]}}}}"
+        kubectl rollout restart "deployment/${DEPLOYMENT}"
     done
 }
 
