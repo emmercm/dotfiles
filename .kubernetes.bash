@@ -168,6 +168,14 @@ ksh() {
     kubectl exec --stdin --tty $(kpod "$1" | head -1) -- sh
 }
 
+# List all Kubernetes stateful sets
+kstatefulsets() {
+    kubectl get statefulsets
+}
+kss() {
+    kstatefulsets "$@"
+}
+
 # Emulate a `top` command for Kubernetes pods, optionally filtering to an application
 # @param {string} $1 App label
 ktop() {
