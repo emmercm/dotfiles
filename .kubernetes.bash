@@ -72,9 +72,9 @@ kdeployments() {
     kubectl get deployments --output=jsonpath="{.items[*].metadata.name}" ${1:+--selector="app=$1"} | tr -s '[[:space:]]' '\n' | sort -u
 }
 
-# Open a port forward socket to a remote Kubernetes deployment
+# Open a port forward session to a remote Kubernetes deployment
 # @param {string} $1 Deployment name
-# @param {number} $2 Local port number
+# @param {number} $2 Local+remote OR local port number
 # @param {number=} $3 Remote port number
 kforward() {
     kubectl port-forward "deployment/$1" "$2${3:+:$3}"
