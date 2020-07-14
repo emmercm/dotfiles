@@ -4,7 +4,7 @@ alias dalpine="docker run --interactive --tty alpine:latest sh --"
 # Execute `bash` interactively in the Docker container
 # @param {string} $1 Container name
 dbash() {
-    docker exec --interactive --tty "$1" -- bash
+    docker exec --interactive --tty "$1" bash --
 }
 
 # Execute `bash` interactively in a Debian container
@@ -14,7 +14,7 @@ alias ddebian="docker run --interactive --tty debian:latest bash --"
 # @param {string} $1 name[:tag|@digest]
 dhash() {
     docker pull "$1" &> /dev/null || true
-    docker inspect --format='{{index .RepoDigests 0}}' "$1" | awk -F "@" '{print $2}'
+    docker inspect --format '{{index .RepoDigests 0}}' "$1" | awk -F "@" '{print $2}'
 }
 
 # Kill all running Docker containers
@@ -44,7 +44,7 @@ alias dps="docker ps"
 # Execute `sh` interactively in the Docker container
 # @param {string} $1 Container name
 dsh() {
-    docker exec --interactive --tty "$1" -- sh
+    docker exec --interactive --tty "$1" sh --
 }
 
 # Execute `bash` interactively in a Ubuntu container
