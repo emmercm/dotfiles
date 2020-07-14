@@ -46,3 +46,6 @@ alias dps="docker ps"
 dsh() {
     docker exec --interactive --tty "$1" -- sh
 }
+
+# Execute `bash` interactively in a Ubuntu container
+alias dubuntu="docker run --interactive --tty ubuntu:latest bash --"
