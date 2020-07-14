@@ -22,10 +22,10 @@ Some additional completions are loaded:
 
 A number of helpers are written in:
 
-- [`.profile`](./profile).
-- [`.docker.bash`](./docker.bash).
-- [`.kubernetes.bash`](./kubernetes.bash).
-- [`.osx.bash`](./osx.bash).
+- [`.profile`](./profile)
+- [`.docker.bash`](./docker.bash)
+- [`.kubernetes.bash`](./kubernetes.bash)
+- [`.osx.bash`](./osx.bash)
 
 ## Extending
 
