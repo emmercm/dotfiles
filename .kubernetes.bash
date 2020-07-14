@@ -158,8 +158,8 @@ ksecrets() {
 
 # Describe a Kubernetes service to get info such as labels, IP, and load balancer ingress
 # @param {string=} $1 App label
-kservice() {
-    kubectl get service ${1:+--selector="app=$1"}
+kservices() {
+    kubectl get services ${1:+--selector="app=$1"}
 }
 
 # Execute `sh` interactively in the Kubernetes pod
