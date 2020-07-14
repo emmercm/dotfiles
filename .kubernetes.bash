@@ -112,7 +112,7 @@ klogs() {
     if [[ -x "$(command -v stern)" ]]; then
         stern --timestamps --tail ${2:-0} --selector "app=$1"
     else
-        kubectl logs --all-containers --timestamps --follow --max-log-requests=${2:-0} --tail=0 --selector="app=$1"
+        kubectl logs --all-containers --timestamps --follow --max-log-requests=${2:-0} --tail=${2:-0} --selector="app=$1"
     fi
 }
 
