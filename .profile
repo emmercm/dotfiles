@@ -42,7 +42,9 @@ lsf() {
 }
 
 # OS X aliases
-source ".osx.bash"
+while read -r FILE; do
+    source "${FILE}"
+done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".osx.bash")"
 
 
 ##### Git #####
