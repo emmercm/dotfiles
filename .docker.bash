@@ -7,6 +7,9 @@ dbash() {
     docker exec --interactive --tty "$1" -- bash
 }
 
+# Execute `bash` interactively in a Debian container
+alias ddebian="docker run --interactive --tty debian:latest bash --"
+
 # Get the digest hash of a Docker image
 # @param {string} $1 name[:tag|@digest]
 dhash() {
