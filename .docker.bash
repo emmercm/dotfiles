@@ -1,3 +1,6 @@
+# Execute `sh` interactively in an Alpine container
+alias dalpine="docker run --interactive --tty alpine:latest sh --"
+
 # Execute `bash` interactively in the Docker container
 # @param {string} $1 Container name
 dbash() {
