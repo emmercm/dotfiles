@@ -38,6 +38,9 @@ dlogs() {
 # Kill all running Docker containers and delete all container data
 alias dprune="dkillall && docker system prune --all --force && docker images purge"
 
+# List all Docker containers
+alias dps="docker ps"
+
 # Execute `sh` interactively in the Docker container
 # @param {string} $1 Container name
 dsh() {
