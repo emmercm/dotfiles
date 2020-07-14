@@ -29,6 +29,12 @@ dlayers() {
     docker inspect --format '{{range .RootFS.Layers}}{{println .}}{{end}}' "$1"
 }
 
+# Follow the logs from a Docker container
+# @param {string} $1 Container name
+dlogs() {
+    docker logs --tail ${2:-0} --follow "$1"
+}
+
 # Kill all running Docker containers and delete all container data
 alias dprune="dkillall && docker system prune --all --force && docker images purge"
 
