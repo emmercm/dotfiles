@@ -46,6 +46,14 @@ kcrons() {
     kubectl get cronjob ${1:+--selector="app=$1"}
 }
 
+# List all Kubernetes daemon sets
+kdaemonsets() {
+    kubectl get daemonsets
+}
+kds() {
+    kdaemonsets "$@"
+}
+
 # List all Kubernetes container names given a deployment name
 # @param {string} $1 Deployment name
 kdcontainers() {
