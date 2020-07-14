@@ -46,6 +46,14 @@ kcrons() {
     kubectl get cronjob ${1:+--selector="app=$1"}
 }
 
+# List all Kubernetes daemon sets
+kdaemonsets() {
+    kubectl get daemonsets
+}
+kds() {
+    kdaemonsets "$@"
+}
+
 # List all Kubernetes container names given a deployment name
 # @param {string} $1 Deployment name
 kdcontainers() {
@@ -64,9 +72,9 @@ kdeployments() {
     kubectl get deployments --output=jsonpath="{.items[*].metadata.name}" ${1:+--selector="app=$1"} | tr -s '[[:space:]]' '\n' | sort -u
 }
 
-# Open a port forward socket to a remote Kubernetes deployment
+# Open a port forward session to a remote Kubernetes deployment
 # @param {string} $1 Deployment name
-# @param {number} $2 Local port number
+# @param {number} $2 Local+remote OR local port number
 # @param {number=} $3 Remote port number
 kforward() {
     kubectl port-forward "deployment/$1" "$2${3:+:$3}"
@@ -104,7 +112,7 @@ klogs() {
     if [[ -x "$(command -v stern)" ]]; then
         stern --timestamps --tail ${2:-0} --selector "app=$1"
     else
-        kubectl logs --all-containers --timestamps --follow --max-log-requests=${2:-0} --tail=0 --selector="app=$1"
+        kubectl logs --all-containers --timestamps --follow --max-log-requests=${2:-0} --tail=${2:-0} --selector="app=$1"
     fi
 }
 
@@ -125,15 +133,14 @@ kpods() {
     kubectl get pods --label-columns="app" ${1:+--selector="app=$1"}
 }
 
-# Reboot all Kubernetes pods with a given app label
+# Reboot all Kubernetes deployments with a given app label
 # @param {string} $1 App label
 kreboot() {
     if [[ -z "$1" ]]; then
         return 1
     fi
     for DEPLOYMENT in $(kdeployments "$1"); do
-        CONTAINER=$(kdcontainers "${DEPLOYMENT}" | head -1)
-        kubectl patch deployment "${DEPLOYMENT}" --patch="{\"spec\":{\"template\":{\"spec\":{\"containers\":[{\"name\":\"${CONTAINER}\",\"env\":[{\"name\":\"LAST_MANUAL_RESTART\",\"value\":\"$(date +%s)\"}]}]}}}}"
+        kubectl rollout restart "deployment/${DEPLOYMENT}"
     done
 }
 
@@ -151,14 +158,22 @@ ksecrets() {
 
 # Describe a Kubernetes service to get info such as labels, IP, and load balancer ingress
 # @param {string=} $1 App label
-kservice() {
-    kubectl get service ${1:+--selector="app=$1"}
+kservices() {
+    kubectl get services ${1:+--selector="app=$1"}
 }
 
 # Execute `sh` interactively in the Kubernetes pod
 # @param {string} $1 App label
 ksh() {
     kubectl exec --stdin --tty $(kpod "$1" | head -1) -- sh
+}
+
+# List all Kubernetes stateful sets
+kstatefulsets() {
+    kubectl get statefulsets
+}
+kss() {
+    kstatefulsets "$@"
 }
 
 # Emulate a `top` command for Kubernetes pods, optionally filtering to an application
