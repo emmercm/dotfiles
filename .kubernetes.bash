@@ -102,7 +102,7 @@ kingress() {
 # List all Kubernetes jobs, optionally filtering to an application
 # @param {string=} $1 App label
 kjobs() {
-    kubectl get jobs ${1:+--selector="app=$1"} --label-columns="app" ${1:+--selector="app=$1"}
+    kubectl get jobs --label-columns="app" ${1:+--selector="app=$1"}
 }
 
 # Follow the logs from all Kubernetes containers with a given app label
@@ -112,7 +112,7 @@ klogs() {
     if [[ -x "$(command -v stern)" ]]; then
         stern --timestamps --tail ${2:-0} --selector "app=$1"
     else
-        kubectl logs --all-containers --timestamps --follow --max-log-requests=${2:-0} --tail=${2:-0} --selector="app=$1"
+        kubectl logs --all-containers --timestamps --follow --max-log-requests=9999 --tail=${2:-0} --selector="app=$1"
     fi
 }
 
@@ -122,7 +122,7 @@ knodes() {
 }
 
 # Get the pod name of the newest running Kubernetes containers given an app label
-# @param {string=} $1 App label
+# @param {string} $1 App label
 kpod() {
     kubectl get pods --selector="app=$1" --field-selector=status.phase=Running --sort-by=".metadata.creationTimestamp" --show-labels | tail -n +2 | sed 's/[ ][ ]*/ /g' | sort -u -k6,6 | awk '{print $1}'
 }
@@ -142,6 +142,19 @@ kreboot() {
     for DEPLOYMENT in $(kdeployments "$1"); do
         kubectl rollout restart "deployment/${DEPLOYMENT}"
     done
+}
+
+# Get the most recent revision number for a Kubernetes deployment
+# @param {string} $1 Deployment name
+krevision() {
+    khistory "$1" | grep '^[0-9]\+' | sort --sort=numeric --reverse | head -1 | awk '{print $1}'
+}
+
+# Roll back a Kubernetes deployment
+# @param {string} $1 Deployment name
+# @param {number=} $1 Revision number
+krollback() {
+    kubectl rollout undo "deployment/$1" ${2:+--to-revision=$2}
 }
 
 # List all Kubernetes replica sets, optionally filtering to an application
@@ -177,7 +190,7 @@ kss() {
 }
 
 # Emulate a `top` command for Kubernetes pods, optionally filtering to an application
-# @param {string} $1 App label
+# @param {string=} $1 App label
 ktop() {
     watch "kubectl top pods --containers ${1:+--selector="app=$1"} | awk 'NR == 1; NR > 1 {print \$0 | \"sort -n -k3 -r\"}'"
 }
