@@ -8,28 +8,34 @@ A collection of personal dotfiles.
 
 All dotfiles are symlinked to the user's home directory to keep them up to date with this repo. Files that would be overwritten are backed-up first.
 
-## Contents
+## Shells
 
-### [bash-completion](https://github.com/scop/bash-completion)
+The following shells are supported by these dotfiles:
 
-Some additional completions are loaded:
+**Bash (Bourne Again SHell):**
 
-- Git
-- Docker
-- Kubernetes (`helm`, `kops`, `kubectl`, `minikube`, and `stern`)
+- Files are sourced in the following order:
+  - [`~/.bash_profile`](./.bash_profile): macOS default, mostly empty
+  - [`~/.profile`](./.profile): Ubuntu default, mostly empty
+  - [`~/.bashrc`](./.bashrc): functions and aliases
+  - `~/.*.bash` (including [`~/.powerline.bash`](./.powerline.bash)): functions and aliases
+- Uses [Powerline](https://github.com/powerline/powerline) for shell decoration
 
-### Aliases & Functions
+**Zsh (Z shell):**
 
-A number of helpers are written in:
+- Files are sourced in the following order:
+  - [`~/.zshrc`](./.zshrc): mostly empty
+  - [`~/.p10k.zsh`](./.p10k.zsh): [Powerlevel10k](https://github.com/romkatv/powerlevel10k) configuration
+  - [`~/.bashrc`](./.bashrc): functions and aliases
+  - `~/.*.bash` (including [`~/.oh-my-zsh.bash`](./.oh-my-zsh.bash)): functions and aliases
+- Uses [Oh My Zsh](https://ohmyz.sh/) for shell decoration
+- Uses [Powerlevel10k](https://github.com/romkatv/powerlevel10k) for the theme
 
-- [`.profile`](./profile)
-- [`.docker.bash`](./docker.bash)
-- [`.kubernetes.bash`](./kubernetes.bash)
-- [`.osx.bash`](./osx.bash)
+## `.*.bash` files
 
-## Extending
-
-[`.profile`](./profile) sources all `.*.bash` files in the same directory so aliases and functions can be nicely grouped.
+- `.docker.bash`: [Docker](https://www.docker.com) shortcuts and aliases
+- `.kubernetes.bash`: [Kubernetes](https://kubernetes.io/) competions, shortcuts, and alises
+- `.macos.bash`: macOS shortcuts and polyfills
 
 ## Inspiration
 
