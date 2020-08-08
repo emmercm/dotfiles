@@ -6,19 +6,19 @@ fi
 
 # Load bash-completions
 if [[ -x "$(command -v helm)" ]]; then
-    source <(helm completion bash)
+    source <(helm completion "$(basename "${SHELL}")")
 fi
 if [[ -x "$(command -v kops)" ]]; then
-    source <(kops completion bash)
+    source <(kops completion "$(basename "${SHELL}")")
 fi
 if [[ -x "$(command -v kubectl)" ]]; then
-    source <(kubectl completion bash)
+    source <(kubectl completion "$(basename "${SHELL}")")
 fi
 if [[ -x "$(command -v minikube)" ]]; then
-    source <(minikube completion bash)
+    source <(minikube completion "$(basename "${SHELL}")")
 fi
 if [[ -x "$(command -v stern)" ]]; then
-    source <(stern --completion=bash)
+    source <(stern --completion "$(basename "${SHELL}")")
 fi
 
 
