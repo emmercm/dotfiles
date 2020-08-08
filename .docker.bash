@@ -11,10 +11,14 @@ dbash() {
 alias ddebian="docker run --interactive --tty debian:latest bash --"
 
 # Get the digest hash of a Docker image
-# @param {string} $1 name[:tag|@digest]
-dhash() {
-    docker pull "$1" &> /dev/null || true
-    docker inspect --format '{{index .RepoDigests 0}}' "$1" | awk -F "@" '{print $2}'
+# @param {string} $1 name[:tag][@digest]
+ddigest() {
+    if [[ -x "$(command -v skopeo)" ]]; then
+        skopeo inspect --raw "docker://$1" | shasum --algorithm 256 | awk '{print "sha256:"$1}'
+    else
+        docker pull "$1" &> /dev/null || true
+        docker inspect --format '{{index .RepoDigests 0}}' "$1" | awk -F "@" '{print $2}'
+    fi
 }
 
 # Kill all running Docker containers
@@ -23,7 +27,7 @@ dkillall() {
 }
 
 # List all layers of a Docker container
-# @param {string} $1 name[:tag|@digest]
+# @param {string} $1 name[:tag][@digest]
 dlayers() {
     docker pull "$1" &> /dev/null || true
     docker inspect --format '{{range .RootFS.Layers}}{{println .}}{{end}}' "$1"
@@ -31,6 +35,7 @@ dlayers() {
 
 # Follow the logs from a Docker container
 # @param {string} $1 Container name
+# @param {number=} $2 Tail length
 dlogs() {
     docker logs --tail ${2:-0} --follow "$1"
 }
