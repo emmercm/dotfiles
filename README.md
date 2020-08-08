@@ -25,7 +25,7 @@ A number of helpers are written in:
 - [`.profile`](./profile)
 - [`.docker.bash`](./docker.bash)
 - [`.kubernetes.bash`](./kubernetes.bash)
-- [`.osx.bash`](./osx.bash)
+- [`.macos.bash`](./macos.bash)
 
 ## Extending
 

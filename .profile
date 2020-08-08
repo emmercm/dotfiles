@@ -1,6 +1,6 @@
-# .bash_profile (OS X Default) -> .profile (Ubuntu Default) -> .bashrc
 
 ##### Bash #####
+# .bash_profile (macOS Default) -> .profile (Ubuntu Default) -> .bashrc
 
 # Load .bashrc
 if [[ -n "${BASH_VERSION}" && -s ~/.bashrc ]]; then
