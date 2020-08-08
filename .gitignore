@@ -1,6 +1,10 @@
+# Secrets
+.secrets.bash
+id_rsa*
+*kubeconfig*
+*.pem
+
 .config/configstore
 .config/filezilla
 .config/gtk*
 .config/karabiner
-
-.secrets.bash
