@@ -1,4 +1,4 @@
-# bash: .bash_profile (macOS Default) -> .profile (Ubuntu Default) -> .bashrc
+# Bash: .bash_profile (macOS default) -> .profile (Ubuntu default) -> .bashrc
 
 # Load .bashrc
 if [[ -s ~/.bashrc ]]; then

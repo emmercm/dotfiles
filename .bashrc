@@ -1,4 +1,4 @@
-# bash: .bash_profile (macOS Default) -> .profile (Ubuntu Default) -> .bashrc
+# Bash: .bash_profile (macOS default) -> .profile (Ubuntu default) -> .bashrc
 # zsh:  .zshrc (always executed) -> .bashrc
 
 ##### Bash #####
