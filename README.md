@@ -27,7 +27,7 @@ The following shells are supported by these dotfiles:
   - `~/.zshrc`: mostly empty
   - `~/.p10k.zsh`: [Powerlevel10k](https://github.com/romkatv/powerlevel10k) configuration
   - `~/.bashrc`: functions and aliases
-  - `~/.*.bash` (including `~/oh-my-zsh.bash`): functions and aliases
+  - `~/.*.bash` (including `~/.oh-my-zsh.bash`): functions and aliases
 - Uses [Oh My Zsh](https://ohmyz.sh/) for shell decoration
 - Uses [Powerlevel10k](https://github.com/romkatv/powerlevel10k) for the theme
 
