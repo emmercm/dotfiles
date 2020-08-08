@@ -9,7 +9,7 @@ if [[ "$(basename "${SHELL}")" == "bash" && -x "$(command -v brew)" && -s "$(bre
 fi
 
 # Reload this file after change
-alias reload=". ~/.bashrc"
+alias reload="exec ${SHELL}"
 
 
 ##### Misc #####
