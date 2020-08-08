@@ -58,9 +58,12 @@ fi
 # Link dotfiles to home directory
 link "$(pwd)" ".*"
 
-# Add global .gitignore if git is installed
 if [[ -x "$(command -v git)" && -s ~/.gitignore_global ]]; then
+    # Add global .gitignore
     git config --global core.excludesfile ~/.gitignore_global
+
+    # Autocorrect misspelled Git commands
+    git config --global help.autocorrect 1
 fi
 
 # Reload powerline if installed
