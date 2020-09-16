@@ -37,6 +37,10 @@ lsf() {
     ls -l "$@" | grep --color=never '^-'
 }
 
+# Jokes
+alias please="sudo"
+alias yeet="rm -rf"
+
 # macOS aliases
 while read -r FILE; do
     source "${FILE}"
