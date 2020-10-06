@@ -90,6 +90,13 @@ if [[ -x "$(command -v go)" ]]; then
 fi
 
 
+##### Java #####
+
+while read -r DIR; do
+    export JAVA_HOME="${DIR}"
+done <<< "$(find /Library/Java/JavaVirtualMachines/*/Contents -type d -name Home 2> /dev/null)"
+
+
 ##### MySQL #####
 
 # Set path environment variables
