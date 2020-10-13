@@ -90,11 +90,22 @@ if [[ -x "$(command -v go)" ]]; then
 fi
 
 
+##### Java #####
+
+while read -r DIR; do
+    export JAVA_HOME="${DIR}"
+done <<< "$(find /Library/Java/JavaVirtualMachines/*/Contents -type d -name Home 2> /dev/null)"
+
+
 ##### MySQL #####
 
 # Set path environment variables
-if [[ -d "$(brew --prefix)/opt/mysql-client/bin" ]]; then
-    export PATH="$(brew --prefix)/opt/mysql-client/bin:${PATH}"
+if [[ -x "$(command -v brew)" ]]; then
+    while read -r DIR; do
+        if [[ -d "${DIR}/bin" ]]; then
+            export PATH="${DIR}/bin:${PATH}"
+        fi
+    done <<< "$(find "$(brew --prefix)/opt" -maxdepth 1 -name "mysql-client*")"
 fi
 
 
@@ -110,7 +121,7 @@ export NVM_DIR="$HOME/.nvm"
 
 while read -r DIR; do
     export PATH="${DIR}:${PATH}"
-done <<< "$(find ~/Library/Python -type d -name bin)"
+done <<< "$(find ~/Library/Python -type d -name bin 2> /dev/null)"
 
 
 ##### Everything Else #####
