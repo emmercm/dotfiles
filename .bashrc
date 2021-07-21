@@ -1,6 +1,10 @@
 # Bash: .bash_profile (macOS default) -> .profile (Ubuntu default) -> .bashrc
 # zsh:  .zshrc (always executed) -> .bashrc
 
+##### Fig (Pre) #####
+
+[ -s ~/.fig/shell/pre.sh ] && source ~/.fig/shell/pre.sh
+
 ##### Bash #####
 
 # Load bash-completion
@@ -129,3 +133,7 @@ done <<< "$(find ~/Library/Python -type d -name bin 2> /dev/null)"
 while read -r FILE; do
     source "${FILE}"
 done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.bash")"
+
+##### Fig (Post) #####
+
+[ -s ~/.fig/fig.sh ] && source ~/.fig/fig.sh
