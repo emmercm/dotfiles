@@ -1,9 +1,3 @@
-# Use an editor you can exit from
-if [[ -x "$(command -v nano)" ]]; then
-    export KUBE_EDITOR="nano"
-fi
-
-
 # Load bash-completions
 if [[ -x "$(command -v helm)" ]]; then
     source <(helm completion "$(basename "${SHELL}")")

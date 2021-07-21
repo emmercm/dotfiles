@@ -18,6 +18,11 @@ alias reload="exec ${SHELL}"
 
 ##### Misc #####
 
+# Don't be a savage
+if [[ -x "$(command -v nano)" ]]; then
+    export EDITOR=/usr/bin/nano
+fi
+
 # Navigation helpers
 alias ..="cd .."
 alias ...="cd ../.."
