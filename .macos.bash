@@ -11,6 +11,7 @@ command -v sha256sum > /dev/null || alias sha256sum="shasum --algorithm 256"
 
 if [[ -x "$(command -v brew)" ]]; then
     command -v gsed   > /dev/null || brew install gnu-sed
+    command -v jq     > /dev/null || brew install jq
     command -v rename > /dev/null || brew install rename
     command -v tree   > /dev/null || brew install tree
     command -v watch  > /dev/null || brew install watch
@@ -26,6 +27,8 @@ command -v gsed > /dev/null && alias sed="gsed"
 
 # macOS has no `md5sum`, so use `md5` as a fallback
 command -v md5sum > /dev/null || alias md5sum="md5"
+
+alias ports="sudo lsof -iTCP -sTCP:LISTEN -n -P"
 
 # macOS has no `realpath` by default, so emulate it
 # @link https://stackoverflow.com/a/18443300

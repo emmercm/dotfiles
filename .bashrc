@@ -102,11 +102,11 @@ if [[ -x "$(command -v go)" ]]; then
 
     export GOPATH=$(go env GOPATH)
     if [[ ! -d "${GOPATH}" ]]; then
-        mkdir "${GOPATH}"
+        mkdir -p "${GOPATH}"
         mkdir "${GOPATH}/bin"
         mkdir "${GOPATH}/src"
     fi
-    export PATH=$PATH:$(go env GOPATH)/bin
+    export PATH="$PATH:$(go env GOPATH)/bin"
 fi
 
 
@@ -142,6 +142,13 @@ export NVM_DIR="$HOME/.nvm"
 while read -r DIR; do
     export PATH="${DIR}:${PATH}"
 done <<< "$(find ~/Library/Python -type d -name bin 2> /dev/null)"
+
+if [[ -d ~/grpc_tools ]]; then
+    export PATH=~/grpc_tools:$PATH
+fi
+if [[ -d ~/grpc_tools/grpc/bins/opt ]]; then
+    export PATH=~/grpc_tools/grpc/bins/opt:$PATH
+fi
 
 
 ##### Everything Else #####
