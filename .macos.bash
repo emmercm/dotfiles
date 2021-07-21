@@ -41,3 +41,12 @@ command -v realpath > /dev/null || realpath() {
     cd "$OURPWD"
     echo "$REALPATH"
 }
+
+
+##### JetBrains #####
+
+if [[ "$(mdfind -name 'kMDItemFSName == "IntelliJ IDEA.app"')" != "" ]]; then
+    idea() {
+        open -na "IntelliJ IDEA.app" --args "$@"
+    }
+fi

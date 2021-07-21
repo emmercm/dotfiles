@@ -56,6 +56,17 @@ while read -r FILE; do
 done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".macos.bash")"
 
 
+##### IDEs #####
+
+if [[ -d "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ]]; then
+    export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+fi
+if [[ -d "/Applications/VSCodium.app/Contents/Resources/app/bin" ]]; then
+    export PATH="$PATH:/Applications/VSCodium.app/Contents/Resources/app/bin"
+    alias code=codium
+fi
+
+
 ##### Git #####
 
 # Short alias
