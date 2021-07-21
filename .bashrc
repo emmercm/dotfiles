@@ -1,6 +1,10 @@
 # Bash: .bash_profile (macOS default) -> .profile (Ubuntu default) -> .bashrc
 # zsh:  .zshrc (always executed) -> .bashrc
 
+##### Fig (Pre) #####
+
+[ -s ~/.fig/shell/pre.sh ] && source ~/.fig/shell/pre.sh
+
 ##### Bash #####
 
 # Load bash-completion
@@ -13,6 +17,11 @@ alias reload="exec ${SHELL}"
 
 
 ##### Misc #####
+
+# Don't be a savage
+if [[ -x "$(command -v nano)" ]]; then
+    export EDITOR=/usr/bin/nano
+fi
 
 # Navigation helpers
 alias ..="cd .."
@@ -45,6 +54,17 @@ alias yeet="rm -rf"
 while read -r FILE; do
     source "${FILE}"
 done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".macos.bash")"
+
+
+##### IDEs #####
+
+if [[ -d "/Applications/Visual Studio Code.app/Contents/Resources/app/bin" ]]; then
+    export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+fi
+if [[ -d "/Applications/VSCodium.app/Contents/Resources/app/bin" ]]; then
+    export PATH="$PATH:/Applications/VSCodium.app/Contents/Resources/app/bin"
+    alias code=codium
+fi
 
 
 ##### Git #####
@@ -82,11 +102,11 @@ if [[ -x "$(command -v go)" ]]; then
 
     export GOPATH=$(go env GOPATH)
     if [[ ! -d "${GOPATH}" ]]; then
-        mkdir "${GOPATH}"
+        mkdir -p "${GOPATH}"
         mkdir "${GOPATH}/bin"
         mkdir "${GOPATH}/src"
     fi
-    export PATH=$PATH:$(go env GOPATH)/bin
+    export PATH="$PATH:$(go env GOPATH)/bin"
 fi
 
 
@@ -123,9 +143,20 @@ while read -r DIR; do
     export PATH="${DIR}:${PATH}"
 done <<< "$(find ~/Library/Python -type d -name bin 2> /dev/null)"
 
+if [[ -d ~/grpc_tools ]]; then
+    export PATH=~/grpc_tools:$PATH
+fi
+if [[ -d ~/grpc_tools/grpc/bins/opt ]]; then
+    export PATH=~/grpc_tools/grpc/bins/opt:$PATH
+fi
+
 
 ##### Everything Else #####
 
 while read -r FILE; do
     source "${FILE}"
 done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.bash")"
+
+##### Fig (Post) #####
+
+[ -s ~/.fig/fig.sh ] && source ~/.fig/fig.sh

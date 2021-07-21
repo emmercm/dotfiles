@@ -1,9 +1,3 @@
-# Use an editor you can exit from
-if [[ -x "$(command -v nano)" ]]; then
-    export KUBE_EDITOR="nano"
-fi
-
-
 # Load bash-completions
 if [[ -x "$(command -v helm)" ]]; then
     source <(helm completion "$(basename "${SHELL}")")
@@ -116,6 +110,14 @@ klogs() {
     fi
 }
 
+# List all Kubernetes namespaces
+knamespaces() {
+    kubectl get namespaces
+}
+kns() {
+    knamespaces "$@"
+}
+
 # List all Kubernetes nodes
 knodes() {
     kubectl get nodes --label-columns="nodegroup-name"
@@ -159,8 +161,11 @@ krollback() {
 
 # List all Kubernetes replica sets, optionally filtering to an application
 # @param {string=} $1 App label
-krs() {
+kreplicasets() {
     kubectl get rs ${1:+--selector="app=$1"}
+}
+krs() {
+    kreplicasets "$@"
 }
 
 # List all Kubernetes secrets, optionally filtering to an application

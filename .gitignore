@@ -6,5 +6,7 @@ id_rsa*
 
 .config/configstore
 .config/filezilla
+.config/fish/conf.d/*fig*
 .config/gtk*
+.config/jgit
 .config/karabiner

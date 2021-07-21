@@ -58,13 +58,15 @@ fi
 # Link dotfiles to home directory
 link "$(pwd)" ".*"
 
+# Git settings
 if [[ -x "$(command -v git)" && -s ~/.gitignore_global ]]; then
-    # Add global .gitignore
     git config --global core.excludesfile ~/.gitignore_global
-
-    # Autocorrect misspelled Git commands
     git config --global help.autocorrect 1
+    git config --global init.defaultBranch main
 fi
+
+defaults write com.apple.Finder AppleShowAllFiles true
+killall Finder
 
 # Reload powerline if installed
 if [[ -x "$(command -v powerline-daemon)" ]]; then
