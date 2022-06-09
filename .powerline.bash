@@ -1,7 +1,7 @@
 # pip3 install --user powerline-status powerline-gitstatus powerline-svnstatus powerline-kubernetes powerline-docker
 
 # Only use powerline with bash
-if [[ "$(basename $(ps -o comm= $$))" != "bash" ]]; then
+if [[ "$(basename "$(ps -o comm= $$)")" != "bash" ]]; then
     return 0
 fi
 
@@ -17,7 +17,7 @@ fi
 # If installed run it
 if [[ -x "$(command -v powerline-daemon)" ]]; then
     powerline-daemon --quiet
-    POWERLINE_BASH_CONTINUATION=1
-    POWERLINE_BASH_SELECT=1
+    export POWERLINE_BASH_CONTINUATION=1
+    export POWERLINE_BASH_SELECT=1
     . "$(pip3 show powerline-status | grep "Location:" | awk '{print $2}')/powerline/bindings/bash/powerline.sh"
 fi

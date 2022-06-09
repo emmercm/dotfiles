@@ -1,17 +1,22 @@
 # Load bash-completions
 if [[ -x "$(command -v helm)" ]]; then
+    # shellcheck disable=SC1090
     source <(helm completion "$(basename "${SHELL}")")
 fi
 if [[ -x "$(command -v kops)" ]]; then
+    # shellcheck disable=SC1090
     source <(kops completion "$(basename "${SHELL}")")
 fi
 if [[ -x "$(command -v kubectl)" ]]; then
+    # shellcheck disable=SC1090
     source <(kubectl completion "$(basename "${SHELL}")")
 fi
 if [[ -x "$(command -v minikube)" ]]; then
+    # shellcheck disable=SC1090
     source <(minikube completion "$(basename "${SHELL}")")
 fi
 if [[ -x "$(command -v stern)" ]]; then
+    # shellcheck disable=SC1090
     source <(stern --completion "$(basename "${SHELL}")")
 fi
 

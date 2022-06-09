@@ -105,7 +105,7 @@ drm() {
 
 # Remove all Docker containers
 drmall() {
-    docker rm --force $(docker ps --quiet) 2> /dev/null || true
+    docker rm --force "$(docker ps --quiet)" 2> /dev/null || true
 }
 
 # Remove a Docker container and its volumes

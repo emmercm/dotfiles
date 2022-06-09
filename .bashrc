@@ -8,12 +8,14 @@
 ##### Bash #####
 
 # Load bash-completion
-if [[ "$(basename $(ps -o comm= $$))" == "bash" && -x "$(command -v brew)" && -s "$(brew --prefix)/etc/bash_completion" ]]; then
+if [[ "$(basename "$(ps -o comm= $$)")" == "bash" && -x "$(command -v brew)" && -s "$(brew --prefix)/etc/bash_completion" ]]; then
     source "$(brew --prefix)/etc/bash_completion"
 fi
 
 # Reload this file after change
-alias reload="exec $(ps -o comm= $$)"
+reload() {
+    exec "$(ps -o comm= $$)"
+}
 
 
 ##### Misc #####
