@@ -108,8 +108,7 @@ fi
 
 # Git config aliases
 for al in $(git --list-cmds=alias); do
-    alias "g${al}"="git ${al}"
-    alias g${al}="git \"${al}\""
+    alias "g${al}"="git \"${al}\""
     if type __git_aliased_command &> /dev/null; then
         complete_func=_git_$(__git_aliased_command ${al})
         type ${complete_func} &> /dev/null && __git_complete g${al} ${complete_func}
