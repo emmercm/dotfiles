@@ -2,5 +2,6 @@
 
 # Load .bashrc
 if [[ -s ~/.bashrc ]]; then
+    # shellcheck source=.bashrc
     . ~/.bashrc
 fi

@@ -3,24 +3,42 @@
 
 ##### Fig (Pre) #####
 
-[ -s ~/.fig/shell/pre.sh ] && source ~/.fig/shell/pre.sh
+. "$HOME/.fig/shell/bashrc.pre.bash"
 
 ##### Bash #####
 
 # Load bash-completion
-if [[ "$(basename "${SHELL}")" == "bash" && -x "$(command -v brew)" && -s "$(brew --prefix)/etc/bash_completion" ]]; then
+if [[ "$(basename "$(ps -o comm= $$)")" == "bash" && -x "$(command -v brew)" ]]; then
+    if [[ ! -f "$(brew --prefix)/etc/bash_completion" ]]; then
+        brew install zsh-completions
+    fi
     source "$(brew --prefix)/etc/bash_completion"
 fi
 
 # Reload this file after change
-alias reload="exec ${SHELL}"
+reload() {
+    exec "$(ps -o comm= $$)"
+}
 
 
 ##### Misc #####
 
+# `which` but better
+#   https://emmer.dev/blog/reliably-finding-files-in-path/
+pinpoint() {
+    while read -r DIR; do
+        if [[ -f "${DIR}/$1" ]]; then
+            echo "${DIR}/$1"
+            return 0
+        fi
+    done <<< "$(echo "${PATH}" | tr ':' '\n')"
+    return 1
+}
+
 # Don't be a savage
 if [[ -x "$(command -v nano)" ]]; then
-    export EDITOR=/usr/bin/nano
+    EDITOR=$(pinpoint nano)
+    export EDITOR
 fi
 
 # Navigation helpers
@@ -30,30 +48,43 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
 # Colorize various commands
+# shellcheck disable=SC2139,SC2262
 alias ls="command ls $(if ls --color &> /dev/null; then echo "--color"; else echo "-G"; fi)"
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # ls shortcuts
-ll() {
-    ls -alF
-}
+alias ll="ls -alF"
 lsd() {
-    ls -l "$@" | grep --color=never '^d'
+    for DIR in "${@:-.}"/*; do
+        if [[ -d "${DIR}" ]]; then
+            echo "${DIR}"
+        fi
+    done
 }
 lsf() {
-    ls -l "$@" | grep --color=never '^-'
+    for FILE in "${@:-.}"/*; do
+        if [[ ! -d "${FILE}" ]]; then
+            echo "${FILE}"
+        fi
+    done
 }
 
 # Jokes
 alias please="sudo"
 alias yeet="rm -rf"
 
+# Helpers
+if [[ -x "$(command -v beep)" ]]; then
+    alias beep="echo -ne '\007'"
+fi
+
 # macOS aliases
-while read -r FILE; do
-    source "${FILE}"
-done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".macos.bash")"
+if [[ -s ~/.macos.bash ]]; then
+    # shellcheck source=.macos.bash
+    . ~/.macos.bash
+fi
 
 
 ##### IDEs #####
@@ -71,15 +102,18 @@ fi
 
 # Short alias
 alias g="git"
-if type _git &> /dev/null; then
+if [[ "$(basename "$(ps -o comm= $$)")" == "bash" ]] && type _git &> /dev/null; then
 	complete -o default -o nospace -F _git g
 fi
 
 # Git config aliases
-for al in $(git config --get-regexp '^alias\.' | cut -f 1 -d ' ' | cut -f 2 -d '.'); do
+for al in $(git --list-cmds=alias); do
+    # shellcheck disable=SC2139
     alias g${al}="git ${al}"
-    complete_func=_git_$(__git_aliased_command ${al})
-    function_exists ${complete_fnc} && __git_complete g${al} ${complete_func}
+    if type __git_aliased_command &> /dev/null; then
+        complete_func=_git_$(__git_aliased_command ${al})
+        type ${complete_func} &> /dev/null && __git_complete g${al} ${complete_func}
+    fi
 done
 
 # Get the most recent versions from Git tags
@@ -97,16 +131,19 @@ alias gv="gvs 1"
 # Set path environment variables
 if [[ -x "$(command -v go)" ]]; then
     if [[ ! -d "${GOROOT}" ]]; then
-        export GOROOT=$(realpath "$(which go)" | sed 's/\/bin\/go$//')
+        GOROOT=$(realpath "$(which go)" | sed 's/\/bin\/go$//')
+        export GOROOT
     fi
 
-    export GOPATH=$(go env GOPATH)
+    GOPATH=$(go env GOPATH)
+    export GOPATH
     if [[ ! -d "${GOPATH}" ]]; then
         mkdir -p "${GOPATH}"
         mkdir "${GOPATH}/bin"
         mkdir "${GOPATH}/src"
     fi
-    export PATH="$PATH:$(go env GOPATH)/bin"
+    PATH="$PATH:$(go env GOPATH)/bin"
+    export PATH
 fi
 
 
@@ -114,7 +151,7 @@ fi
 
 while read -r DIR; do
     export JAVA_HOME="${DIR}"
-done <<< "$(find /Library/Java/JavaVirtualMachines/*/Contents -type d -name Home 2> /dev/null)"
+done <<< "$(find /Library/Java/JavaVirtualMachines/*/Contents -type d -name Home 2> /dev/null | sort --version-sort)"
 
 
 ##### MySQL #####
@@ -154,9 +191,10 @@ fi
 ##### Everything Else #####
 
 while read -r FILE; do
+    # shellcheck disable=SC1090
     source "${FILE}"
 done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.bash")"
 
 ##### Fig (Post) #####
 
-[ -s ~/.fig/fig.sh ] && source ~/.fig/fig.sh
+. "$HOME/.fig/shell/bashrc.post.bash"

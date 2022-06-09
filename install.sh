@@ -34,16 +34,12 @@ function link() {
 
         # Symlink the file
         ln -s "${FILE}" "${LINK}"
-    done <<< "$(find "$1" -maxdepth 1 -name "$2" ! -name ".git" ! -name ".gitignore")"
+    done <<< "$(find "$1" -maxdepth 1 -name "$2" ! -name ".git" ! -name ".github" ! -name ".gitignore")"
 }
 
 
 # Set up bash-completion
 if [[ -x "$(command -v brew)" ]]; then
-    if [[ ! -f $(brew --prefix)/etc/bash_completion ]]; then
-        brew install bash-completion
-    fi
-
     # Git
     if [[ -f "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" ]]; then
         ln -sf "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" "$(brew --prefix)/etc/bash_completion.d/"
@@ -65,8 +61,11 @@ if [[ -x "$(command -v git)" && -s ~/.gitignore_global ]]; then
     git config --global init.defaultBranch main
 fi
 
-defaults write com.apple.Finder AppleShowAllFiles true
-killall Finder
+# macOS settings
+if [[ "${OSTYPE:-}" == "darwin"* ]]; then
+    defaults write com.apple.Finder AppleShowAllFiles true
+    killall Finder
+fi
 
 # Reload powerline if installed
 if [[ -x "$(command -v powerline-daemon)" ]]; then

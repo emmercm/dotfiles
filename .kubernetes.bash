@@ -1,17 +1,22 @@
 # Load bash-completions
 if [[ -x "$(command -v helm)" ]]; then
+    # shellcheck disable=SC1090
     source <(helm completion "$(basename "${SHELL}")")
 fi
 if [[ -x "$(command -v kops)" ]]; then
+    # shellcheck disable=SC1090
     source <(kops completion "$(basename "${SHELL}")")
 fi
 if [[ -x "$(command -v kubectl)" ]]; then
+    # shellcheck disable=SC1090
     source <(kubectl completion "$(basename "${SHELL}")")
 fi
 if [[ -x "$(command -v minikube)" ]]; then
+    # shellcheck disable=SC1090
     source <(minikube completion "$(basename "${SHELL}")")
 fi
 if [[ -x "$(command -v stern)" ]]; then
+    # shellcheck disable=SC1090
     source <(stern --completion "$(basename "${SHELL}")")
 fi
 
@@ -19,7 +24,7 @@ fi
 # Execute `bash` interactively in the Kubernetes pod
 # @param {string} $1 App label
 kbash() {
-    kubectl exec --stdin --tty $(kpod "$1" | head -1) -- bash
+    kubectl exec --stdin --tty "$(kpod "$1" | head -1)" -- bash
 }
 
 # List all Kubernetes config maps, optionally filtering to an application
@@ -183,7 +188,7 @@ kservices() {
 # Execute `sh` interactively in the Kubernetes pod
 # @param {string} $1 App label
 ksh() {
-    kubectl exec --stdin --tty $(kpod "$1" | head -1) -- sh
+    kubectl exec --stdin --tty "$(kpod "$1" | head -1)" -- sh
 }
 
 # List all Kubernetes stateful sets

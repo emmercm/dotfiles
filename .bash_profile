@@ -2,5 +2,6 @@
 
 # Load .profile
 if [[ -s ~/.profile ]]; then
+    # shellcheck source=.profile
     . ~/.profile
 fi

@@ -1,0 +1,17 @@
+name: CI/CD
+
+on: push
+
+jobs:
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run ShellCheck
+      uses: ludeeus/action-shellcheck@master
+      with:
+        severity: warning
+      env:
+        # SC2148: ignore missing shebang, it's not appropriate here
+        SHELLCHECK_OPTS: -e SC2148

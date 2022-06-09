@@ -1,4 +1,4 @@
-if [[ "${OSTYPE}" != "darwin"* ]]; then
+if [[ "${OSTYPE:-}" != "darwin"* ]]; then
     return 0
 fi
 
@@ -22,6 +22,12 @@ if [[ -x "$(command -v brew)" ]]; then
     fi
 fi
 
+# macOS DNS flush
+flush() {
+    sudo dscacheutil -flushcache
+    sudo killall -HUP mDNSResponder
+}
+
 # macOS's BSD sed sucks
 command -v gsed > /dev/null && alias sed="gsed"
 
@@ -34,14 +40,14 @@ alias ports="sudo lsof -iTCP -sTCP:LISTEN -n -P"
 # @link https://stackoverflow.com/a/18443300
 command -v realpath > /dev/null || realpath() {
     OURPWD=$PWD
-    cd "$(dirname "$1")"
+    cd "$(dirname "$1")" || return 1
     LINK=$(readlink "$(basename "$1")")
     while [ "$LINK" ]; do
-        cd "$(dirname "$LINK")"
+        cd "$(dirname "$LINK")" || return 1
         LINK=$(readlink "$(basename "$1")")
     done
     REALPATH="$PWD/$(basename "$1")"
-    cd "$OURPWD"
+    cd "$OURPWD" || return 1
     echo "$REALPATH"
 }
 
