@@ -1,5 +1,5 @@
 # Only use oh-my-zsh with zsh
-if [[ "$(basename "${SHELL}")" != "zsh" ]]; then
+if [[ "$(basename $(ps -o comm= $$))" != "zsh" ]]; then
     return 0
 fi
 
