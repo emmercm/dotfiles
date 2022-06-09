@@ -48,6 +48,7 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
 # Colorize various commands
+# shellcheck disable=SC2139,SC2262
 alias ls="command ls $(if ls --color &> /dev/null; then echo "--color"; else echo "-G"; fi)"
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
@@ -108,6 +109,7 @@ fi
 # Git config aliases
 for al in $(git --list-cmds=alias); do
     alias "g${al}"="git ${al}"
+    alias g${al}="git \"${al}\""
     if type __git_aliased_command &> /dev/null; then
         complete_func=_git_$(__git_aliased_command ${al})
         type ${complete_func} &> /dev/null && __git_complete g${al} ${complete_func}
