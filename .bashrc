@@ -3,24 +3,36 @@
 
 ##### Fig (Pre) #####
 
-[ -s ~/.fig/shell/pre.sh ] && source ~/.fig/shell/pre.sh
+. "$HOME/.fig/shell/bashrc.pre.bash"
 
 ##### Bash #####
 
 # Load bash-completion
-if [[ "$(basename "${SHELL}")" == "bash" && -x "$(command -v brew)" && -s "$(brew --prefix)/etc/bash_completion" ]]; then
+if [[ "$(basename $(ps -o comm= $$))" == "bash" && -x "$(command -v brew)" && -s "$(brew --prefix)/etc/bash_completion" ]]; then
     source "$(brew --prefix)/etc/bash_completion"
 fi
 
 # Reload this file after change
-alias reload="exec ${SHELL}"
+alias reload="exec $(ps -o comm= $$)"
 
 
 ##### Misc #####
 
+# `which` but better
+#   https://emmer.dev/blog/reliably-finding-files-in-path/
+pinpoint() {
+    while read -r DIR; do
+        if [[ -f "${DIR}/$1" ]]; then
+            echo "${DIR}/$1"
+            return 0
+        fi
+    done <<< "$(echo "${PATH}" | tr ':' '\n')"
+    return 1
+}
+
 # Don't be a savage
 if [[ -x "$(command -v nano)" ]]; then
-    export EDITOR=/usr/bin/nano
+    export EDITOR=$(pinpoint nano)
 fi
 
 # Navigation helpers
@@ -36,9 +48,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # ls shortcuts
-ll() {
-    ls -alF
-}
+alias ll="ls -alF"
 lsd() {
     ls -l "$@" | grep --color=never '^d'
 }
@@ -49,6 +59,11 @@ lsf() {
 # Jokes
 alias please="sudo"
 alias yeet="rm -rf"
+
+# Helpers
+if [[ -x "$(command -v beep)" ]]; then
+    alias beep="echo -ne '\007'"
+fi
 
 # macOS aliases
 while read -r FILE; do
@@ -114,7 +129,7 @@ fi
 
 while read -r DIR; do
     export JAVA_HOME="${DIR}"
-done <<< "$(find /Library/Java/JavaVirtualMachines/*/Contents -type d -name Home 2> /dev/null)"
+done <<< "$(find /Library/Java/JavaVirtualMachines/*/Contents -type d -name Home 2> /dev/null | sort --version-sort)"
 
 
 ##### MySQL #####
@@ -159,4 +174,4 @@ done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.bash")"
 
 ##### Fig (Post) #####
 
-[ -s ~/.fig/fig.sh ] && source ~/.fig/fig.sh
+. "$HOME/.fig/shell/bashrc.post.bash"
