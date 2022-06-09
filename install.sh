@@ -65,8 +65,11 @@ if [[ -x "$(command -v git)" && -s ~/.gitignore_global ]]; then
     git config --global init.defaultBranch main
 fi
 
-defaults write com.apple.Finder AppleShowAllFiles true
-killall Finder
+# macOS settings
+if [[ "${OSTYPE:-}" == "darwin"* ]]; then
+    defaults write com.apple.Finder AppleShowAllFiles true
+    killall Finder
+fi
 
 # Reload powerline if installed
 if [[ -x "$(command -v powerline-daemon)" ]]; then
