@@ -8,7 +8,10 @@
 ##### Bash #####
 
 # Load bash-completion
-if [[ "$(basename "$(ps -o comm= $$)")" == "bash" && -x "$(command -v brew)" && -s "$(brew --prefix)/etc/bash_completion" ]]; then
+if [[ "$(basename "$(ps -o comm= $$)")" == "bash" && -x "$(command -v brew)" ]]; then
+    if [[ ! -f "$(brew --prefix)/etc/bash_completion" ]]; then
+        brew install zsh-completions
+    fi
     source "$(brew --prefix)/etc/bash_completion"
 fi
 
@@ -98,15 +101,17 @@ fi
 
 # Short alias
 alias g="git"
-if type _git &> /dev/null; then
+if [[ "$(basename "$(ps -o comm= $$)")" == "bash" ]] && type _git &> /dev/null; then
 	complete -o default -o nospace -F _git g
 fi
 
 # Git config aliases
-for al in $(git config --get-regexp '^alias\.' | cut -f 1 -d ' ' | cut -f 2 -d '.'); do
-    alias g${al}="git ${al}"
-    complete_func=_git_$(__git_aliased_command ${al})
-    function_exists ${complete_fnc} && __git_complete g${al} ${complete_func}
+for al in $(git --list-cmds=alias); do
+    alias "g${al}"="git ${al}"
+    if type __git_aliased_command &> /dev/null; then
+        complete_func=_git_$(__git_aliased_command ${al})
+        type ${complete_func} &> /dev/null && __git_complete g${al} ${complete_func}
+    fi
 done
 
 # Get the most recent versions from Git tags
