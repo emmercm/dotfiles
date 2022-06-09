@@ -53,10 +53,18 @@ alias egrep='egrep --color=auto'
 # ls shortcuts
 alias ll="ls -alF"
 lsd() {
-    ls -l "$@" | grep --color=never '^d'
+    for DIR in "${@:-.}"/*; do
+        if [[ -d "${DIR}" ]]; then
+            echo "${DIR}"
+        fi
+    done
 }
 lsf() {
-    ls -l "$@" | grep --color=never '^-'
+    for FILE in "${@:-.}"/*; do
+        if [[ ! -d "${FILE}" ]]; then
+            echo "${FILE}"
+        fi
+    done
 }
 
 # Jokes
@@ -116,10 +124,12 @@ alias gv="gvs 1"
 # Set path environment variables
 if [[ -x "$(command -v go)" ]]; then
     if [[ ! -d "${GOROOT}" ]]; then
-        export GOROOT=$(realpath "$(which go)" | sed 's/\/bin\/go$//')
+        GOROOT=$(realpath "$(which go)" | sed 's/\/bin\/go$//')
+        export GOROOT
     fi
 
-    export GOPATH=$(go env GOPATH)
+    GOPATH=$(go env GOPATH)
+    export GOPATH
     if [[ ! -d "${GOPATH}" ]]; then
         mkdir -p "${GOPATH}"
         mkdir "${GOPATH}/bin"
