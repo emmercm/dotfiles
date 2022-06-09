@@ -1,4 +1,4 @@
-if [[ "${OSTYPE}" != "darwin"* ]]; then
+if [[ "${OSTYPE:-}" != "darwin"* ]]; then
     return 0
 fi
 
@@ -21,6 +21,12 @@ if [[ -x "$(command -v brew)" ]]; then
         hstr --show-configuration >> ~/.bashrc
     fi
 fi
+
+# macOS DNS flush
+flush() {
+    sudo dscacheutil -flushcache
+    sudo killall -HUP mDNSResponder
+}
 
 # macOS's BSD sed sucks
 command -v gsed > /dev/null && alias sed="gsed"
