@@ -34,7 +34,7 @@ function link() {
 
         # Symlink the file
         ln -s "${FILE}" "${LINK}"
-    done <<< "$(find "$1" -maxdepth 1 -name "$2" ! -name ".git" ! -name ".gitignore")"
+    done <<< "$(find "$1" -maxdepth 1 -name "$2" ! -name ".git" ! -name ".github" ! -name ".gitignore")"
 }
 
 
