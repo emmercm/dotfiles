@@ -188,7 +188,7 @@ kservices() {
 # Execute `sh` interactively in the Kubernetes pod
 # @param {string} $1 App label
 ksh() {
-    kubectl exec --stdin --tty $(kpod "$1" | head -1) -- sh
+    kubectl exec --stdin --tty "$(kpod "$1" | head -1)" -- sh
 }
 
 # List all Kubernetes stateful sets

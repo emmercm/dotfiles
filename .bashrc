@@ -34,7 +34,8 @@ pinpoint() {
 
 # Don't be a savage
 if [[ -x "$(command -v nano)" ]]; then
-    export EDITOR=$(pinpoint nano)
+    EDITOR=$(pinpoint nano)
+    export EDITOR
 fi
 
 # Navigation helpers
