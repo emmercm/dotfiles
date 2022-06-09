@@ -53,7 +53,7 @@ antigen bundle zsh-users/zsh-syntax-highlighting
 antigen theme romkatv/powerlevel10k
 if [[ -d ~/Library/Fonts && "$(find ~/Library/Fonts -maxdepth 1 -follow -type f -name "*MesloLGS NF*")" == "" ]]; then
     git clone https://github.com/romkatv/powerlevel10k-media.git --depth=1
-    cd powerlevel10k-media
+    cd powerlevel10k-media || return 1
     cp *.ttf ~/Library/Fonts
     cd ..
     rm -rf powerlevel10k-media

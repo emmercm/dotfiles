@@ -66,9 +66,10 @@ if [[ -x "$(command -v beep)" ]]; then
 fi
 
 # macOS aliases
-while read -r FILE; do
-    source "${FILE}"
-done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".macos.bash")"
+if [[ -s ~/.macos.bash ]]; then
+    # shellcheck source=.macos.bash
+    . ~/.macos.bash
+fi
 
 
 ##### IDEs #####

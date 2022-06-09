@@ -19,7 +19,7 @@ fi
 # Execute `bash` interactively in the Kubernetes pod
 # @param {string} $1 App label
 kbash() {
-    kubectl exec --stdin --tty $(kpod "$1" | head -1) -- bash
+    kubectl exec --stdin --tty "$(kpod "$1" | head -1)" -- bash
 }
 
 # List all Kubernetes config maps, optionally filtering to an application

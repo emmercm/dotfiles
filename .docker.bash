@@ -42,7 +42,7 @@ dkill() {
 
 # Kill all running Docker containers
 dkillall() {
-    docker kill $(docker ps --quiet) 2> /dev/null || true
+    docker kill "$(docker ps --quiet)" 2> /dev/null || true
 }
 
 # List all layers of a Docker container

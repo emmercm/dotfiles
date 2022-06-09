@@ -8,7 +8,7 @@ fi
 # Install fonts
 if [[ -d ~/Library/Fonts && "$(find ~/Library/Fonts -maxdepth 1 -follow -type f -name "*Powerline*")" == "" ]]; then
     git clone https://github.com/powerline/fonts.git --depth=1
-    cd fonts
+    cd fonts || return 1
     ./install.sh
     cd ..
     rm -rf fonts
