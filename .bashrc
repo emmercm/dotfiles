@@ -140,7 +140,8 @@ if [[ -x "$(command -v go)" ]]; then
         mkdir "${GOPATH}/bin"
         mkdir "${GOPATH}/src"
     fi
-    export PATH="$PATH:$(go env GOPATH)/bin"
+    PATH="$PATH:$(go env GOPATH)/bin"
+    export PATH
 fi
 
 
@@ -188,6 +189,7 @@ fi
 ##### Everything Else #####
 
 while read -r FILE; do
+    # shellcheck disable=SC1090
     source "${FILE}"
 done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.bash")"
 
