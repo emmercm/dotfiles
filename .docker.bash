@@ -26,7 +26,13 @@ ddigest() {
 }
 
 # Execute `gremlin` interactively in a TinkerPop container
-alias gremlin="docker run --interactive --tty tinkerpop/gremlin-console:latest gremlin --"
+# @param {string=} $1 Image tag
+dgremlin() {
+    docker run --interactive --tty "tinkerpop/gremlin-console:${1:-latest}" gremlin --
+}
+
+# Execute `sh` interactively in a Docker-in-Docker container
+alias dind="docker run --interactive --tty docker:dind sh --"
 
 # Kill a Docker container
 # @param {string} $1 Container name
@@ -53,12 +59,37 @@ dlogs() {
     docker logs --tail ${2:-0} --follow "$1"
 }
 
-# Run an instance of the MySQL container (username: root)
-alias dmysql="docker run --env MYSQL_ROOT_PASSWORD=password --publish 3306:3306 --detach mysql:latest"
+# Execute `mysql` interactively in a MySQL server container
+# @param {string=} $1 Image tag
+dmysql() {
+    CONTAINER_ID=$(docker run --env MYSQL_ROOT_PASSWORD=password --detach "mysql:${1:-latest}") &&
+        docker exec "${CONTAINER_ID}" mysqladmin ping --wait && sleep 1 &&
+        docker exec --interactive --tty "${CONTAINER_ID}" mysql --password=password &&
+        docker rm --force --volumes "${CONTAINER_ID}" > /dev/null
+}
 
-# Run an instance of the PostgreSQL container (username: postgres)
-alias dpostgres="docker run --env POSTGRES_PASSWORD=password --publish 5432:5432 --detach postgres:latest"
+# Run a detached instance of the MySQL server container (username: root)
+# @param {string=} $1 Image tag
+dmysqld() {
+    docker run --env MYSQL_ROOT_PASSWORD=password --publish 3306:3306 --detach "mysql:${1:-latest}"
+}
+
+# Execute `psql` interactively in a PostgreSQL server container
+# @param {string=} $1 Image tag
+dpostgres() {
+    CONTAINER_ID=$(docker run --env POSTGRES_PASSWORD=password --detach "postgres:${1:-latest}") &&
+        until docker exec "${CONTAINER_ID}" pg_isready ; do sleep 1 ; done &&
+        docker exec --interactive --tty "${CONTAINER_ID}" psql --username postgres &&
+        docker rm --force --volumes "${CONTAINER_ID}" > /dev/null
+}
 alias dpostgresql="dpostgres"
+
+# Run a detached instance of the PostgreSQL server container (username: postgres)
+# @param {string=} $1 Image tag
+dpostgresd() {
+    docker run --env POSTGRES_PASSWORD=password --publish 5432:5432 --detach "postgres:${1:-latest}"
+}
+alias dpostgresqld="dpostgres"
 
 # Kill all running Docker containers and delete all container data
 alias dprune="dkillall && docker system prune --all --force && docker images purge"
