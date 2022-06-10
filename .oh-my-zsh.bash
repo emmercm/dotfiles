@@ -31,6 +31,38 @@ antigen bundle virtualenv
 # Helper plugins
 antigen bundle command-not-found
 
+# Language plugins
+
+autoload -U add-zsh-hook
+load-nvmrc() {
+    # Don't do anything if no .nvmrc exists and nvm hasn't been loaded yet
+    if [[ ! -s .nvmrc && "${NVM_BIN:-}" == "" ]]; then
+        return
+    fi
+
+    # Ensure nvm has been lazy loaded
+    if [[ "${NVM_BIN:-}" == "" ]]; then
+        nvm version &> /dev/null
+    fi
+
+    # https://github.com/nvm-sh/nvm/blob/master/README.md
+    local node_version="$(nvm version)"
+    local nvmrc_path="$(nvm_find_nvmrc)"
+    if [ -n "$nvmrc_path" ]; then
+        local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+        if [ "$nvmrc_node_version" = "N/A" ]; then
+            nvm install
+        elif [ "$nvmrc_node_version" != "$node_version" ]; then
+            nvm use
+        fi
+    elif [ "$node_version" != "$(nvm version default)" ]; then
+        echo "Reverting to nvm default version"
+        nvm use default
+    fi
+}
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
+
 # First-party autocompletions and aliases
 antigen bundle aws
 antigen bundle gem
