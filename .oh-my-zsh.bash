@@ -3,8 +3,6 @@ if [[ "$(basename "$(ps -o comm= $$)")" != "zsh" ]]; then
     return 0
 fi
 
-set +x
-
 
 # Install oh-my-zsh
 ZSH=${ZSH:-~/.oh-my-zsh}
