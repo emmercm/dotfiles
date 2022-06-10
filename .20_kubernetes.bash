@@ -1,26 +1,33 @@
 __kube_completions() {
+    if [[  "$(basename "$(ps -o comm= $$)")" == "zsh" && ! -x "$(command -v compdef)" ]]; then
+        autoload -Uz compinit && compinit
+    fi
+
     # Load bash-completions
     # if [[ -x "$(command -v helm)" ]]; then
     #     # shellcheck disable=SC1090
     #     source <(helm completion "$(basename "$(ps -o comm= $$)")")
     # fi
+
     # if [[ -x "$(command -v kops)" ]]; then
     #     # shellcheck disable=SC1090
     #     source <(kops completion "$(basename "$(ps -o comm= $$)")")
     # fi
+
     if [[ -x "$(command -v kubectl)" ]]; then
         # shellcheck disable=SC1090
         source <(kubectl completion "$(basename "$(ps -o comm= $$)")")
     fi
+
     # if [[ -x "$(command -v minikube)" ]]; then
     #     # shellcheck disable=SC1090
     #     source <(minikube completion "$(basename "$(ps -o comm= $$)")")
     # fi
+
     # if [[ -x "$(command -v stern)" ]]; then
     #     # shellcheck disable=SC1090
     #     source <(stern --completion "$(basename "$(ps -o comm= $$)")")
     # fi
-    # NOTE: `autoload -Uz compinit && compinit` needs to be run AFTER this!
 }
 __kube_completions
 
