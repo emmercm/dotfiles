@@ -60,8 +60,6 @@ link "$(pwd)" ".*"
 # Git settings
 if [[ -x "$(command -v git)" && -s ~/.gitignore_global ]]; then
     git config --global core.excludesfile ~/.gitignore_global
-    git config --global help.autocorrect 1
-    git config --global init.defaultBranch main
 fi
 
 # macOS settings
