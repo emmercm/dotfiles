@@ -2,6 +2,14 @@ export BUILDKIT_PROGRESS=plain
 export PROGRESS_NO_TRUNC=1
 
 
+__docker_completions() {
+    if [[ -x "$(command -v brew)" && -d "/Applications/Docker.app" && -z "$(find "$(brew --prefix)/etc/bash_completion.d" -maxdepth 1 -name "docker*")" ]]; then
+        find "/Applications/Docker.app" -follow -type f -name "*.bash-completion" -exec ln -sf "{}" "$(brew --prefix)/etc/bash_completion.d/" \;
+    fi
+}
+__docker_completions
+
+
 __docker_funcs() {
     # Execute `sh` interactively in an Alpine container
     alias dalpine="docker run --interactive --tty alpine:latest sh --"

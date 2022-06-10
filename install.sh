@@ -38,17 +38,6 @@ function link() {
 }
 
 
-# Set up bash-completion
-if [[ -x "$(command -v brew)" ]]; then
-    # Git
-    if [[ -f "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" ]]; then
-        ln -sf "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" "$(brew --prefix)/etc/bash_completion.d/"
-    fi
-
-    # Docker
-    if [[ -d "/Applications/Docker.app" ]]; then
-        find "/Applications/Docker.app" -follow -type f -name "*.bash-completion" -exec ln -sf "{}" "$(brew --prefix)/etc/bash_completion.d/" \;
-    fi
 fi
 
 # Remove old, broken symlinks

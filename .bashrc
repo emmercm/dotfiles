@@ -101,13 +101,18 @@ __bashrc_ides
 ##### Git #####
 
 __bashrc_git() {
+    # Bash completions
+    if [[ -x "$(command -v brew)" && -f "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" && ! -f "$(brew --prefix)/etc/bash_completion.d/git-completion.bash" ]]; then
+        ln -sf "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" "$(brew --prefix)/etc/bash_completion.d/"
+    fi
+
     # Short alias
     alias g="git"
     if [[ "$(basename "$(ps -o comm= $$)")" == "bash" ]] && type _git &> /dev/null; then
         complete -o default -o nospace -F _git g
     fi
 
-    # Git config aliases
+    # Shell alias Git aliases from the .gitconfig
     for al in $(git --list-cmds=alias); do
         # shellcheck disable=SC2139
         alias g${al}="git ${al}"
