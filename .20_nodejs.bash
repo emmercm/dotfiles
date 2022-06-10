@@ -1,8 +1,23 @@
 __nodejs_nvm() {
-    # Set path environment variables
+    # Lazy load nvm because it is notoriously slow
     export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-    # [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
+    if [[ -s "$NVM_DIR/nvm.sh" ]]; then
+        nvm() {
+            # Unset this function so it's never called again in this session
+            unset -f "$0"
+
+            # Load nvm
+            . "$NVM_DIR/nvm.sh"
+
+            # Load nvm's bash completions
+            if [[ -s "$NVM_DIR/bash_completion" ]]; then
+                . "$NVM_DIR/bash_completion"
+            fi
+
+            # Execute the intended command
+            $0 "$@"
+        }
+    fi
 }
 __nodejs_nvm
 

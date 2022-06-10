@@ -1,33 +1,48 @@
 __kube_completions() {
-    if [[  "$(basename "$(ps -o comm= $$)")" == "zsh" && ! -x "$(command -v compdef)" ]]; then
-        autoload -Uz compinit && compinit
+    # This lazy-loads completions for common Kube commands. This is because a number of them are
+    # minorly slow. Completions won't be available until the first time the command is invoked.
+
+    # NOTE: `autoload -Uz compinit && compinit` will need to happen before sourcing any of these!
+
+    if [[ -x "$(command -v helm)" ]]; then
+        helm() {
+            unset -f "$0"
+            source <(helm completion "$(basename "$(ps -o comm= $$)")")
+            $0 "$@"
+        }
     fi
 
-    # Load bash-completions
-    # if [[ -x "$(command -v helm)" ]]; then
-    #     # shellcheck disable=SC1090
-    #     source <(helm completion "$(basename "$(ps -o comm= $$)")")
-    # fi
-
-    # if [[ -x "$(command -v kops)" ]]; then
-    #     # shellcheck disable=SC1090
-    #     source <(kops completion "$(basename "$(ps -o comm= $$)")")
-    # fi
+    if [[ -x "$(command -v kops)" ]]; then
+        kops() {
+            unset -f "$0"
+            source <(kops completion "$(basename "$(ps -o comm= $$)")")
+            $0 "$@"
+        }
+    fi
 
     if [[ -x "$(command -v kubectl)" ]]; then
-        # shellcheck disable=SC1090
-        source <(kubectl completion "$(basename "$(ps -o comm= $$)")")
+        kubectl() {
+            unset -f "$0"
+            source <(kubectl completion "$(basename "$(ps -o comm= $$)")")
+            $0 "$@"
+        }
     fi
 
-    # if [[ -x "$(command -v minikube)" ]]; then
-    #     # shellcheck disable=SC1090
-    #     source <(minikube completion "$(basename "$(ps -o comm= $$)")")
-    # fi
+    if [[ -x "$(command -v minikube)" ]]; then
+        minikube() {
+            unset -f "$0"
+            source <(minikube completion "$(basename "$(ps -o comm= $$)")")
+            $0 "$@"
+        }
+    fi
 
-    # if [[ -x "$(command -v stern)" ]]; then
-    #     # shellcheck disable=SC1090
-    #     source <(stern --completion "$(basename "$(ps -o comm= $$)")")
-    # fi
+    if [[ -x "$(command -v stern)" ]]; then
+        stern() {
+            unset -f "$0"
+            source <(stern --completion "$(basename "$(ps -o comm= $$)")")
+            $0 "$@"
+        }
+    fi
 }
 __kube_completions
 

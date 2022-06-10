@@ -2,6 +2,7 @@ if [[ "${OSTYPE:-}" != "darwin"* ]]; then
     return 0
 fi
 
+
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 
