@@ -51,6 +51,9 @@ if [[ -x "$(command -v brew)" ]]; then
     fi
 fi
 
+# Remove old, broken symlinks
+find "${HOME}" -maxdepth 1 -name ".*.bash" -type l ! -exec test -e {} \; -delete
+
 # Link dotfiles to home directory
 link "$(pwd)" ".*"
 

@@ -1,5 +1,5 @@
 # Secrets
-.secrets.bash
+*secrets.bash
 id_rsa*
 *kubeconfig*
 *.pem

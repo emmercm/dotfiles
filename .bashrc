@@ -225,7 +225,7 @@ __bashrc_python
 while read -r FILE; do
     # shellcheck disable=SC1090
     source "${FILE}"
-done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.bash")"
+done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.bash" | sort --version-sort)"
 
 ##### Fig (Post) #####
 

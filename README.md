@@ -14,28 +14,35 @@ The following shells are supported by these dotfiles:
 
 **Bash (Bourne Again SHell):**
 
-- Files are sourced in the following order:
-  - [`~/.bash_profile`](./.bash_profile): macOS default entry point, mostly empty
-  - [`~/.profile`](./.profile): Ubuntu default entry point, mostly empty
-  - [`~/.bashrc`](./.bashrc): general functions and aliases
-  - `~/.*.bash` (including [`~/.powerline.bash`](./.powerline.bash)): specific functions and aliases
-- Uses [Powerline](https://github.com/powerline/powerline) for shell decoration
+Files are sourced in the following order:
+
+1. [`~/.bash_profile`](./.bash_profile): macOS default entry point, mostly empty
+2. [`~/.profile`](./.profile): Ubuntu default entry point, mostly empty
+3. [`~/.bashrc`](./.bashrc): general functions and aliases
+4. `~/.*.bash`: specific functions and aliases
+   1. [`~/.powerline.bash`](./.powerline.bash) for shell decoration with [Powerline](https://github.com/powerline/powerline)
+   2. Other files described below
 
 **Zsh (Z shell):**
 
-- Files are sourced in the following order:
-  - [`~/.zshrc`](./.zshrc): mostly empty
-  - [`~/.p10k.zsh`](./.p10k.zsh): [Powerlevel10k](https://github.com/romkatv/powerlevel10k) configuration
-  - [`~/.bashrc`](./.bashrc): general functions and aliases
-  - `~/.*.bash` (including [`~/.oh-my-zsh.bash`](./.oh-my-zsh.bash)): specific functions and aliases
-- Uses [Oh My Zsh](https://ohmyz.sh/) for shell decoration
-- Uses [Powerlevel10k](https://github.com/romkatv/powerlevel10k) for the theme
+Files are sourced in the following order:
+
+1. [`~/.zshrc`](./.zshrc): mostly empty
+2. [`~/.bashrc`](./.bashrc): general functions and aliases
+3. `~/.*.bash`: specific functions and aliases
+   1. [`~/.oh-my-zsh.bash`](./.oh-my-zsh.bash) for [Oh My Zsh](https://ohmyz.sh/) shell configuration, using [Antigen](https://antigen.sharats.me/) for plugin management.
+
+      The contents of this file are typically put in `~/.zshrc` but are broken out here for organization.
+
+      1. [`~/.p10k.zsh`](./.p10k.zsh): [Powerlevel10k](https://github.com/romkatv/powerlevel10k) shell theme configuration
+
+   2. Other files described below
 
 ## `.*.bash` files
 
-- [`.docker.bash`](./.docker.bash): [Docker](https://www.docker.com) shortcuts and aliases
-- [`.kubernetes.bash`](./.kubernetes.bash): [Kubernetes](https://kubernetes.io/) competions, shortcuts, and alises
-- [`.macos.bash`](./.macos.bash): macOS shortcuts and polyfills
+- [`.10_macos.bash`](./.10_macos.bash): macOS shortcuts and polyfills
+- [`.20_docker.bash`](./.20_docker.bash): [Docker](https://www.docker.com) shortcuts and aliases
+- [`.20_kubernetes.bash`](./.20_kubernetes.bash): [Kubernetes](https://kubernetes.io/) completions, shortcuts, and aliases
 
 ## Inspiration
 
