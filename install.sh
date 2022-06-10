@@ -38,7 +38,12 @@ function link() {
 }
 
 
+# Add Git hook symlinks
+if [[ -d "$(pwd)/.git/hooks" ]]; then
+    rm -rf "$(pwd)/.git/hooks"
 fi
+ln -s "$(pwd)/.githooks" "$(pwd)/.git/hooks"
+chmod +x "$(pwd)/.git/hooks"/*
 
 # Remove old, broken symlinks
 find "${HOME}" -maxdepth 1 -name ".*.bash" -type l ! -exec test -e {} \; -delete

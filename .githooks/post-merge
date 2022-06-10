@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "↓↓↓↓↓ emmercm/dotfiles post-merge ↓↓↓↓↓"
+
+
+echo "Running install.sh"
+./install.sh
+
+
+echo "↑↑↑↑↑ emmercm/dotfiles post-merge ↑↑↑↑↑"
