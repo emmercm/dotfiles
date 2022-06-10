@@ -25,27 +25,34 @@ fi
 # Load the oh-my-zsh's library
 antigen use oh-my-zsh
 
-# Bundles from the default repo (https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins)
-antigen bundle aws
-antigen bundle brew
+# Prompt plugins
+antigen bundle virtualenv
+
+# Helper plugins
 antigen bundle command-not-found
-antigen bundle docker
-antigen bundle docker-compose
-antigen bundle git
+
+# First-party autocompletions and aliases
+antigen bundle aws
+antigen bundle gem
 antigen bundle golang
-antigen bundle node
+antigen bundle gradle
+antigen bundle heroku
+antigen bundle mvn
 antigen bundle npm
 antigen bundle nvm
-antigen bundle osx
 antigen bundle pip
 antigen bundle pipenv
 antigen bundle redis-cli
 antigen bundle vagrant
-antigen bundle virtualenv
+antigen bundle yarn
 
-# Syntax highlighting bundle
-antigen bundle zsh-users/zsh-autosuggestions
+# Autocompletions
+antigen bundle lukechilds/zsh-better-npm-completion
+antigen bundle srijanshetty/zsh-pip-completion
 antigen bundle zsh-users/zsh-completions
+
+# Fish-like suggestions, history searching, and syntax highlighting
+antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-history-substring-search
 antigen bundle zsh-users/zsh-syntax-highlighting
 

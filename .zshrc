@@ -12,25 +12,6 @@ if [[ -s ~/.p10k.zsh ]]; then
     . ~/.p10k.zsh
 fi
 
-# Load zsh-completions
-if [[ -x "$(command -v brew)" ]]; then
-    if [[ ! -d "$(brew --prefix)/share/zsh-completions" ]]; then
-        brew install zsh-completions
-    fi
-
-    # Git
-    if [[ ! -f "$(brew --prefix)/share/zsh-completions/_git" ]]; then
-        curl --output "$(brew --prefix)/share/zsh-completions/_git" https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.zsh
-    fi
-    if [[ ! -f "$(brew --prefix)/share/zsh-completions/git-completion.bash" ]]; then
-        curl --output "$(brew --prefix)/share/zsh-completions/git-completion.bash" https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-    fi
-    zstyle ':completion:*:*:git:*' script "$(brew --prefix)/share/zsh-completions/git-completion.bash"
-
-    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-    autoload -Uz compinit && compinit
-fi
-
 # Load .bashrc
 if [[ -s ~/.bashrc ]]; then
     # shellcheck source=.bashrc
