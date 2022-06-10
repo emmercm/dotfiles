@@ -39,7 +39,7 @@ antigen bundle gradle
 antigen bundle heroku
 antigen bundle mvn
 antigen bundle npm
-antigen bundle nvm
+# antigen bundle nvm
 antigen bundle pip
 antigen bundle pipenv
 antigen bundle redis-cli
