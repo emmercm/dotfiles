@@ -7,10 +7,6 @@ if [[ -r "${P10K_INSTANT_PROMPT}" ]]; then
     # shellcheck disable=SC1090
     . "${P10K_INSTANT_PROMPT}"
 fi
-if [[ -s ~/.p10k.zsh ]]; then
-    # shellcheck source=.p10k.zsh
-    . ~/.p10k.zsh
-fi
 
 # Load .bashrc
 if [[ -s ~/.bashrc ]]; then

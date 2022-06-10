@@ -73,6 +73,10 @@ if [[ -d ~/Library/Fonts && "$(find ~/Library/Fonts -maxdepth 1 -follow -type f 
 		end tell
 	EOF
 fi
+if [[ -s ~/.p10k.zsh ]]; then
+    # shellcheck source=.p10k.zsh
+    . ~/.p10k.zsh
+fi
 
 # Tell Antigen that you're done
 antigen apply
