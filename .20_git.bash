@@ -40,6 +40,11 @@ __git_funcs() {
         fi
         git pull
         git checkout "${GIT_BRANCH}"
+        if [[ $(git branch --list main) ]]; then
+            git merge main
+        else
+            git merge master
+        fi
 
         # if [[ $(git branch --list main) ]]; then
         #     git checkout origin/main
