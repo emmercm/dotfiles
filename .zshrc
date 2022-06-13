@@ -4,7 +4,7 @@
 ##### Fig (Pre) #####
 
 
-# zsh: .zshrc (always executed) -> .bashrc
+# zsh: .zshrc (always executed) -> .everythingrc
 
 # Profile shell functions, output viewed with `zprof`
 # zmodload zsh/zprof
@@ -17,10 +17,10 @@ if [[ -r "${P10K_INSTANT_PROMPT}" ]]; then
     . "${P10K_INSTANT_PROMPT}"
 fi
 
-# Load .bashrc
-if [[ -s ~/.bashrc ]]; then
-    # shellcheck source=.bashrc
-    . ~/.bashrc
+# Load .everythingrc
+if [[ -s ~/.everythingrc ]]; then
+    # shellcheck source=.everythingrc
+    . ~/.everythingrc
 fi
 
 

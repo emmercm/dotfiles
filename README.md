@@ -18,8 +18,9 @@ Files are sourced in the following order:
 
 1. [`~/.bash_profile`](./.bash_profile): macOS default entry point, mostly empty
 2. [`~/.profile`](./.profile): Ubuntu default entry point, mostly empty
-3. [`~/.bashrc`](./.bashrc): general functions and aliases
-4. `~/.*.bash`: specific functions and aliases
+3. [`~/.bashrc`](./.bashrc): mostly empty
+4. [`~/.everythingrc`](./.everythingrc): general functions and aliases
+5. `~/.*.bash`: specific functions and aliases
    1. [`~/.powerline.bash`](./.powerline.bash) for shell decoration with [Powerline](https://github.com/powerline/powerline)
    2. Other files described below
 
@@ -28,7 +29,7 @@ Files are sourced in the following order:
 Files are sourced in the following order:
 
 1. [`~/.zshrc`](./.zshrc): mostly empty
-2. [`~/.bashrc`](./.bashrc): general functions and aliases
+2. [`~/.everythingrc`](./.everythingrc): general functions and aliases
 3. `~/.*.bash`: specific functions and aliases
    1. [`~/.oh-my-zsh.bash`](./.oh-my-zsh.bash) for [Oh My Zsh](https://ohmyz.sh/) shell configuration, using [Antigen](https://antigen.sharats.me/) for plugin management.
 
