@@ -127,9 +127,14 @@ __bashrc_golang
 ##### Java #####
 
 __bashrc_java() {
-    while read -r DIR; do
-        export JAVA_HOME="${DIR}"
-    done <<< "$(find /Library/Java/JavaVirtualMachines/*/Contents -type d -name Home 2> /dev/null | sort --version-sort)"
+    if [[ "${JAVA_HOME:-}" == "" && -x /usr/libexec/java_home ]]; then
+        export JAVA_HOME=$(/usr/libexec/java_home -v 11)
+    fi
+    if [[ "${JAVA_HOME:-}" == "" ]]; then
+        while read -r DIR; do
+            export JAVA_HOME="${DIR}"
+        done <<< "$(find /Library/Java/JavaVirtualMachines/*/Contents -type d -name Home 2> /dev/null | sort --version-sort)"
+    fi
 }
 __bashrc_java
 
