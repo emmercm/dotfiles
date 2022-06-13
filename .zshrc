@@ -1,3 +1,9 @@
+# Fig pre block. Keep at the top of this file.
+# . "$HOME/.fig/shell/zshrc.pre.zsh"
+
+##### Fig (Pre) #####
+
+
 # zsh: .zshrc (always executed) -> .bashrc
 
 # Profile shell functions, output viewed with `zprof`
@@ -16,3 +22,9 @@ if [[ -s ~/.bashrc ]]; then
     # shellcheck source=.bashrc
     . ~/.bashrc
 fi
+
+
+##### Fig (Post) #####
+
+# Fig post block. Keep at the bottom of this file.
+# . "$HOME/.fig/shell/zshrc.post.zsh"

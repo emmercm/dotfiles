@@ -1,9 +1,11 @@
-# Bash: .bash_profile (macOS default) -> .profile (Ubuntu default) -> .bashrc
-# zsh:  .zshrc (always executed) -> .bashrc
+# Fig pre block. Keep at the top of this file.
+# . "$HOME/.fig/shell/bashrc.pre.bash"
 
 ##### Fig (Pre) #####
 
-. "$HOME/.fig/shell/bashrc.pre.bash"
+
+# Bash: .bash_profile (macOS default) -> .profile (Ubuntu default) -> .bashrc
+# zsh:  .zshrc (always executed) -> .bashrc
 
 ##### Bash #####
 
@@ -171,6 +173,8 @@ while read -r FILE; do
     source "${FILE}"
 done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.bash" | sort --version-sort)"
 
+
 ##### Fig (Post) #####
 
-. "$HOME/.fig/shell/bashrc.post.bash"
+# Fig post block. Keep at the bottom of this file.
+# . "$HOME/.fig/shell/bashrc.post.bash"
