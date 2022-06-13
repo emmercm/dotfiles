@@ -11,6 +11,30 @@ __docker_completions
 
 
 __docker_funcs() {
+    # Auto/lazy-start Docker if it's not running
+    if [[ -x "$(command -v docker)" ]]; then
+        docker() {
+            local DOCKER=$(pinpoint docker)
+            if [[ "${OSTYPE:-}" == "darwin"* ]]; then
+                # macOS
+                ps axo pid,command | grep -v grep | grep --quiet /Applications/Docker.app/Contents/MacOS/Docker || (
+                    open --background -a Docker
+                    while true; do
+                        "${DOCKER}" ps &> /dev/null && break
+                        sleep 1
+                    done
+                )
+            fi
+            "${DOCKER}" "$@"
+        }
+    fi
+    if [[ -x "$(command -v docker-compose)" ]]; then
+        docker-compose() {
+            docker ps &> /dev/null # start
+            "$(pinpoint docker-compose)" "$@"
+        }
+    fi
+
     # Execute `sh` interactively in an Alpine container
     alias dalpine="docker run --interactive --tty alpine:latest sh --"
 
@@ -71,7 +95,7 @@ __docker_funcs() {
     # Execute `mysql` interactively in a MySQL server container
     # @param {string=} $1 Image tag
     dmysql() {
-        CONTAINER_ID=$(docker run --env MYSQL_ROOT_PASSWORD=password --detach "mysql:${1:-latest}") &&
+        local CONTAINER_ID=$(docker run --env MYSQL_ROOT_PASSWORD=password --detach "mysql:${1:-latest}") &&
             docker exec "${CONTAINER_ID}" mysqladmin ping --wait && sleep 1 &&
             docker exec --interactive --tty "${CONTAINER_ID}" mysql --password=password &&
             docker rm --force --volumes "${CONTAINER_ID}" > /dev/null
@@ -86,7 +110,7 @@ __docker_funcs() {
     # Execute `psql` interactively in a PostgreSQL server container
     # @param {string=} $1 Image tag
     dpostgres() {
-        CONTAINER_ID=$(docker run --env POSTGRES_PASSWORD=password --detach "postgres:${1:-latest}") &&
+        local CONTAINER_ID=$(docker run --env POSTGRES_PASSWORD=password --detach "postgres:${1:-latest}") &&
             until docker exec "${CONTAINER_ID}" pg_isready ; do sleep 1 ; done &&
             docker exec --interactive --tty "${CONTAINER_ID}" psql --username postgres &&
             docker rm --force --volumes "${CONTAINER_ID}" > /dev/null
