@@ -30,8 +30,9 @@ __git_funcs() {
     done
 
     gupdate() {
-        GIT_BRANCH=$(git branch --show-current)
         git stash --include-untracked
+
+        local GIT_BRANCH=$(git branch --show-current)
         if [[ $(git branch --list main) ]]; then
             git checkout main
         else
@@ -39,8 +40,14 @@ __git_funcs() {
         fi
         git pull
         git checkout "${GIT_BRANCH}"
+
+        # if [[ $(git branch --list main) ]]; then
+        #     git checkout origin/main
+        # else
+        #     git checkout origin/master
+        # fi
+
         git stash pop
-        # git merge origin/main
     }
 
     # Get the most recent versions from Git tags
@@ -52,3 +59,4 @@ __git_funcs() {
     # Get the most recent version from Git tags
     alias gv="gvs 1"
 }
+__git_funcs
