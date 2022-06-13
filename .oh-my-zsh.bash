@@ -35,6 +35,11 @@ antigen bundle command-not-found
 
 autoload -U add-zsh-hook
 load-nvmrc() {
+    # Don't do anything if nvm isn't installed/aliased
+    if [[ ! -x "$(command -v nvm)" ]]; then
+        return
+    fi
+
     # Don't do anything if no .nvmrc exists and nvm hasn't been loaded yet
     if [[ ! -s .nvmrc && "${NVM_BIN:-}" == "" ]]; then
         return
@@ -62,6 +67,8 @@ load-nvmrc() {
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
+
+# TODO(cemmer): nodeenv
 
 # First-party autocompletions and aliases
 antigen bundle aws
@@ -109,6 +116,14 @@ if [[ -s ~/.p10k.zsh ]]; then
     # shellcheck source=.p10k.zsh
     . ~/.p10k.zsh
 fi
+
+# Fix zcache issues
+if [[ ! -s ~/.antigen/init.zsh ]]; then
+    antigen cache-gen
+fi
+# if [[ -s ~/.antigen/init.zsh ]]; then
+#     sed --in-place '/command-not-found''/command-not-found/' ~/.antigen/init.zsh
+# fi
 
 # Tell Antigen that you're done
 antigen apply
