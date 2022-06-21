@@ -67,6 +67,15 @@ __docker_funcs() {
     # Execute `sh` interactively in a Docker-in-Docker container
     alias dind="docker run --interactive --tty docker:dind sh --"
 
+    # Execute `jshell` interactively in a Java JDK container
+    # @param {string=} $1 Image tag
+    djava() {
+        if [[ "${1:-}" == "" && -x "$(command -v java)" ]]; then
+            java --version | head -1 | sed 's/"//g' | sed -E 's/(.* )?([0-9]+)\.[0-9]+\.[0-9]+.*/\2/'
+        fi
+        docker run --interactive --tty "openjdk:${1:-${JAVA_VERSION:-latest}}" jshell
+    }
+
     # Kill a Docker container
     # @param {string} $1 Container name
     dkill() {
