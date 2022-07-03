@@ -38,18 +38,15 @@ function link() {
 }
 
 
-# Set up bash-completion
-if [[ -x "$(command -v brew)" ]]; then
-    # Git
-    if [[ -f "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" ]]; then
-        ln -sf "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" "$(brew --prefix)/etc/bash_completion.d/"
-    fi
-
-    # Docker
-    if [[ -d "/Applications/Docker.app" ]]; then
-        find "/Applications/Docker.app" -follow -type f -name "*.bash-completion" -exec ln -sf "{}" "$(brew --prefix)/etc/bash_completion.d/" \;
-    fi
+# Add Git hook symlinks
+if [[ -d "$(pwd)/.git/hooks" ]]; then
+    rm -rf "$(pwd)/.git/hooks"
 fi
+ln -s "$(pwd)/.githooks" "$(pwd)/.git/hooks"
+chmod +x "$(pwd)/.git/hooks"/*
+
+# Remove old, broken symlinks
+find "${HOME}" -maxdepth 1 -name ".*.bash" -type l ! -exec test -e {} \; -delete
 
 # Link dotfiles to home directory
 link "$(pwd)" ".*"
@@ -57,12 +54,14 @@ link "$(pwd)" ".*"
 # Git settings
 if [[ -x "$(command -v git)" && -s ~/.gitignore_global ]]; then
     git config --global core.excludesfile ~/.gitignore_global
-    git config --global help.autocorrect 1
-    git config --global init.defaultBranch main
 fi
 
 # macOS settings
 if [[ "${OSTYPE:-}" == "darwin"* ]]; then
+    # HID settings
+    defaults write .GlobalPreferences com.apple.mouse.scaling -1
+
+    # Finder settings
     defaults write com.apple.Finder AppleShowAllFiles true
     killall Finder
 fi

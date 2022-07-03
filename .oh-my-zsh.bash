@@ -25,27 +25,76 @@ fi
 # Load the oh-my-zsh's library
 antigen use oh-my-zsh
 
-# Bundles from the default repo (https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins)
-antigen bundle aws
-antigen bundle brew
+# Prompt plugins
+antigen bundle virtualenv
+
+# Helper plugins
 antigen bundle command-not-found
-antigen bundle docker
-antigen bundle docker-compose
-antigen bundle git
+
+# Language plugins
+
+autoload -U add-zsh-hook
+load-nvmrc() {
+    # Don't do anything if nvm isn't installed/aliased
+    if [[ ! -x "$(command -v nvm)" ]]; then
+        return
+    fi
+
+    # Don't do anything if no .nvmrc exists and nvm hasn't been loaded yet
+    if [[ ! -s .nvmrc && "${NVM_BIN:-}" == "" ]]; then
+        return
+    fi
+
+    # Ensure nvm has been lazy loaded
+    if [[ "${NVM_BIN:-}" == "" ]]; then
+        nvm version &> /dev/null
+    fi
+
+    # https://github.com/nvm-sh/nvm/blob/master/README.md
+    local node_version
+    node_version="$(nvm version)"
+    local nvmrc_path
+    nvmrc_path="$(nvm_find_nvmrc)"
+    if [ -n "$nvmrc_path" ]; then
+        local nvmrc_node_version
+        nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+        if [ "$nvmrc_node_version" = "N/A" ]; then
+            nvm install
+        elif [ "$nvmrc_node_version" != "$node_version" ]; then
+            nvm use
+        fi
+    elif [ "$node_version" != "$(nvm version default)" ]; then
+        echo "Reverting to nvm default version"
+        nvm use default
+    fi
+}
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc
+
+# TODO(cemmer): nodeenv
+
+# First-party autocompletions and aliases
+antigen bundle aws
+antigen bundle gem
 antigen bundle golang
-antigen bundle node
+antigen bundle gradle
+antigen bundle heroku
+antigen bundle mvn
 antigen bundle npm
-antigen bundle nvm
-antigen bundle osx
+# antigen bundle nvm
 antigen bundle pip
 antigen bundle pipenv
 antigen bundle redis-cli
 antigen bundle vagrant
-antigen bundle virtualenv
+antigen bundle yarn
 
-# Syntax highlighting bundle
-antigen bundle zsh-users/zsh-autosuggestions
+# Autocompletions
+antigen bundle lukechilds/zsh-better-npm-completion
+antigen bundle srijanshetty/zsh-pip-completion
 antigen bundle zsh-users/zsh-completions
+
+# Fish-like suggestions, history searching, and syntax highlighting
+antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-history-substring-search
 antigen bundle zsh-users/zsh-syntax-highlighting
 
@@ -66,6 +115,18 @@ if [[ -d ~/Library/Fonts && "$(find ~/Library/Fonts -maxdepth 1 -follow -type f 
 		end tell
 	EOF
 fi
+if [[ -s ~/.p10k.zsh ]]; then
+    # shellcheck source=.p10k.zsh
+    . ~/.p10k.zsh
+fi
+
+# Fix zcache issues
+if [[ ! -s ~/.antigen/init.zsh ]]; then
+    antigen cache-gen
+fi
+# if [[ -s ~/.antigen/init.zsh ]]; then
+#     sed --in-place '/command-not-found''/command-not-found/' ~/.antigen/init.zsh
+# fi
 
 # Tell Antigen that you're done
 antigen apply

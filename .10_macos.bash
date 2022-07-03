@@ -2,6 +2,7 @@ if [[ "${OSTYPE:-}" != "darwin"* ]]; then
     return 0
 fi
 
+
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 
@@ -28,8 +29,11 @@ flush() {
     sudo killall -HUP mDNSResponder
 }
 
-# macOS's BSD sed sucks
-command -v gsed > /dev/null && alias sed="gsed"
+# Prefer GNU's coreutils binaries
+if [[ -x "$(command -v brew)" && -d "$(brew --prefix)/Cellar/coreutils" ]]; then
+    alias date="gdate"
+    alias sed="gsed"
+fi
 
 # macOS has no `md5sum`, so use `md5` as a fallback
 command -v md5sum > /dev/null || alias md5sum="md5"
