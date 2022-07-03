@@ -7,6 +7,7 @@ __kube_completions() {
     if [[ -x "$(command -v helm)" ]]; then
         helm() {
             unset -f "$0"
+            # shellcheck disable=SC1090
             source <(helm completion "$(basename "$(ps -o comm= $$)")")
             $0 "$@"
         }
@@ -15,6 +16,7 @@ __kube_completions() {
     if [[ -x "$(command -v kops)" ]]; then
         kops() {
             unset -f "$0"
+            # shellcheck disable=SC1090
             source <(kops completion "$(basename "$(ps -o comm= $$)")")
             $0 "$@"
         }
@@ -23,6 +25,7 @@ __kube_completions() {
     if [[ -x "$(command -v kubectl)" ]]; then
         kubectl() {
             unset -f "$0"
+            # shellcheck disable=SC1090
             source <(kubectl completion "$(basename "$(ps -o comm= $$)")")
             $0 "$@"
         }
@@ -31,6 +34,7 @@ __kube_completions() {
     if [[ -x "$(command -v minikube)" ]]; then
         minikube() {
             unset -f "$0"
+            # shellcheck disable=SC1090
             source <(minikube completion "$(basename "$(ps -o comm= $$)")")
             $0 "$@"
         }
@@ -39,6 +43,7 @@ __kube_completions() {
     if [[ -x "$(command -v stern)" ]]; then
         stern() {
             unset -f "$0"
+            # shellcheck disable=SC1090
             source <(stern --completion "$(basename "$(ps -o comm= $$)")")
             $0 "$@"
         }

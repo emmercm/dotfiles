@@ -14,18 +14,19 @@ __docker_funcs() {
     # Auto/lazy-start Docker if it's not running
     if [[ -x "$(command -v docker)" ]]; then
         docker() {
-            local DOCKER=$(pinpoint docker)
+            local docker
+            docker=$(pinpoint docker)
             if [[ "${OSTYPE:-}" == "darwin"* ]]; then
                 # macOS
                 ps axo pid,command | grep -v grep | grep --quiet /Applications/Docker.app/Contents/MacOS/Docker || (
                     open --background -a Docker
                     while true; do
-                        "${DOCKER}" ps &> /dev/null && break
+                        "${docker}" ps &> /dev/null && break
                         sleep 1
                     done
                 )
             fi
-            "${DOCKER}" "$@"
+            "${docker}" "$@"
         }
     fi
     if [[ -x "$(command -v docker-compose)" ]]; then
@@ -71,7 +72,7 @@ __docker_funcs() {
     # @param {string=} $1 Image tag
     djava() {
         if [[ "${1:-}" == "" && -x "$(command -v java)" ]]; then
-            1=$(java --version | head -1 | sed 's/"//g' | sed -E 's/(.* )?([0-9]+)\.[0-9]+\.[0-9]+.*/\2/')
+            set -- "$(java --version | head -1 | sed 's/"//g' | sed -E 's/(.* )?([0-9]+)\.[0-9]+\.[0-9]+.*/\2/')"
         fi
 
         if [[ -z "$1" || "${1:-}" -ge 9 ]]; then
