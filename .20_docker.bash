@@ -90,6 +90,7 @@ __docker_funcs() {
 
     # Kill all running Docker containers
     dkillall() {
+        # shellcheck disable=SC2046
         docker kill $(docker ps --quiet) 2> /dev/null || true
     }
 
@@ -110,10 +111,11 @@ __docker_funcs() {
     # Execute `mysql` interactively in a MySQL server container
     # @param {string=} $1 Image tag
     dmysql() {
-        local CONTAINER_ID=$(docker run --env MYSQL_ROOT_PASSWORD=password --detach "mysql:${1:-latest}") &&
-            docker exec "${CONTAINER_ID}" mysqladmin ping --wait && sleep 1 &&
-            docker exec --interactive --tty "${CONTAINER_ID}" mysql --password=password &&
-            docker rm --force --volumes "${CONTAINER_ID}" > /dev/null
+        local container_id
+        container_id=$(docker run --env MYSQL_ROOT_PASSWORD=password --detach "mysql:${1:-latest}") &&
+            docker exec "${container_id}" mysqladmin ping --wait && sleep 1 &&
+            docker exec --interactive --tty "${container_id}" mysql --password=password &&
+            docker rm --force --volumes "${container_id}" > /dev/null
     }
 
     # Run a detached instance of the MySQL server container (username: root)
@@ -125,10 +127,11 @@ __docker_funcs() {
     # Execute `psql` interactively in a PostgreSQL server container
     # @param {string=} $1 Image tag
     dpostgres() {
-        local CONTAINER_ID=$(docker run --env POSTGRES_PASSWORD=password --detach "postgres:${1:-latest}") &&
-            until docker exec "${CONTAINER_ID}" pg_isready ; do sleep 1 ; done &&
-            docker exec --interactive --tty "${CONTAINER_ID}" psql --username postgres &&
-            docker rm --force --volumes "${CONTAINER_ID}" > /dev/null
+        local container_id
+        container_id=$(docker run --env POSTGRES_PASSWORD=password --detach "postgres:${1:-latest}") &&
+            until docker exec "${container_id}" pg_isready ; do sleep 1 ; done &&
+            docker exec --interactive --tty "${container_id}" psql --username postgres &&
+            docker rm --force --volumes "${container_id}" > /dev/null
     }
     alias dpostgresql="dpostgres"
 

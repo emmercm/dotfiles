@@ -32,14 +32,15 @@ __git_funcs() {
     gupdate() {
         git stash --include-untracked
 
-        local GIT_BRANCH=$(git branch --show-current)
+        local git_branch
+        git_branch=$(git branch --show-current)
         if [[ $(git branch --list main) ]]; then
             git checkout main
         else
             git checkout master
         fi
         git pull
-        git checkout "${GIT_BRANCH}"
+        git checkout "${git_branch}"
         if [[ $(git branch --list main) ]]; then
             git merge main
         else
