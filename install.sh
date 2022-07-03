@@ -58,6 +58,10 @@ fi
 
 # macOS settings
 if [[ "${OSTYPE:-}" == "darwin"* ]]; then
+    # HID settings
+    defaults write .GlobalPreferences com.apple.mouse.scaling -1
+
+    # Finder settings
     defaults write com.apple.Finder AppleShowAllFiles true
     killall Finder
 fi
