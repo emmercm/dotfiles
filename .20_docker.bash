@@ -71,9 +71,14 @@ __docker_funcs() {
     # @param {string=} $1 Image tag
     djava() {
         if [[ "${1:-}" == "" && -x "$(command -v java)" ]]; then
-            java --version | head -1 | sed 's/"//g' | sed -E 's/(.* )?([0-9]+)\.[0-9]+\.[0-9]+.*/\2/'
+            1=$(java --version | head -1 | sed 's/"//g' | sed -E 's/(.* )?([0-9]+)\.[0-9]+\.[0-9]+.*/\2/')
         fi
-        docker run --interactive --tty "openjdk:${1:-${JAVA_VERSION:-latest}}" jshell
+
+        if [[ -z "$1" || "${1:-}" -ge 9 ]]; then
+            docker run --interactive --tty "openjdk:${1:-latest}" jshell
+        else
+            docker run --interactive --tty "openjdk:$1" bash -c "wget --quiet https://github.com/beanshell/beanshell/releases/download/2.1.0/bsh-2.1.0.jar && java -cp bsh-*.jar bsh.Interpreter"
+        fi
     }
 
     # Kill a Docker container
