@@ -113,8 +113,9 @@ __docker_funcs() {
     dmysql() {
         local container_id
         container_id=$(docker run --env MYSQL_ROOT_PASSWORD=password --detach "mysql:${1:-latest}") &&
-            docker exec "${container_id}" mysqladmin ping --wait && sleep 1 &&
-            docker exec --interactive --tty "${container_id}" mysql --password=password &&
+            docker exec "${container_id}" mysqladmin ping --wait &&
+            until docker exec "${container_id}" mysqladmin --password=password status &> /dev/null ; do sleep 1 ; done &&
+            docker exec --interactive --tty "${container_id}" mysql --password=password --database=mysql &&
             docker rm --force --volumes "${container_id}" > /dev/null
     }
 
@@ -170,6 +171,10 @@ __docker_funcs() {
     dsh() {
         docker exec --interactive --tty "$1" sh --
     }
+
+    # Run a "top"-like stream of Docker container stats
+    alias dstats="docker stats"
+    alias dtop="dstats"
 
     # Execute `bash` interactively in a Ubuntu container
     alias dubuntu="docker run --interactive --tty ubuntu:latest bash --"
