@@ -21,8 +21,8 @@ Files are sourced in the following order:
 3. [`~/.bashrc`](./.bashrc): mostly empty
 4. [`~/.everythingrc`](./.everythingrc): general functions and aliases
 5. `~/.*.bash`: specific functions and aliases
-   1. [`~/.powerline.bash`](./.powerline.bash) for shell decoration with [Powerline](https://github.com/powerline/powerline)
-   2. Other files described below
+   1. Other files described below
+   2. [`~/.90_powerline.bash`](./.powerline.bash) for shell decoration with [Powerline](https://github.com/powerline/powerline)
 
 **Zsh (Z shell):**
 
@@ -43,7 +43,7 @@ Files are sourced in the following order:
 
 - [`.10_macos.bash`](./.10_macos.bash): macOS shortcuts and polyfills
 - [`.20_docker.bash`](./.20_docker.bash): [Docker](https://www.docker.com) shortcuts and aliases
-- [`.20_git.bash](./.20_git.bash): [Git](https://git-scm.com/) completions, shortcuts, and aliases
+- [`.20_git.bash`](./.20_git.bash): [Git](https://git-scm.com/) completions, shortcuts, and aliases
 - [`.20_kubernetes.bash`](./.20_kubernetes.bash): [Kubernetes](https://kubernetes.io/) completions, shortcuts, and aliases
 - [`.20_nodejs.bash`](./.20_nodejs.bash): [Node.js](https://nodejs.org/en/) shortcuts and aliases
 

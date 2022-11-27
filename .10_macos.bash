@@ -11,6 +11,7 @@ command -v sha1sum > /dev/null || alias sha1sum="shasum"
 command -v sha256sum > /dev/null || alias sha256sum="shasum --algorithm 256"
 
 if [[ -x "$(command -v brew)" ]]; then
+    command -v gawk   > /dev/null || brew install gawk
     command -v gsed   > /dev/null || brew install gnu-sed
     command -v jq     > /dev/null || brew install jq
     command -v rename > /dev/null || brew install rename

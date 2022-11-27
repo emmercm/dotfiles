@@ -73,7 +73,7 @@ __bashrc_misc() {
     alias yeet="rm -rf"
 
     # Helpers
-    if [[ -x "$(command -v beep)" ]]; then
+    if [[ ! -x "$(command -v beep)" ]]; then
         alias beep="echo -ne '\007'"
     fi
 }
@@ -167,6 +167,20 @@ __bashrc_python() {
     fi
 }
 __bashrc_python
+
+
+##### Ruby #####
+
+__bashrc_ruby() {
+    if [[ -x "$(command -v brew)" ]]; then
+        source $(brew --prefix)/opt/chruby/share/chruby/chruby.sh
+        source $(brew --prefix)/opt/chruby/share/chruby/auto.sh
+    fi
+    if [[ -x "$(command -v chruby)" && -d ~/.rubies ]]; then
+        chruby "$(ls -1 ~/.rubies/ | sort | tail -1)"
+    fi
+}
+__bashrc_ruby
 
 
 ##### Everything Else #####
