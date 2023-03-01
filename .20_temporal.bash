@@ -37,6 +37,8 @@ __tctl_funcs() {
         } | awk "{printf(\"%s%s\",\$0,NR%${column_count}?\"${temp_sep}\":\"\n\")}" | column -t -s "${temp_sep}" | awk 'NR<2{print $0;next}{print $0 | "sort"}' 
     }
 
+    # List all namespaces in a Temporal cluster, outputting in a table format
+    # @param {...string} $@ Additional flags to pass tctl
     tnamespace() {
         __tctl_table "Name|State|Retention|ActiveClusterName|Clusters|IsGlobalNamespace" "$@" namespace list
     }
