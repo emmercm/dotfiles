@@ -3,7 +3,7 @@
 
 [user]
     name = Christian Emmer
-    email = emmercm@gmail.com
+	email = 10749361+emmercm@users.noreply.github.com
 
 [filter "lfs"]
     clean = git-lfs clean -- %f

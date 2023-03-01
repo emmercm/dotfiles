@@ -31,13 +31,12 @@ Files are sourced in the following order:
 1. [`~/.zshrc`](./.zshrc): mostly empty
 2. [`~/.everythingrc`](./.everythingrc): general functions and aliases
 3. `~/.*.bash`: specific functions and aliases
-   1. [`~/.oh-my-zsh.bash`](./.oh-my-zsh.bash) for [Oh My Zsh](https://ohmyz.sh/) shell configuration, using [Antigen](https://antigen.sharats.me/) for plugin management.
+   1. Other files described below
+   2. [`~/.oh-my-zsh.bash`](./.oh-my-zsh.bash) for [Oh My Zsh](https://ohmyz.sh/) shell configuration, using [Antigen](https://antigen.sharats.me/) for plugin management.
 
       The contents of this file are typically put in `~/.zshrc` but are broken out here for organization.
 
       1. [`~/.p10k.zsh`](./.p10k.zsh): [Powerlevel10k](https://github.com/romkatv/powerlevel10k) shell theme configuration
-
-   2. Other files described below
 
 ## `.*.bash` files
 
@@ -46,6 +45,7 @@ Files are sourced in the following order:
 - [`.20_git.bash`](./.20_git.bash): [Git](https://git-scm.com/) completions, shortcuts, and aliases
 - [`.20_kubernetes.bash`](./.20_kubernetes.bash): [Kubernetes](https://kubernetes.io/) completions, shortcuts, and aliases
 - [`.20_nodejs.bash`](./.20_nodejs.bash): [Node.js](https://nodejs.org/en/) shortcuts and aliases
+- [`.20_temporal.bash`](./.20_temporal.bash): [Temporal](https://docs.temporal.io/tctl-v1/) shortcuts and aliases
 
 ## Inspiration
 

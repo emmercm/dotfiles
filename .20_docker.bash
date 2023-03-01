@@ -14,25 +14,23 @@ __docker_funcs() {
     # Auto/lazy-start Docker if it's not running
     if [[ -x "$(command -v docker)" ]]; then
         docker() {
-            local docker
-            docker=$(pinpoint docker)
             if [[ "${OSTYPE:-}" == "darwin"* ]]; then
                 # macOS
                 ps axo pid,command | grep -v grep | grep --quiet /Applications/Docker.app/Contents/MacOS/Docker || (
                     open --background -a Docker
                     while true; do
-                        "${docker}" ps &> /dev/null && break
+                        command docker ps &> /dev/null && break
                         sleep 1
                     done
                 )
             fi
-            "${docker}" "$@"
+            command docker "$@"
         }
     fi
     if [[ -x "$(command -v docker-compose)" ]]; then
         docker-compose() {
             docker ps &> /dev/null # start
-            "$(pinpoint docker-compose)" "$@"
+            command docker-compose "$@"
         }
     fi
 
