@@ -10,7 +10,9 @@ id_rsa*
 .config/fish/conf.d/*fig*
 .config/gh
 .config/gtk*
+.config/iterm2
 .config/jgit
 .config/karabiner
+.config/op
 .config/planetscale
 .config/temporalio

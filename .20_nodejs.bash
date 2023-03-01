@@ -23,6 +23,16 @@ __nodejs_nvm
 
 
 __nodejs_funcs() {
+    # @link https://github.com/npm/npm/issues/15536#issuecomment-392657820
+    ndeprecated() {
+        jq -r '.dependencies,.devDependencies|keys[] as $k|"\($k)@\(.[$k])"' package.json | while read line; do \
+            printf "$line: "
+            [ "$(npm show "$line" | grep --count --extended-regexp '^DEPRECATED')" != "0" ] && \
+            printf "\e[1;31m""DEPRECATED\n""\e[0m" || \
+            printf "\e[1;32m""not deprecated\n""\e[0m"
+        done
+    }
+
     # Find the minimum Node version supported by all package.json's engines
     # @param {string=} $1 Package name
     nengine() {
@@ -47,14 +57,19 @@ __nodejs_funcs() {
         echo "${RANGES}" | sort --version-sort | tail -1
     }
 
-    # @link https://github.com/npm/npm/issues/15536#issuecomment-392657820
-    ndeprecated() {
-        jq -r '.dependencies,.devDependencies|keys[] as $k|"\($k)@\(.[$k])"' package.json | while read line; do \
-            printf "$line: "
-            [ "$(npm show "$line" | grep -ic 'DEPRECATED')" != "0" ] && \
-            printf "\e[1;31m""DEPRECATED\n""\e[0m" || \
-            printf "\e[1;32m""not deprecated.\n""\e[0m"
-        done
+    # Install a package from GitHub
+    # @param {string} $1 GitHub "<user>/<repo>", e.g. emmercm/metalsmith-plugins
+    # @param {string} $2 Branch name or commit hash
+    # @param {string=} $3 Package subdirectory
+    # @example ngit isaacs/rimraf v3
+    # @example ngit emmercm/metalsmith-plugins 8e21383 packages/metalsmith-mermaid
+    ngit() {
+        local user_repo=$(echo "$1" | sed 's#^[a-z]*://[a-z.]*/\([^/]*/[^/]*\).*#\1#i')
+        if [[ "${3:-}" == "" ]]; then
+            npm install "git+https://github.com/${user_repo}#$2"
+        else
+            npm install "https://gitpkg.now.sh/${user_repo}/$3?$2"
+        fi
     }
 }
 __nodejs_funcs

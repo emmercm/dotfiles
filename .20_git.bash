@@ -32,6 +32,8 @@ __git_funcs() {
     gupdate() {
         git stash --include-untracked
 
+        git pull --rebase=merges
+
         local git_branch
         git_branch=$(git branch --show-current)
         if [[ $(git branch --list main) ]]; then
@@ -40,6 +42,7 @@ __git_funcs() {
             git checkout master
         fi
         git pull
+
         git checkout "${git_branch}"
         if [[ $(git branch --list main) ]]; then
             git merge main
@@ -66,3 +69,23 @@ __git_funcs() {
     alias gv="gvs 1"
 }
 __git_funcs
+
+
+__git_hooks() {
+    git() {
+        # Delete Resilio Sync placeholders before doing any git action
+        if [[ -d "/Applications/Resilio Sync.app" ]]; then
+            local dir
+            dir=$(pwd)
+            while [[ "${dir}" != "/" && ! -d "${dir}/.git" ]]; do
+                dir="$(dirname "${dir}")"
+            done
+            if [[ "${dir}" != "/" ]]; then
+                find "${dir}/.git/refs" -name "*.rsl*" -exec rm {} \;
+            fi
+        fi
+
+        command git "$@"
+    }
+}
+__git_hooks
