@@ -17,9 +17,11 @@ __tctl_funcs() {
     __tctl_table() {
         local columns=$1
         shift
-        local column_count=$(echo "${columns}" | tr '|' '\n' | wc -l | awk '{print $1}')
+        local column_count
+        column_count=$(echo "${columns}" | tr '|' '\n' | wc -l | awk '{print $1}')
 
-        local tctl_output=$(tctl "$@" 2>&1)
+        local tctl_output
+        tctl_output=$(tctl "$@" 2>&1)
         if [[ $? -ne 0 ]]; then
             echo "${tctl_output}"
             return 1
@@ -27,7 +29,8 @@ __tctl_funcs() {
         tctl_output=$(echo "${tctl_output}" | grep -E "^(${columns}):")
 
         local temp_sep=';'
-        local column_headers=$(echo "${tctl_output}" | head -${column_count} | awk '{print $1}')
+        local column_headers
+        column_headers=$(echo "${tctl_output}" | head -${column_count} | awk '{print $1}')
         {
             echo "${column_headers}"
             echo "${tctl_output}" | sed 's/^[^:]*: //g'
