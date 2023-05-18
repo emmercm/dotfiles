@@ -81,9 +81,7 @@ __kube_funcs() {
     kdaemonsets() {
         kubectl get daemonsets
     }
-    kds() {
-        kdaemonsets "$@"
-    }
+    alias kds=kdaemonsets
 
     # List all Kubernetes container names given a deployment name
     # @param {string} $1 Deployment name
@@ -151,9 +149,7 @@ __kube_funcs() {
     knamespaces() {
         kubectl get namespaces
     }
-    kns() {
-        knamespaces "$@"
-    }
+    alias kns=knamespaces
 
     # List all Kubernetes nodes
     knodes() {
@@ -201,9 +197,7 @@ __kube_funcs() {
     kreplicasets() {
         kubectl get rs ${1:+--selector="app=$1"}
     }
-    krs() {
-        kreplicasets "$@"
-    }
+    alias krs=kreplicasets
 
     # List all Kubernetes secrets, optionally filtering to an application
     # @param {string=} $1 App label
@@ -227,9 +221,7 @@ __kube_funcs() {
     kstatefulsets() {
         kubectl get statefulsets
     }
-    kss() {
-        kstatefulsets "$@"
-    }
+    alias kss=kstatefulsets
 
     # Emulate a `top` command for Kubernetes pods, optionally filtering to an application
     # @param {string=} $1 App label

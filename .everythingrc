@@ -1,25 +1,45 @@
 # Bash: .bash_profile (macOS default) -> .profile (Ubuntu default) -> .bashrc -> .everythingrc
 # zsh:  .zshrc (always executed) -> .everythingrc
 
+# https://docs.brew.sh/Shell-Completion
+: ${HOMEBREW_PREFIX:=$(if type brew &>/dev/null; then brew --prefix; fi)}
+
+
 ##### Bash #####
 
-# Load bash-completion
-if [[ "$(basename "$(ps -o comm= $$)")" == "bash" && -x "$(command -v brew)" ]]; then
-    local brew_prefix=$(brew --prefix)
-    __bash_completion() {
-        if [[ -f "${brew_prefix}/etc/profile.d/bash_completion.sh" ]]; then
-            # bash-completion@2
-            . "${brew_prefix}/etc/profile.d/bash_completion.sh"
-        elif [[ -f "${brew_prefix}/etc/bash_completion" ]]; then
-            # bash-completion@1
-            . "${brew_prefix}/etc/bash_completion"
-        else
-            brew install bash-completion && __bash_completion
-        fi
-    }
-    __bash_completion
+if [[ -x "$(command -v brew)" ]]; then
+    # Load bash-completion
+    if [[ "$(basename "$(ps -o comm= $$)")" == "bash" ]]; then
+        __bash_completion() {
+            if [[ -f "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
+                # bash-completion@2
+                . "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+            elif [[ -f "${HOMEBREW_PREFIX}/etc/bash_completion" ]]; then
+                # bash-completion@1
+                . "${HOMEBREW_PREFIX}/etc/bash_completion"
+            else
+                brew install bash-completion && __bash_completion
+            fi
+
+            # https://docs.brew.sh/Shell-Completion#configuring-completions-in-bash
+            for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
+                [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
+            done
+        }
+        __bash_completion
+    fi
+
+    # Load zsh/site-functions
+    if [[ "$(basename "$(ps -o comm= $$)")" == "zsh" ]]; then
+        __zsh_completion() {
+            # https://docs.brew.sh/Shell-Completion#configuring-completions-in-zsh
+            FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+            # autoload -Uz compinit
+            # compinit
+        }
+        __zsh_completion
+    fi
 fi
-# zsh-completions are loaded by oh-my-zsh
 
 # Reload this file after change
 reload() {
@@ -60,6 +80,12 @@ __bashrc_misc() {
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
+    alias tree='tree -C'
+
+    # cat shortcuts
+    cathex() {
+        xxd -p "$@" | tr -d '\n' | awk '{print $1}'
+    }
 
     # ls shortcuts
     alias ll="ls -alF"
@@ -161,7 +187,7 @@ __bashrc_mysql() {
             if [[ -d "${DIR}/bin" ]]; then
                 export PATH="${DIR}/bin:${PATH}"
             fi
-        done <<< "$(find "$(brew --prefix)/opt" -maxdepth 1 -name "mysql-client*")"
+        done <<< "$(find "${HOMEBREW_PREFIX}/opt" -maxdepth 1 -name "mysql-client*")"
     fi
 }
 __bashrc_mysql
@@ -187,10 +213,17 @@ __bashrc_python
 ##### Ruby #####
 
 __bashrc_ruby() {
-    if [[ -x "$(command -v brew)" ]]; then
-        source $(brew --prefix)/opt/chruby/share/chruby/chruby.sh
-        source $(brew --prefix)/opt/chruby/share/chruby/auto.sh
+    # Lazy load chruby
+    if [[ -d "${HOMEBREW_PREFIX}/opt/chruby/share/chruby" ]]; then
+        chruby() {
+            unset -f "$0"
+            source "${HOMEBREW_PREFIX}/opt/chruby/share/chruby/chruby.sh"
+            source "${HOMEBREW_PREFIX}/opt/chruby/share/chruby/auto.sh"
+            $0 "$@"
+        }
     fi
+
+    # Auto-load the latest Ruby version
     if [[ -x "$(command -v chruby)" && -d ~/.rubies ]]; then
         chruby "$(ls -1 ~/.rubies/ | sort | tail -1)"
     fi

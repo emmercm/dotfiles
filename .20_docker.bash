@@ -142,7 +142,7 @@ __docker_funcs() {
     alias dpostgresqld="dpostgres"
 
     # Kill all running Docker containers and delete all container data
-    alias dprune="dkillall && docker system prune --all --force && docker images purge"
+    alias dprune="dkillall && docker volume prune --force && docker system prune --all --force && docker images purge"
 
     # List all Docker containers
     alias dps="docker ps"

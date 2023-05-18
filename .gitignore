@@ -4,6 +4,7 @@ id_rsa*
 *kubeconfig*
 *.pem
 
+.config/argocd
 .config/asciinema
 .config/configstore
 .config/filezilla
@@ -13,6 +14,7 @@ id_rsa*
 .config/iterm2
 .config/jgit
 .config/karabiner
+.config/Kreya
 .config/op
 .config/planetscale
 .config/temporalio
