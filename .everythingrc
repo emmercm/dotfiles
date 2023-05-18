@@ -2,7 +2,7 @@
 # zsh:  .zshrc (always executed) -> .everythingrc
 
 # https://docs.brew.sh/Shell-Completion
-: ${HOMEBREW_PREFIX:=$(if type brew &>/dev/null; then brew --prefix; fi)}
+: ${HOMEBREW_PREFIX:=$(if type brew &> /dev/null; then brew --prefix; fi)}
 
 
 ##### Bash #####
