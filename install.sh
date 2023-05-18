@@ -14,6 +14,7 @@ function backup() {
 
 # Given a path and expression, safely link all files to the home directory
 function link() {
+    # Create symlinks
     while read -r FILE; do
         LINK="${HOME}/$(basename "${FILE}")"
 
@@ -35,6 +36,11 @@ function link() {
         # Symlink the file
         ln -s "${FILE}" "${LINK}"
     done <<< "$(find "$1" -maxdepth 1 -name "$2" ! -name ".git" ! -name ".github" ! -name ".gitignore")"
+
+    # Delete broken symlinks
+    while read -r FILE; do
+        rm -f "${FILE}"
+    done <<< "$(find "${HOME}" -type l -maxdepth 1 ! -exec test -e {} \; -print)"
 }
 
 

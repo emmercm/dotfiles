@@ -237,3 +237,10 @@ while read -r FILE; do
     # shellcheck disable=SC1090
     source "${FILE}"
 done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.bash" | sort --version-sort)"
+
+if [[ "$(basename "$(ps -o comm= $$)")" == "zsh" ]]; then
+    while read -r FILE; do
+        # shellcheck disable=SC1090
+        source "${FILE}"
+    done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.zsh" | sort --version-sort)"
+fi
