@@ -29,25 +29,31 @@ __git_funcs() {
         fi
     done
 
+    gempty() {
+        git commit --allow-empty --message='Empty commit'
+    }
+
     gupdate() {
-        git stash --include-untracked
+        # git stash --include-untracked
 
-        git pull --rebase=merges
+        # git pull --rebase=merges
 
-        local git_branch
-        git_branch=$(git branch --show-current)
+        # local git_branch
+        # git_branch=$(git branch --show-current)
+        # if [[ $(git branch --list main) ]]; then
+        #     git checkout main
+        # else
+        #     git checkout master
+        # fi
+        # git pull
+        # git checkout "${git_branch}"
+
         if [[ $(git branch --list main) ]]; then
-            git checkout main
+            git fetch origin main
+            git merge --no-edit origin/main
         else
-            git checkout master
-        fi
-        git pull
-
-        git checkout "${git_branch}"
-        if [[ $(git branch --list main) ]]; then
-            git merge main
-        else
-            git merge master
+            git fetch origin master
+            git merge --no-edit origin/master
         fi
 
         # if [[ $(git branch --list main) ]]; then
@@ -56,7 +62,7 @@ __git_funcs() {
         #     git checkout origin/master
         # fi
 
-        git stash pop
+        # git stash pop
     }
 
     # Get the most recent versions from Git tags

@@ -4,15 +4,5 @@ id_rsa*
 *kubeconfig*
 *.pem
 
-.config/asciinema
-.config/configstore
-.config/filezilla
-.config/fish/conf.d/*fig*
-.config/gh
-.config/gtk*
-.config/iterm2
-.config/jgit
-.config/karabiner
-.config/op
-.config/planetscale
-.config/temporalio
+.config
+! .config/powerline
