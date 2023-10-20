@@ -12,6 +12,7 @@ __pulsar_jre() {
     pulsar-shell() {
         if [[ -x /usr/libexec/java_home ]]; then
             # We need JRE v17+ for class file v61.0+
+            # shellcheck disable=SC2034
             JAVA_HOME=$(/usr/libexec/java_home -v 17 2> /dev/null)
         fi
         command pulsar-shell "$@"
