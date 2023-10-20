@@ -11,14 +11,14 @@ __temporal_completions() {
         tctl() {
             unset -f "$0"
             # shellcheck disable=SC1090
-            source <(tctl completion "$(basename "$(ps -o comm= $$)")")
+            source <(tctl completion "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")")
             $0 "$@"
         }
 
         temporal() {
             unset -f "$0"
             # shellcheck disable=SC1090
-            source <(temporal completion "$(basename "$(ps -o comm= $$)")")
+            source <(temporal completion "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")")
             $0 "$@"
         }
     fi
