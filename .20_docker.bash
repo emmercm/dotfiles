@@ -123,6 +123,12 @@ __docker_funcs() {
         docker run --env MYSQL_ROOT_PASSWORD=password --publish 3306:3306 --detach "mysql:${1:-latest}"
     }
 
+    # Execute `bash` interactively in a Node.js container
+    # @param {string=} $1 Image tag
+    dnode() {
+        docker run --interactive --tty "node:${1:-latest}" bash --
+    }
+
     # Execute `psql` interactively in a PostgreSQL server container
     # @param {string=} $1 Image tag
     dpostgres() {

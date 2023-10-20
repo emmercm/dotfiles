@@ -9,7 +9,7 @@
 
 if [[ -x "$(command -v brew)" ]]; then
     # Load bash-completion
-    if [[ "$(basename "$(ps -o comm= $$)")" == "bash" ]]; then
+    if [[ "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")" == "bash" ]]; then
         __bash_completion() {
             if [[ -f "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
                 # bash-completion@2
@@ -30,7 +30,7 @@ if [[ -x "$(command -v brew)" ]]; then
     fi
 
     # Load zsh/site-functions
-    if [[ "$(basename "$(ps -o comm= $$)")" == "zsh" ]]; then
+    if [[ "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")" == "zsh" ]]; then
         __zsh_completion() {
             # https://docs.brew.sh/Shell-Completion#configuring-completions-in-zsh
             FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
@@ -163,12 +163,12 @@ __bashrc_golang
 
 __bashrc_java() {
     if [[ "${JAVA_HOME:-}" == "" && -x /usr/libexec/java_home ]]; then
-        export JAVA_HOME=$(/usr/libexec/java_home -v 11)
+        export JAVA_HOME=$(/usr/libexec/java_home -v 11 2> /dev/null)
     fi
     if [[ "${JAVA_HOME:-}" == "" ]]; then
         while read -r DIR; do
             export JAVA_HOME="${DIR}"
-        done <<< "$(find /Library/Java/JavaVirtualMachines/*/Contents -type d -name Home 2> /dev/null | sort --version-sort)"
+        done <<< "$((find /Library/Java/JavaVirtualMachines/*/Contents -type d -name Home) 2> /dev/null | sort --version-sort)"
     fi
 
     jversion() {
@@ -238,7 +238,7 @@ while read -r FILE; do
     source "${FILE}"
 done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.bash" | sort --version-sort)"
 
-if [[ "$(basename "$(ps -o comm= $$)")" == "zsh" ]]; then
+if [[ "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")" == "zsh" ]]; then
     while read -r FILE; do
         # shellcheck disable=SC1090
         source "${FILE}"

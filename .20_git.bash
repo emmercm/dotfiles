@@ -15,7 +15,7 @@ __git_completions
 __git_funcs() {
     # Short alias
     alias g="git"
-    if [[ "$(basename "$(ps -o comm= $$)")" == "bash" ]] && type _git &> /dev/null; then
+    if [[ "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")" == "bash" ]] && type _git &> /dev/null; then
         complete -o default -o nospace -F _git g
     fi
 

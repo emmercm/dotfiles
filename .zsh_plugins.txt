@@ -1,6 +1,9 @@
 # Theme
 romkatv/powerlevel10k
 
+# Debug plugins
+romkatv/zsh-bench kind:path
+
 # Prompt plugins
 ohmyzsh/ohmyzsh path:plugins/virtualenv
 

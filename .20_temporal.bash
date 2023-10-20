@@ -11,14 +11,14 @@ __temporal_completions() {
         tctl() {
             unset -f "$0"
             # shellcheck disable=SC1090
-            source <(tctl completion "$(basename "$(ps -o comm= $$)")")
+            source <(tctl completion "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")")
             $0 "$@"
         }
 
         temporal() {
             unset -f "$0"
             # shellcheck disable=SC1090
-            source <(temporal completion "$(basename "$(ps -o comm= $$)")")
+            source <(temporal completion "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")")
             $0 "$@"
         }
     fi
@@ -33,7 +33,7 @@ __tctl_funcs() {
         column_count=$(echo "${columns}" | tr '|' '\n' | wc -l | awk '{print $1}')
 
         tctl_output=$(cat)
-        # v2.0.0-beta massaging: keys with two leading spaces, and values that span multiple lines
+        # v2.0.0-beta massaging: keys with two leading spaces, and values that span multiple lines (requires gsed)
         tctl_output=$(echo "${tctl_output}" | sed 's/^\s\s//m' | sed -e ':a' -e 'N' -e '$!ba' -e 's/ *\n  */ /g')
         # Only the keys we care about
         local tctl_output_filtered
@@ -76,7 +76,7 @@ __tctl_funcs() {
     # List all namespaces in a Temporal cluster, outputting in a table format
     # @param {...string} $@ Additional flags to pass tctl
     tnamespace() {
-        tctl "$@" namespace list | __tctl_rows_to_table "Name|Id|.*Retention.*|ActiveClusterName|Clusters|IsGlobalNamespace"
+        tctl "$@" namespace list | __tctl_rows_to_table "Name|Id|.*Retention.*|ActiveClusterName|Clusters|IsGlobalNamespace|FailoverVersion"
     }
     alias tns=tnamespace
 }

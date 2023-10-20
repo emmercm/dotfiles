@@ -39,7 +39,8 @@ fi
 # macOS has no `md5sum`, so use `md5` as a fallback
 command -v md5sum > /dev/null || alias md5sum="md5"
 
-alias ports="sudo lsof -iTCP -sTCP:LISTEN -n -P"
+alias lsports="sudo lsof -iTCP -sTCP:LISTEN -n -P"
+alias lsp=lsports
 
 # macOS has no `realpath` by default, so emulate it
 # @link https://stackoverflow.com/a/18443300
@@ -60,7 +61,9 @@ command -v realpath > /dev/null || realpath() {
 ##### JetBrains #####
 
 if [[ "$(mdfind -name 'kMDItemFSName == "IntelliJ IDEA.app"')" != "" ]]; then
-    idea() {
+    intellij() {
         open -na "IntelliJ IDEA.app" --args "$@"
     }
+    alias ij=intellij
+    alias idea=intellij
 fi
