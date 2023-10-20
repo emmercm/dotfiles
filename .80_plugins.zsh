@@ -10,6 +10,13 @@ source ${ZDOTDIR:-~}/.antidote/antidote.zsh
 antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
 
 
+##### Plugins Additional Code #####
+
+# zsh-users/zsh-history-substring-search
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+
 ##### Theme #####
 
 # Load the theme
@@ -21,8 +28,8 @@ if [[ -d ~/Library/Fonts && "$(find ~/Library/Fonts -maxdepth 1 -follow -type f 
     rm -rf powerlevel10k-media
 	osascript <<- EOF
 		tell application "Terminal"
-			set ProfilesNames to name of every settings set
-			repeat with ProfileName in ProfilesNames
+			set ProfileNames to name of every settings set
+			repeat with ProfileName in ProfileNames
 				set font name of settings set ProfileName to "MesloLGS NF"
 			end repeat
 		end tell

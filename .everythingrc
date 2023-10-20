@@ -163,12 +163,12 @@ __bashrc_golang
 
 __bashrc_java() {
     if [[ "${JAVA_HOME:-}" == "" && -x /usr/libexec/java_home ]]; then
-        export JAVA_HOME=$(/usr/libexec/java_home -v 11)
+        export JAVA_HOME=$(/usr/libexec/java_home -v 11 2> /dev/null)
     fi
     if [[ "${JAVA_HOME:-}" == "" ]]; then
         while read -r DIR; do
             export JAVA_HOME="${DIR}"
-        done <<< "$(find /Library/Java/JavaVirtualMachines/*/Contents -type d -name Home 2> /dev/null | sort --version-sort)"
+        done <<< "$((find /Library/Java/JavaVirtualMachines/*/Contents -type d -name Home) 2> /dev/null | sort --version-sort)"
     fi
 
     jversion() {
