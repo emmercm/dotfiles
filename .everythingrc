@@ -1,6 +1,8 @@
 # Bash: .bash_profile (macOS default) -> .profile (Ubuntu default) -> .bashrc -> .everythingrc
 # zsh:  .zshrc (always executed) -> .everythingrc
 
+: ${SHELL:=$(which "$(ps -o comm= $$ | sed 's/^-*//')")}
+
 # https://docs.brew.sh/Shell-Completion
 : ${HOMEBREW_PREFIX:=$(if type brew &> /dev/null; then brew --prefix; fi)}
 
@@ -9,7 +11,7 @@
 
 if [[ -x "$(command -v brew)" ]]; then
     # Load bash-completion
-    if [[ "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")" == "bash" ]]; then
+    if [[ "$(basename "${SHELL}")" == "bash" ]]; then
         __bash_completion() {
             if [[ -f "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
                 # bash-completion@2
@@ -30,7 +32,7 @@ if [[ -x "$(command -v brew)" ]]; then
     fi
 
     # Load zsh/site-functions
-    if [[ "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")" == "zsh" ]]; then
+    if [[ "$(basename "${SHELL}")" == "zsh" ]]; then
         __zsh_completion() {
             # https://docs.brew.sh/Shell-Completion#configuring-completions-in-zsh
             FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
@@ -43,7 +45,7 @@ fi
 
 # Reload this file after change
 reload() {
-    exec "$(ps -o comm= $$)"
+    exec "${SHELL}"
 }
 
 
@@ -238,7 +240,7 @@ while read -r FILE; do
     source "${FILE}"
 done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.bash" | sort --version-sort)"
 
-if [[ "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")" == "zsh" ]]; then
+if [[ "$(basename "${SHELL}")" == "zsh" ]]; then
     while read -r FILE; do
         # shellcheck disable=SC1090
         source "${FILE}"

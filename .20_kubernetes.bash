@@ -8,7 +8,7 @@ __kube_completions() {
         helm() {
             unset -f "$0"
             # shellcheck disable=SC1090
-            source <(helm completion "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")")
+            source <(helm completion "$(basename "${SHELL}")")
             $0 "$@"
         }
     fi
@@ -17,7 +17,7 @@ __kube_completions() {
         kops() {
             unset -f "$0"
             # shellcheck disable=SC1090
-            source <(kops completion "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")")
+            source <(kops completion "$(basename "${SHELL}")")
             $0 "$@"
         }
     fi
@@ -26,7 +26,7 @@ __kube_completions() {
         kubectl() {
             unset -f "$0"
             # shellcheck disable=SC1090
-            source <(kubectl completion "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")")
+            source <(kubectl completion "$(basename "${SHELL}")")
             $0 "$@"
         }
     fi
@@ -35,7 +35,7 @@ __kube_completions() {
         minikube() {
             unset -f "$0"
             # shellcheck disable=SC1090
-            source <(minikube completion "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")")
+            source <(minikube completion "$(basename "${SHELL}")")
             $0 "$@"
         }
     fi
@@ -44,7 +44,7 @@ __kube_completions() {
         stern() {
             unset -f "$0"
             # shellcheck disable=SC1090
-            source <(stern --completion "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")")
+            source <(stern --completion "$(basename "${SHELL}")")
             $0 "$@"
         }
     fi
