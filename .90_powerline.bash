@@ -1,7 +1,7 @@
 # pip3 install --user powerline-status powerline-gitstatus powerline-svnstatus powerline-kubernetes powerline-docker
 
 # Only use powerline with bash
-if [[ "$(basename "$(ps -o comm= $$ | sed 's/^-*//')")" != "bash" ]]; then
+if [[ "$(basename "${SHELL}")" != "bash" ]]; then
     return 0
 fi
 
