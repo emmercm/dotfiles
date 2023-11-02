@@ -57,21 +57,6 @@ find "${HOME}" -maxdepth 1 -name ".*.bash" -type l ! -exec test -e {} \; -delete
 # Link dotfiles to home directory
 link "$(pwd)" ".*"
 
-# Git settings
-if [[ -x "$(command -v git)" && -s ~/.gitignore_global ]]; then
-    git config --global core.excludesfile ~/.gitignore_global
-fi
-
-# macOS settings
-if [[ "${OSTYPE:-}" == "darwin"* ]]; then
-    # HID settings
-    defaults write .GlobalPreferences com.apple.mouse.scaling -1
-
-    # Finder settings
-    defaults write com.apple.Finder AppleShowAllFiles true
-    killall Finder
-fi
-
 # Reload powerline if installed
 if [[ -x "$(command -v powerline-daemon)" ]]; then
     powerline-daemon --quiet --replace
