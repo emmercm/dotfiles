@@ -22,6 +22,15 @@ __nodejs_nvm() {
 __nodejs_nvm
 
 
+__nodejs_volta() {
+    if [[ -d "$HOME/.volta" ]]; then
+        export VOLTA_HOME="$HOME/.volta"
+        export PATH="$VOLTA_HOME/bin:$PATH"
+    fi
+}
+__nodejs_volta
+
+
 __nodejs_funcs() {
     # @link https://github.com/npm/npm/issues/15536#issuecomment-392657820
     ndeprecated() {
