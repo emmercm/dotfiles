@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
+here="${PWD}"
+# shellcheck disable=SC2064
+trap "cd \"${here}\"" EXIT
 cd "$(dirname "$0")"
 
 
