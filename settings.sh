@@ -13,93 +13,108 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # https://linearmouse.app/
     # https://brew.sh/
 
-    # Settings > Wi-Fi
+    # ***** Settings > Wi-Fi *****
 
-    # Settings > Bluetooth
+    # ***** Settings > Bluetooth *****
 
-    # Settings > Network
+    # ***** Settings > Network *****
 
-    # Settings > Notifications
+    # ***** Settings > Notifications *****
 
-    # Settings > Sound
+    # ***** Settings > Sound *****
+    defaults write .GlobalPreferences com.apple.sound.beep.volume -float 0.5
+    defaults write .GlobalPreferences com.apple.sound.beep.feedback -bool true
 
-    # Settings > Focus
+    # ***** Settings > Focus *****
 
-    # Settings > Screen Time
+    # ***** Settings > Screen Time *****
 
-    # Settings > General > Software Update
+    # ***** Settings > General > Software Update *****
     # sudo softwareupdate --schedule ON
     # sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate.plist AutomaticCheckEnabled -bool YES
 
-    # Settings > Appearance
+    # ***** Settings > Appearance *****
+    # NOTE: appearance change requires restart
     defaults write .GlobalPreferences AppleInterfaceStyle -string "Dark"
+    defaults write .GlobalPreferences AppleInterfaceStyleSwitchesAutomatically -bool false
     defaults write .GlobalPreferences AppleAccentColor 1
     defaults write .GlobalPreferences AppleShowScrollBars -string "Always"
 
-    # Settings > Accessibility
+    # ***** Settings > Accessibility *****
 
-    # Settings > Control Center
+    # ***** Settings > Control Center *****
     # https://apple.stackexchange.com/a/337179
-    defaults write com.apple.systemuiserver "NSStatusItem Visible com.apple.menuextra.bluetooth" 1
-    defaults write com.apple.systemuiserver "NSStatusItem Visible com.apple.menuextra.volume" 1
-    defaults write com.apple.menuextra.battery ShowPercent YES
-    defaults write com.apple.menuextra.clock Show24Hour 1
+    defaults -currentHost write com.apple.controlcenter Bluetooth -int 18
+    defaults -currentHost write com.apple.controlcenter Sound -int 18
+    defaults -currentHost write com.apple.controlcenter BatteryShowPercentage -bool true
+    defaults write com.apple.menuextra.clock Show24Hour -int 1
     killall SystemUIServer
 
-    # Settings > Siri & Spotlight
+    # ***** Settings > Siri & Spotlight *****
 
-    # Settings > Privacy & Security
+    # ***** Settings > Privacy & Security *****
 
-    # Settings > Desktop & Dock
+    # ***** Settings > Desktop & Dock *****
     defaults write com.apple.dock autohide -bool false
     defaults write com.apple.dock magnification -bool false
-    defaults write com.apple.Dock orientation -string bottom
+    defaults write com.apple.dock orientation -string bottom
     defaults write com.apple.dock show-process-indicators -bool true
-    defaults write com.apple.Dock tilesize -int 45
+    defaults write com.apple.dock tilesize -int 45
     killall Dock
 
-    # Settings > Displays
+    # ***** Settings > Displays *****
     # TODO: Automatically adjust brightness off
     # TODO: True Tone off
 
-    # Settings > Wallpaper
+    # ***** Settings > Wallpaper *****
 
-    # Settings > Screen Saver
+    # ***** Settings > Screen Saver *****
     # defaults -currentHost write com.apple.screensaver idleTime -int 1800
     # defaults write com.apple.screensaver askForPasswordDelay -int 0
 
-    # Settings > Battery
+    # ***** Settings > Battery *****
 
-    # Settings > Lock Screen
+    # ***** Settings > Lock Screen *****
+    # Start screen saver when active for X seconds
+    defaults -currentHost write com.apple.screensaver -int 300
+    # Turn display off on battery/charger when active for X minutes
+    sudo pmset -b displaysleep 10
+    sudo pmset -c displaysleep 10
+    # TODO: require password: 1min
+    # Prevent automatic sleeping on power adapter when the display is off
+    sudo pmset -c sleep 0
+    # TODO: Night Shift from sunset to sunrise
+    killall "System Settings"
 
-    # Settings > Touch ID & Password
+    # ***** Settings > Touch ID & Password *****
 
-    # Settings > Users & Groups
+    # ***** Settings > Users & Groups *****
 
-    # Settings > Passwords
+    # ***** Settings > Passwords *****
 
-    # Settings > Internet Accounts
+    # ***** Settings > Internet Accounts *****
 
-    # Settings > Game Center
+    # ***** Settings > Game Center *****
 
-    # Settings > Wallet & Apple Pay
+    # ***** Settings > Wallet & Apple Pay *****
 
-    # Settings > Keyboard
+    # ***** Settings > Keyboard *****
     # Turn off auto-correct
     defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
     defaults write NSGlobalDomain WebAutomaticSpellingCorrectionEnabled -bool false
+    # TODO: keyboard brightness
 
-    # Settings > Mouse
+    # ***** Settings > Mouse *****
     defaults write .GlobalPreferences com.apple.mouse.scaling -1
 
-    # Settings > Trackpad
+    # ***** Settings > Trackpad *****
     # Enable App Exposé of swipe down with three fingers
     defaults write com.apple.dock showAppExposeGestureEnabled -bool true
 
     # ***** Finder *****
     # Always show file extensions
     defaults write .GlobalPreferences AppleShowAllExtensions -bool true
-    defaults write com.apple.Finder AppleShowAllFiles true
+    defaults write com.apple.finder AppleShowAllFiles true
     # Use stacks on the desktop
     defaults write com.apple.finder DesktopViewSettings -dict-add GroupBy Kind
     # Search in the current folder by default
@@ -111,19 +126,19 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     defaults write com.apple.finder ShowExternalHardDrivesOnDesktop 1
     defaults write com.apple.finder ShowHardDrivesOnDesktop 1
     defaults write com.apple.finder ShowMountedServersOnDesktop 1
-    defaults write com.apple.Finder ShowPathbar -bool true
+    defaults write com.apple.finder ShowPathbar -bool true
     defaults write com.apple.finder ShowRecentTags -bool false
     defaults write com.apple.finder ShowRemovableMediaOnDesktop 1
-    defaults write com.apple.Finder ShowStatusBar -bool true
+    defaults write com.apple.finder ShowStatusBar -bool true
     # Don't create some .DS_Store files
     defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
     defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
     killall Finder
 
     # Desktop
-    defaults write com.apple.Finder ShowHardDrivesOnDesktop -bool true
-    defaults write com.apple.Finder ShowExternalHardDrivesOnDesktop -bool true
-    defaults write com.apple.Finder ShowRemovableMediaOnDesktop -bool true
-    defaults write com.apple.Finder ShowMountedServersOnDesktop -bool true
+    defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
+    defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
+    defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
+    defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
     killall Finder
 fi
