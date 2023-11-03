@@ -26,12 +26,12 @@ if [[ -d ~/Library/Fonts && "$(find ~/Library/Fonts -maxdepth 1 -follow -type f 
     cp *.ttf ~/Library/Fonts
     cd ..
     rm -rf powerlevel10k-media
-	osascript <<- EOF
-		tell application "Terminal"
-			set ProfileNames to name of every settings set
-			repeat with ProfileName in ProfileNames
-				set font name of settings set ProfileName to "MesloLGS NF"
-			end repeat
-		end tell
-	EOF
 fi
+osascript <<- EOF
+	tell application "Terminal"
+		set ProfileNames to name of every settings set
+		repeat with ProfileName in ProfileNames
+			set font name of settings set ProfileName to "MesloLGS NF"
+		end repeat
+	end tell
+EOF
