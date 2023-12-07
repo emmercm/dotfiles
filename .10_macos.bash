@@ -10,6 +10,10 @@ alias dt="cd ~/Desktop"
 command -v sha1sum > /dev/null || alias sha1sum="shasum"
 command -v sha256sum > /dev/null || alias sha256sum="shasum --algorithm 256"
 
+if [[ ! -x "$(command -v brew)" && -f /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 if [[ -x "$(command -v brew)" ]]; then
     command -v gawk   > /dev/null || brew install gawk
     command -v gsed   > /dev/null || brew install gnu-sed

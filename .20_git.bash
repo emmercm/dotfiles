@@ -1,3 +1,8 @@
+# Don't use the git from macOS, use the Homebrew version instead
+if [[ -x "$(command -v brew)" && ! -f "$(brew --prefix)/bin/git" ]]; then
+    brew install git
+fi
+
 if [[ ! -x "$(command -v git)" ]]; then
     return 0
 fi
@@ -31,6 +36,19 @@ __git_funcs() {
 
     gempty() {
         git commit --allow-empty --message='Empty commit'
+    }
+
+    gssh() {
+        local origin_old
+        origin_old="$(git remote get-url origin)"
+        local origin_new
+        origin_new="$(echo "${origin_old}" | sed 's#https://github.com/#git@github.com:#')"
+        if [[ "${origin_new}" != "${origin_old}" && "${origin_new}" != "" ]]; then
+            echo "Changing $(pwd) remote origin to: ${origin_new}"
+            git remote set-url origin "${origin_new}"
+        else
+            echo "Not changing $(pwd) remote origin: ${origin_old}"
+        fi
     }
 
     gupdate() {

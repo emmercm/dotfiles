@@ -28,7 +28,7 @@ Files are sourced in the following order:
 
 Files are sourced in the following order:
 
-1. [`~/.zshrc`](./.zshrc): mostly empty
+1. [`~/.zshrc`](./.zshrc): default entry point, mostly empty
 2. [`~/.everythingrc`](./.everythingrc): general functions and aliases
 3. `~/.*.bash`: specific functions and aliases
    1. Files described below
@@ -43,4 +43,5 @@ Files are sourced in the following order:
 - [`.20_git.bash`](./.20_git.bash): [Git](https://git-scm.com/) completions, shortcuts, and aliases
 - [`.20_kubernetes.bash`](./.20_kubernetes.bash): [Kubernetes](https://kubernetes.io/) completions, shortcuts, and aliases
 - [`.20_nodejs.bash`](./.20_nodejs.bash): [Node.js](https://nodejs.org/en/) shortcuts and aliases
+- [`.20_pulsar.bash`](./.20_pulsar.bash): [Apache Pulsar](https://pulsar.apache.org/) shortcuts and aliases
 - [`.20_temporal.bash`](./.20_temporal.bash): [Temporal](https://docs.temporal.io/tctl-v1/) shortcuts and aliases
