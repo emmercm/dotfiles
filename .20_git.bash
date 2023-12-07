@@ -39,8 +39,10 @@ __git_funcs() {
     }
 
     gssh() {
-        local origin_old="$(git remote get-url origin)"
-        local origin_new="$(echo "${origin_old}" | sed 's#https://github.com/#git@github.com:#')"
+        local origin_old
+        origin_old="$(git remote get-url origin)"
+        local origin_new
+        origin_new="$(echo "${origin_old}" | sed 's#https://github.com/#git@github.com:#')"
         if [[ "${origin_new}" != "${origin_old}" && "${origin_new}" != "" ]]; then
             echo "Changing $(pwd) remote origin to: ${origin_new}"
             git remote set-url origin "${origin_new}"
