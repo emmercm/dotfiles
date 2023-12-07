@@ -71,6 +71,10 @@ __kube_funcs() {
         kubectl get pods --output=jsonpath="{.items[*].spec.containers[*].name}" ${1:+--selector="app=$1"} | tr -s '[[:space:]]' '\n' | sort -u
     }
 
+    # Change to a kubectl context
+    # @param {string} $1 Context name
+    alias kcontext="kubectl config use-context"
+
     # List all Kubernetes cron jobs, optionally filtering to an application
     # @param {string=} $1 App label
     kcrons() {

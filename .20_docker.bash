@@ -26,8 +26,9 @@ __docker_funcs() {
             fi
             command docker "$@"
         }
-    fi
-    if [[ -x "$(command -v docker-compose)" ]]; then
+
+        alias docker-compose="docker compose --compatibility"
+    elif [[ -x "$(command -v docker-compose)" ]]; then
         docker-compose() {
             docker ps &> /dev/null # start
             command docker-compose "$@"
@@ -40,7 +41,7 @@ __docker_funcs() {
     # Execute `bash` interactively in the Docker container
     # @param {string} $1 Container name
     dbash() {
-        docker exec --interactive --tty "$1" bash --
+        docker exec --interactive --tty --rm "$1" bash --
     }
 
     # Execute `bash` interactively in a Debian container
@@ -111,13 +112,14 @@ __docker_funcs() {
     dmysql() {
         local container_id
         container_id=$(docker run --env MYSQL_ROOT_PASSWORD=password --detach "mysql:${1:-latest}") &&
-            docker exec "${container_id}" mysqladmin ping --wait &&
-            until docker exec "${container_id}" mysqladmin --password=password status &> /dev/null ; do sleep 1 ; done &&
-            docker exec --interactive --tty "${container_id}" mysql --password=password --database=mysql &&
+            docker exec --rm "${container_id}" mysqladmin ping --wait &&
+            until docker exec --rm "${container_id}" mysqladmin --password=password status &> /dev/null ; do sleep 1 ; done &&
+            docker exec --interactive --tty --rm "${container_id}" mysql --password=password --database=mysql &&
             docker rm --force --volumes "${container_id}" > /dev/null
     }
 
     # Run a detached instance of the MySQL server container (username: root)
+    # REPL: mysql --host=127.0.0.1 --port 3306 --user=root --password=password --database=mysql
     # @param {string=} $1 Image tag
     dmysqld() {
         docker run --env MYSQL_ROOT_PASSWORD=password --publish 3306:3306 --detach "mysql:${1:-latest}"
@@ -134,8 +136,8 @@ __docker_funcs() {
     dpostgres() {
         local container_id
         container_id=$(docker run --env POSTGRES_PASSWORD=password --detach "postgres:${1:-latest}") &&
-            until docker exec "${container_id}" pg_isready ; do sleep 1 ; done &&
-            docker exec --interactive --tty "${container_id}" psql --username postgres &&
+            until docker exec --rm "${container_id}" pg_isready ; do sleep 1 ; done &&
+            docker exec --interactive --tty --rm "${container_id}" psql --username postgres &&
             docker rm --force --volumes "${container_id}" > /dev/null
     }
     alias dpostgresql="dpostgres"

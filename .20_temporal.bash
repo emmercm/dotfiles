@@ -3,6 +3,10 @@ if [[ -x "$(command -v tctl)" ]]; then
     tctl config set version current
 fi
 
+if [[ -d "${HOME}/.temporalio/bin" ]]; then
+    export PATH="${PATH}:${HOME}/.temporalio/bin"
+fi
+
 
 __temporal_completions() {
     # NOTE: `autoload -Uz compinit && compinit` will need to happen before sourcing any of these!
