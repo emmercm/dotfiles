@@ -21,6 +21,7 @@ if [[ -x "$(command -v brew)" ]]; then
     command -v rename > /dev/null || brew install rename
     command -v tree   > /dev/null || brew install tree
     command -v watch  > /dev/null || brew install watch
+    command -v wget   > /dev/null || brew install wget
 
     if [[ ! -x "$(command -v hstr)" ]]; then
         brew install hstr
