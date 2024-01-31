@@ -82,7 +82,7 @@ __bashrc_misc() {
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
-    alias tree='tree -C'
+    command -v tree > /dev/null && alias tree='tree -C'
 
     # cat shortcuts
     cathex() {

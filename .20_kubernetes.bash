@@ -186,7 +186,7 @@ __kube_funcs() {
     # Get the most recent revision number for a Kubernetes deployment
     # @param {string} $1 Deployment name
     krevision() {
-        khistory "$1" | grep '^[0-9]\+' | sort --sort=numeric --reverse | head -1 | awk '{print $1}'
+        khistory "$1" | grep -E '^[0-9]\+' | sort --sort=numeric --reverse | head -1 | awk '{print $1}'
     }
 
     # Roll back a Kubernetes deployment
