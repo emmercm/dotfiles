@@ -13,6 +13,10 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # https://linearmouse.app/
     # https://brew.sh/
 
+    if ! sudo -n true &> /dev/null; then
+        echo -e "\033[1;33mWARN:\033[0m you will be asked for your password to run 'pmset' and other utilities\n"
+    fi
+
     # ***** Settings > Wi-Fi *****
 
     # ***** Settings > Bluetooth *****
@@ -116,6 +120,8 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # Turn off auto-correct
     defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
     defaults write NSGlobalDomain WebAutomaticSpellingCorrectionEnabled -bool false
+    # Turn off text replacements (requires restart?)
+    defaults write NSGlobalDomain WebAutomaticTextReplacementEnabled -bool false
     # TODO: keyboard brightness
 
     # ***** Settings > Mouse *****

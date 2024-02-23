@@ -36,10 +36,8 @@ flush() {
 }
 
 # Prefer GNU's coreutils binaries
-if [[ -x "$(command -v brew)" && -d "$(brew --prefix)/Cellar/coreutils" ]]; then
-    alias date="gdate"
-    alias sed="gsed"
-fi
+command -v gdate > /dev/null && alias date="gdate"
+command -v gsed > /dev/null && alias sed="gsed"
 
 # macOS has no `md5sum`, so use `md5` as a fallback
 command -v md5sum > /dev/null || alias md5sum="md5"
