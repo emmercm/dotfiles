@@ -11,9 +11,11 @@ __python_pyenv() {
     for i in ${!paths[@]}; do 
     if [[ ${paths[i]} == "''${PYENV_ROOT}/shims''" ]]; then unset '\''paths[i]'\''; 
     fi; done; 
-    echo "${paths[*]}"')"
-    export PATH="${PYENV_ROOT}/shims:${PATH}"
-    export PYENV_SHELL=$(basename "${SHELL}")
+    echo "${paths[*]}"' )"
+    PATH="${PYENV_ROOT}/shims:${PATH}"
+    export PATH
+    PYENV_SHELL=$(basename "${SHELL}")
+    export PYENV_SHELL
     source "$(dirname "$(readlink -f "$(which pyenv)")")/../completions/pyenv.zsh"
     command pyenv rehash 2>/dev/null
     pyenv() {
