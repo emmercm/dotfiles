@@ -248,7 +248,7 @@ __kube_funcs() {
     # @param {string=} $1 App label
     # @param {...string} Additional kubectl options
     ktop() {
-        watch "kubectl top pods --containers ${1:+--selector="app=$1"} \"${@:2}\" | awk 'NR == 1; NR > 1 {print \$0 | \"sort -n -k3 -r\"}'"
+        watch "kubectl top pods --containers ${1:+--selector="app=$1"} \"${*:2}\" | awk 'NR == 1; NR > 1 {print \$0 | \"sort -n -k3 -r\"}'"
     }
 }
 __kube_funcs
