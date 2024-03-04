@@ -29,8 +29,8 @@ __git_funcs() {
         # shellcheck disable=SC2139
         alias g${al}="git ${al}"
         if type __git_aliased_command &> /dev/null; then
-            complete_func=_git_$(__git_aliased_command ${al})
-            type ${complete_func} &> /dev/null && __git_complete g${al} ${complete_func}
+            complete_func=_git_$(__git_aliased_command "${al}")
+            type "${complete_func}" &> /dev/null && __git_complete "g${al}" "${complete_func}"
         fi
     done
 
@@ -86,7 +86,7 @@ __git_funcs() {
     # Get the most recent versions from Git tags
     # @param {number=} $1 Number of versions to show
     gvs() {
-        git tag --sort=-version:refname | grep -E '^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$' | head -${1:-10}
+        git tag --sort=-version:refname | grep -E '^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$' | head "-${1:-10}"
     }
 
     # Get the most recent version from Git tags

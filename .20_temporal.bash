@@ -50,7 +50,7 @@ __tctl_funcs() {
 
         local temp_sep=';'
         local column_headers
-        column_headers=$(echo "${tctl_output}" | head -${column_count} | awk '{print $1}')
+        column_headers=$(echo "${tctl_output}" | head "-${column_count}" | awk '{print $1}')
         {
             echo "${column_headers}"
             echo "${tctl_output}" | sed 's/^[^ ]*\s*//g' | sed 's/ *$//g'

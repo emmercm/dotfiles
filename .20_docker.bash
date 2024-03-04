@@ -104,7 +104,7 @@ __docker_funcs() {
     # @param {string} $1 Container name
     # @param {number=} $2 Tail length
     dlogs() {
-        docker logs --tail ${2:-0} --follow "$1"
+        docker logs --tail "${2:-0}" --follow "$1"
     }
 
     # Execute `mysql` interactively in a MySQL server container

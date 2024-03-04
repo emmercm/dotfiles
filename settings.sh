@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# https://emmer.dev/blog/automate-your-macos-defaults/
+
 
 # Git settings
 if [[ -x "$(command -v git)" && -s ~/.gitignore_global ]]; then
@@ -60,9 +62,13 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     defaults -currentHost write com.apple.controlcenter BatteryShowPercentage -bool true
     # Clock options... show AM/PM: false
     defaults write com.apple.menuextra.clock Show24Hour -int 1
+    # Siri: don't show in menu bar
+    defaults write com.apple.Siri StatusMenuVisible -int 0
     killall SystemUIServer
 
     # ***** Settings > Siri & Spotlight *****
+    # Ask Siri: false
+    defaults write com.apple.assistant.support "Assistant Enabled" -int 0
 
     # ***** Settings > Privacy & Security *****
 

@@ -3,19 +3,17 @@ if [[ "${OSTYPE:-}" != "darwin"* ]]; then
 fi
 
 
-alias dl="cd ~/Downloads"
-alias dt="cd ~/Desktop"
-
-# macOS has no `sha1sum`, so use `shasum` as a fallback
-command -v sha1sum > /dev/null || alias sha1sum="shasum"
-command -v sha256sum > /dev/null || alias sha256sum="shasum --algorithm 256"
-
 if [[ ! -x "$(command -v brew)" && -f /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+
+##### App installs #####
+
+# Homebrew packages
 if [[ -x "$(command -v brew)" ]]; then
     command -v gawk   > /dev/null || brew install gawk
+    command -v gdate  > /dev/null || brew install coreutils
     command -v gsed   > /dev/null || brew install gnu-sed
     command -v jq     > /dev/null || brew install jq
     command -v rename > /dev/null || brew install rename
@@ -29,11 +27,27 @@ if [[ -x "$(command -v brew)" ]]; then
     fi
 fi
 
+# App store applications
+if [[ -x "$(command -v brew)" && ! -x "$(command -v mas)" ]]; then
+    brew install mas
+    # Installed applications aren't enumerated immediately, `mas list` may return nothing
+fi
+# if [[ -x "$(command -v mas)" ]]; then
+#     mas_list=$(mas list)
+#     # 1Password for Safari
+#     # echo "${mas_list}" | grep '^1569813296 ' &> /dev/null || mas install 1569813296
+#     # Menu World Time
+#     # echo "${mas_list}" | grep '^1446377255 ' &> /dev/null || mas install 1446377255
+# fi
+
 # macOS DNS flush
 flush() {
     sudo dscacheutil -flushcache
     sudo killall -HUP mDNSResponder
 }
+
+
+##### Aliases #####
 
 # Prefer GNU's coreutils binaries
 command -v gdate > /dev/null && alias date="gdate"
@@ -41,6 +55,13 @@ command -v gsed > /dev/null && alias sed="gsed"
 
 # macOS has no `md5sum`, so use `md5` as a fallback
 command -v md5sum > /dev/null || alias md5sum="md5"
+
+# macOS has no `sha1sum`, so use `shasum` as a fallback
+command -v sha1sum > /dev/null || alias sha1sum="shasum"
+command -v sha256sum > /dev/null || alias sha256sum="shasum --algorithm 256"
+
+alias dl="cd ~/Downloads"
+alias dt="cd ~/Desktop"
 
 alias lsports="sudo lsof -iTCP -sTCP:LISTEN -n -P"
 alias lsp=lsports
