@@ -1,11 +1,24 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# https://git-scm.com/docs/githooks#_description
+# Before Git invokes a hook, it changes its working directory to either $GIT_DIR in a bare repository or the
+# root of the working tree in a non-bare repository.
+
+# https://git-scm.com/docs/githooks#_post_merge
+# This hook is invoked by git-merge[1], which happens when a git pull is done on a local repository.
+# The hook takes a single parameter, a status flag specifying whether or not the merge being done was a
+# squash merge. This hook cannot affect the outcome of git merge and is not executed, if the merge
+# failed due to conflicts.
+
 echo "↓↓↓↓↓ emmercm/dotfiles post-merge ↓↓↓↓↓"
 
 
 echo "Running install.sh"
 ./install.sh
+
+echo "Running settings.sh"
+./settings.sh
 
 
 echo "↑↑↑↑↑ emmercm/dotfiles post-merge ↑↑↑↑↑"
