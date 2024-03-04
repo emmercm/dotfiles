@@ -33,7 +33,7 @@ if [[ -x "$(command -v brew)" && ! -x "$(command -v mas)" ]]; then
     # Installed applications aren't enumerated immediately, `mas list` may return nothing
 fi
 if [[ -x "$(command -v mas)" ]]; then
-    local mas_list=$(mas list)
+    mas_list=$(mas list)
 
     # 1Password for Safari
     # echo "${mas_list}" | grep '^1569813296 ' &> /dev/null || mas install 1569813296
