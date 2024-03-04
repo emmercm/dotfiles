@@ -155,9 +155,9 @@ __kube_funcs() {
     # @param {...string} Additional kubectl options
     klogs() {
         if [[ -x "$(command -v stern)" ]]; then
-            stern --timestamps --tail ${2:-0} --selector "app=$1"
+            stern --timestamps --tail "${2:-0}" --selector "app=$1"
         else
-            kubectl logs --all-containers --timestamps --follow --max-log-requests=9999 --tail=${2:-0} --selector="app=$1"
+            kubectl logs --all-containers --timestamps --follow --max-log-requests=9999 "--tail=${2:-0}" --selector="app=$1"
         fi
     }
 

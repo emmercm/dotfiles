@@ -7,6 +7,7 @@ __python_pyenv() {
     unset -f pyenv &> /dev/null
 
     # `pyenv init -` but with some portability tweaks
+    # shellcheck disable=SC1078
     PATH="$(bash --norc -ec 'IFS=:; paths=($PATH); 
     for i in ${!paths[@]}; do 
     if [[ ${paths[i]} == "''${PYENV_ROOT}/shims''" ]]; then unset '\''paths[i]'\''; 

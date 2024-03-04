@@ -34,9 +34,9 @@ __nodejs_volta
 __nodejs_funcs() {
     # @link https://github.com/npm/npm/issues/15536#issuecomment-392657820
     ndeprecated() {
-        jq -r '.dependencies,.devDependencies|keys[] as $k|"\($k)@\(.[$k])"' package.json | while read line; do \
-            printf "$line: "
-            [ "$(npm show "$line" | grep --count --extended-regexp '^DEPRECATED')" != "0" ] && \
+        jq -r '.dependencies,.devDependencies|keys[] as $k|"\($k)@\(.[$k])"' package.json | while read -r line; do \
+            printf "%s: " "${line}"
+            [ "$(npm show "${line}" | grep --count --extended-regexp '^DEPRECATED')" != "0" ] && \
             printf "\e[1;31m""DEPRECATED\n""\e[0m" || \
             printf "\e[1;32m""not deprecated\n""\e[0m"
         done
