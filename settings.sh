@@ -123,11 +123,13 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # ***** Settings > Wallet & Apple Pay *****
 
     # ***** Settings > Keyboard *****
+    # Key repeat rate: fast (requires restart?)
+    defaults write .GlobalPreferences KeyRepeat -int 2
     # Turn off auto-correct
-    defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
-    defaults write NSGlobalDomain WebAutomaticSpellingCorrectionEnabled -bool false
+    defaults write .GlobalPreferences NSAutomaticSpellingCorrectionEnabled -bool false
+    defaults write .GlobalPreferences WebAutomaticSpellingCorrectionEnabled -bool false
     # Turn off text replacements (requires restart?)
-    defaults write NSGlobalDomain WebAutomaticTextReplacementEnabled -bool false
+    defaults write .GlobalPreferences WebAutomaticTextReplacementEnabled -bool false
     # TODO: keyboard brightness
 
     # ***** Settings > Mouse *****
