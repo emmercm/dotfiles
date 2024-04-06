@@ -1,6 +1,7 @@
 # Don't use the git from macOS, use the Homebrew version instead
 if [[ -x "$(command -v brew)" && ! -f "$(brew --prefix)/bin/git" ]]; then
     brew install git
+    brew link --overwrite git
 fi
 
 if [[ ! -x "$(command -v git)" ]]; then
@@ -35,6 +36,7 @@ __git_funcs() {
     done
 
     gempty() {
+        git reset
         git commit --allow-empty --message='Empty commit'
     }
 
