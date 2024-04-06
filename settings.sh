@@ -34,6 +34,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     defaults write .GlobalPreferences com.apple.sound.beep.feedback -bool true
 
     # ***** Settings > Focus *****
+    # TODO: remove DND schedules / disable DND
 
     # ***** Settings > Screen Time *****
 
@@ -78,7 +79,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # Magnification: off
     defaults write com.apple.dock magnification -bool false
     # Position on screen: bottom
-    defaults write com.apple.dock orientation -string bottom
+    defaults write com.apple.dock orientation -string "bottom"
     # Automatically hide and show the dock: false
     defaults write com.apple.dock autohide -bool false
     # Show indicators for open applications: true
@@ -131,6 +132,8 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # Turn off text replacements (requires restart?)
     defaults write .GlobalPreferences WebAutomaticTextReplacementEnabled -bool false
     # TODO: keyboard brightness
+    # macOS Sonoma v14 "redesigned insertion point"
+    sudo defaults write /Library/Preferences/FeatureFlags/Domain/UIKit.plist redesigned_text_cursor -dict-add Enabled -bool YES
 
     # ***** Settings > Mouse *****
     defaults write .GlobalPreferences com.apple.mouse.scaling -1
