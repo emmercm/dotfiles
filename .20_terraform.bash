@@ -23,7 +23,7 @@ __tflint_install() {
     tflint() {
         if [[ -x "$(command -v brew)" ]]; then
             brew install tflint
-        elif [[-x "$(command -v docker)" ]]; then
+        elif [[ -x "$(command -v docker)" ]]; then
             docker run --rm --volume "$(pwd):/data" --tty "ghcr.io/terraform-linters/tflint" "$@"
             return $?
         fi
