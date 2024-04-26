@@ -40,6 +40,22 @@ __git_funcs() {
         git commit --allow-empty --message='Empty commit'
     }
 
+    grebase() {
+        git pull
+
+        local stash_name
+        stash_name="$(cat /dev/urandom | base32 | tr -dc 'A-Z0-9' | head -c 16)"
+        git stash push --message "${stash_name}" || return 1
+        if [[ $(git branch --list main) ]]; then
+            git fetch origin main:main
+            git rebase origin/main
+        else
+            git fetch origin master:master
+            git rebase origin/master
+        fi
+        git stash apply "stash^{/${stash_name}}"
+    }
+
     gssh() {
         local origin_old
         origin_old="$(git remote get-url origin)"
@@ -54,35 +70,15 @@ __git_funcs() {
     }
 
     gupdate() {
-        # git stash --include-untracked
-
-        # git pull --rebase=merges
-
-        # local git_branch
-        # git_branch=$(git branch --show-current)
-        # if [[ $(git branch --list main) ]]; then
-        #     git checkout main
-        # else
-        #     git checkout master
-        # fi
-        # git pull
-        # git checkout "${git_branch}"
+        git pull
 
         if [[ $(git branch --list main) ]]; then
-            git fetch origin main
+            git fetch origin main:main
             git merge --no-edit origin/main
         else
-            git fetch origin master
+            git fetch origin master:master
             git merge --no-edit origin/master
         fi
-
-        # if [[ $(git branch --list main) ]]; then
-        #     git checkout origin/main
-        # else
-        #     git checkout origin/master
-        # fi
-
-        # git stash pop
     }
 
     # Get the most recent versions from Git tags

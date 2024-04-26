@@ -28,6 +28,8 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # ***** Settings > Notifications *****
 
     # ***** Settings > Sound *****
+    # Alert sound: Boop
+    defaults write .GlobalPreferences com.apple.sound.beep.sound -string "/System/Library/Sounds/Tink.aiff"
     # Alert volume
     defaults write .GlobalPreferences com.apple.sound.beep.volume -float 0.5
     # Play feedback when volume is changed
@@ -84,6 +86,8 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     defaults write com.apple.dock autohide -bool false
     # Show indicators for open applications: true
     defaults write com.apple.dock show-process-indicators -bool true
+    # Click wallpaper to reveal desktop: always
+    defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -int 1
     killall Dock
 
     # ***** Settings > Displays *****
@@ -109,7 +113,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # Turn display off on power adapter when inctive for X minutes
     sudo pmset -c displaysleep 10
     # TODO: Require password after screen saver begins or display is turned off: 1min
-    killall "System Settings"
+    killall "System Settings" || true
 
     # ***** Settings > Touch ID & Password *****
 
@@ -136,7 +140,8 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     sudo defaults write /Library/Preferences/FeatureFlags/Domain/UIKit.plist redesigned_text_cursor -dict-add Enabled -bool YES
 
     # ***** Settings > Mouse *****
-    defaults write .GlobalPreferences com.apple.mouse.scaling -1
+    # Tracking speed
+    defaults write .GlobalPreferences com.apple.mouse.scaling 0.6875
 
     # ***** Settings > Trackpad *****
     # More gestures... app exposé: swipe down with three fingers

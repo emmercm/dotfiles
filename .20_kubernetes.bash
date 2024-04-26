@@ -52,6 +52,13 @@ __kube_completions() {
 __kube_completions
 
 
+__kube_minikube() {
+    alias kminikube="minikube update-context"
+    alias kmini=kminikube
+}
+__kube_minikube
+
+
 __kube_funcs() {
     # Execute `bash` interactively in the Kubernetes pod
     # @param {string} $1 App label

@@ -44,4 +44,6 @@ Files are sourced in the following order:
 - [`.20_kubernetes.bash`](./.20_kubernetes.bash): [Kubernetes](https://kubernetes.io/) completions, shortcuts, and aliases
 - [`.20_nodejs.bash`](./.20_nodejs.bash): [Node.js](https://nodejs.org/en/) shortcuts and aliases
 - [`.20_pulsar.bash`](./.20_pulsar.bash): [Apache Pulsar](https://pulsar.apache.org/) shortcuts and aliases
+- [`.20_python.bash`](./.20_python.bash): [Python](https://www.python.org/) shortcuts and aliases
 - [`.20_temporal.bash`](./.20_temporal.bash): [Temporal](https://docs.temporal.io/tctl-v1/) shortcuts and aliases
+- [`.20_terraform.bash`](./.20_terraform.bash): [Terraform](https://www.terraform.io/) shortcuts and aliases
