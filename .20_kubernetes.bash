@@ -53,7 +53,9 @@ __kube_completions
 
 
 __kube_minikube() {
-    alias kminikube="minikube update-context"
+    kminikube() {
+        minikube update-context || kubectl config use-context minikube
+    }
     alias kmini=kminikube
 }
 __kube_minikube

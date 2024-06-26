@@ -16,7 +16,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # https://brew.sh/
 
     if ! sudo -n true &> /dev/null; then
-        echo -e "\033[1;33mWARN:\033[0m you will be asked for your password to run 'pmset' and other utilities\n"
+        echo -e "\033[1;33mWARN:\033[0m you will be asked for your password to run 'pmset', 'chflags', and other utilities\n"
     fi
 
     # ***** Settings > Wi-Fi *****
@@ -91,6 +91,8 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     killall Dock
 
     # ***** Settings > Displays *****
+    # Enable subpixel font rendering on non-Apple LCDs
+    defaults write NSGlobalDomain AppleFontSmoothing -int 1
     # TODO: Automatically adjust brightness off
     # TODO: True Tone off
     # TODO: Night Shift... schedule: sunset to sunrise
@@ -130,9 +132,11 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # ***** Settings > Keyboard *****
     # Key repeat rate: fast (requires restart?)
     defaults write .GlobalPreferences KeyRepeat -int 2
-    # Turn off auto-correct
+    # Input Sources > Correct spelling automatically: off
     defaults write .GlobalPreferences NSAutomaticSpellingCorrectionEnabled -bool false
     defaults write .GlobalPreferences WebAutomaticSpellingCorrectionEnabled -bool false
+    # Input Sources > Add period with double-space: off
+    defaults write .GlobalPreferences NSAutomaticPeriodSubstitutionEnabled -bool false
     # Turn off text replacements (requires restart?)
     defaults write .GlobalPreferences WebAutomaticTextReplacementEnabled -bool false
     # TODO: keyboard brightness
@@ -147,25 +151,37 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # More gestures... app exposé: swipe down with three fingers
     defaults write com.apple.dock showAppExposeGestureEnabled -bool true
 
+    # ***** Activity Monitor *****
+    # Columns & sorting preferences
+    defaults write com.apple.ActivityMonitor UserColumnSortPerTab "{0={direction=1;sort=Command;};1={direction=0;sort=anonymousMemory;};2={direction=0;sort=12HRPower;};3={direction=0;sort=CPUUsage;};4={direction=0;sort=txBytes;};5={direction=0;sort=Name;};6={direction=0;sort=GPUUsage;};}"
+    # View > Dock Icon > Show CPU History
+    defaults write com.apple.ActivityMonitor IconType "6"
+    # View > Update Frequency > Often (2 sec)
+    defaults write com.apple.ActivityMonitor UpdatePeriod "2"
+    # View > All Processes, Hierarchically
+    defaults write com.apple.ActivityMonitor ShowCategory "101"
+
     # ***** Finder *****
-    # Settings > general > show these items on the desktop: hard drives, external disks, CDs/DVDs/iPods, connected servers
+    # Settings > General > show these items on the desktop: hard drives, external disks, CDs/DVDs/iPods, connected servers
     defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
     defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
     defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
     defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
-    # Settings > sidebar > recent tags
+    # Settings > Sidebar > recent tags
     defaults write com.apple.finder ShowRecentTags -bool false
-    # Settings > advanced > show all filename extensions
+    # Settings > Advanced > Show all filename extensions
     defaults write .GlobalPreferences AppleShowAllExtensions -bool true
-    # Settings > advanced > when performing a search: search this mac
-    defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
-    # Settings > advanced > show warning before changing an extension: false
+    # Settings > Avanced > Show warning before changing an extension: false
     defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
-    # View > as list
+    # Settings > Advanced > Keep folders on top: In windows when sorting by name
+    defaults write com.apple.finder _FXSortFoldersFirst "1"
+    # Settings > Advanced > When performing a search: Search the Current Folder
+    defaults write com.apple.finder FXDefaultSearchScope "SCcf"
+    # View > as List
     defaults write com.apple.finder FXPreferredViewStyle -string "nlsv"
-    # View > show path bar
+    # View > Show Path Bar
     defaults write com.apple.finder ShowPathbar -bool true
-    # View > show status bar
+    # View > Show Status Bar
     defaults write com.apple.finder ShowStatusBar -bool true
     # Show all hidden files (cmd+shift+.)
     defaults write com.apple.finder AppleShowAllFiles true
@@ -174,5 +190,8 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # Don't create some .DS_Store files
     defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
     defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+    # Show some normally hidden folders
+    chflags nohidden ~/Library
+    sudo chflags nohidden /Volumes
     killall Finder
 fi
