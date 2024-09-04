@@ -44,9 +44,6 @@ __docker_funcs() {
         docker exec --interactive --tty --rm "$1" bash --
     }
 
-    # Execute `bash` interactively in a Debian container
-    alias ddebian="docker run --interactive --tty debian:latest bash --"
-
     # Get the digest hash of a Docker image
     # @param {string} $1 name[:tag][@digest]
     ddigest() {
@@ -55,29 +52,6 @@ __docker_funcs() {
         else
             docker pull "$1" &> /dev/null || true
             docker inspect --format '{{index .RepoDigests 0}}' "$1" | awk -F "@" '{print $2}'
-        fi
-    }
-
-    # Execute `gremlin` interactively in a TinkerPop container
-    # @param {string=} $1 Image tag
-    dgremlin() {
-        docker run --interactive --tty "tinkerpop/gremlin-console:${1:-latest}" gremlin --
-    }
-
-    # Execute `sh` interactively in a Docker-in-Docker container
-    alias dind="docker run --interactive --tty docker:dind sh --"
-
-    # Execute `jshell` interactively in a Java JDK container
-    # @param {string=} $1 Image tag
-    djava() {
-        if [[ "${1:-}" == "" && -x "$(command -v java)" ]]; then
-            set -- "$(java --version | head -1 | sed 's/"//g' | sed -E 's/(.* )?([0-9]+)\.[0-9]+\.[0-9]+.*/\2/')"
-        fi
-
-        if [[ -z "$1" || "${1:-}" -ge 9 ]]; then
-            docker run --interactive --tty "openjdk:${1:-latest}" jshell
-        else
-            docker run --interactive --tty "openjdk:$1" bash -c "wget --quiet https://github.com/beanshell/beanshell/releases/download/2.1.0/bsh-2.1.0.jar && java -cp bsh-*.jar bsh.Interpreter"
         fi
     }
 
@@ -105,6 +79,75 @@ __docker_funcs() {
     # @param {number=} $2 Tail length
     dlogs() {
         docker logs --tail "${2:-0}" --follow "$1"
+    }
+
+    # Kill all running Docker containers and delete all container data
+    alias dprune="dkillall && docker volume prune --force && docker system prune --all --force && docker images purge"
+
+    # List all Docker containers
+    alias dps="docker ps"
+
+    # Remove a Docker container
+    # @param {string} $1 Container name
+    drm() {
+        docker rm --force "$1" 
+    }
+
+    # Remove all Docker containers
+    drmall() {
+        docker rm --force "$(docker ps --quiet)" 2> /dev/null || true
+    }
+
+    # Remove a Docker container and its volumes
+    # @param {string} $1 Container name
+    drmv() {
+        docker rm --force --volumes "$1"
+    }
+
+    # Execute `sh` interactively in the Docker container
+    # @param {string} $1 Container name
+    dsh() {
+        docker exec --interactive --tty "$1" sh --
+    }
+
+    # Run a "top"-like stream of Docker container stats
+    alias dstats="docker stats"
+    alias dtop="dstats"
+}
+__docker_funcs
+
+
+__docker_containers() {
+    # Execute `bash` interactively in a Debian container
+    alias ddebian="docker run --interactive --tty debian:latest bash --"
+
+    # Execute `sh` interactively in a Flink container
+    # @param {string=} $1 Image tag
+    dflink() {
+        docker run --interactive --tty "flink:${1:-latest}" sh --
+    }
+
+    # Execute `gremlin` interactively in a TinkerPop container
+    # @param {string=} $1 Image tag
+    dgremlin() {
+        docker run --interactive --tty "tinkerpop/gremlin-console:${1:-latest}" gremlin --
+    }
+
+    # Execute `sh` interactively in a Docker-in-Docker container
+    alias dind="docker run --interactive --tty docker:dind sh --"
+
+    # Execute `jshell` interactively in a Java JDK container
+    # @param {string=} $1 Image tag
+    djava() {
+        if [[ "${1:-}" == "" && -x "$(command -v java)" ]]; then
+            set -- "$(java --version | head -1 | sed 's/"//g' | sed -E 's/(.* )?([0-9]+)\.[0-9]+\.[0-9]+.*/\2/')"
+        fi
+
+        if [[ -z "$1" || "${1:-}" -ge 9 ]]; then
+            docker run --interactive --tty "openjdk:${1:-latest}" jshell
+        else
+            docker run --interactive --tty "openjdk:$1" bash -c "wget --quiet https://github.com/beanshell/beanshell/releases/download/2.1.0/bsh-2.1.0.jar && java -cp bsh-*.jar bsh.Interpreter"
+        fi
     }
 
     # Execute `mysql` interactively in a MySQL server container
@@ -149,40 +192,7 @@ __docker_funcs() {
     }
     alias dpostgresqld="dpostgres"
 
-    # Kill all running Docker containers and delete all container data
-    alias dprune="dkillall && docker volume prune --force && docker system prune --all --force && docker images purge"
-
-    # List all Docker containers
-    alias dps="docker ps"
-
-    # Remove a Docker container
-    # @param {string} $1 Container name
-    drm() {
-        docker rm --force "$1" 
-    }
-
-    # Remove all Docker containers
-    drmall() {
-        docker rm --force "$(docker ps --quiet)" 2> /dev/null || true
-    }
-
-    # Remove a Docker container and its volumes
-    # @param {string} $1 Container name
-    drmv() {
-        docker rm --force --volumes "$1"
-    }
-
-    # Execute `sh` interactively in the Docker container
-    # @param {string} $1 Container name
-    dsh() {
-        docker exec --interactive --tty "$1" sh --
-    }
-
-    # Run a "top"-like stream of Docker container stats
-    alias dstats="docker stats"
-    alias dtop="dstats"
-
     # Execute `bash` interactively in a Ubuntu container
     alias dubuntu="docker run --interactive --tty ubuntu:latest bash --"
 }
-__docker_funcs
+__docker_containers

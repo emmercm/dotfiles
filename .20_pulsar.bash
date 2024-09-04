@@ -1,4 +1,5 @@
-: "${PULSAR_STANDALONE_DIR:=${HOME}/Downloads/apache-pulsar-2.11.1}"
+# @see https://archive.apache.org/dist/pulsar/
+: "${PULSAR_STANDALONE_DIR:=${HOME}/Downloads/apache-pulsar-3.0.0}"
 
 if [[ -d "${PULSAR_STANDALONE_DIR}" ]]; then
     if [[ -f "${PULSAR_STANDALONE_DIR}/pulsar-admin" ]]; then
