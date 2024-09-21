@@ -12,8 +12,8 @@ fi
 if [[ -x "$(command -v brew)" ]]; then
     brew() {
         if [[ "${1:-}" == "purge" ]]; then
-            brew list | xargs brew uninstall --force
-            brew list --cask | xargs brew uninstall --force
+            brew list | xargs command brew uninstall --force
+            brew list --cask | xargs command brew uninstall --force
             return
         fi
         command brew "$@"
