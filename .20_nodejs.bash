@@ -31,6 +31,24 @@ __nodejs_volta() {
 __nodejs_volta
 
 
+__nodejs_bun() {
+    if [[ -d "$HOME/.bun/bin" ]]; then
+        export BUN_INSTALL="$HOME/.bun"
+        export PATH="$BUN_INSTALL/bin:$PATH"
+    fi
+
+    # Lazy-load shell completions
+    if [[ -d "$HOME/.bun/_bun" ]]; then
+        bun() {
+            unset -f "$0"
+            source "$HOME/.bun/_bun"
+            $0 "$@"
+        }
+    fi
+}
+__nodejs_bun
+
+
 __nodejs_funcs() {
     # @link https://github.com/npm/npm/issues/15536#issuecomment-392657820
     ndeprecated() {

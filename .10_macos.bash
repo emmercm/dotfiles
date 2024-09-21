@@ -3,8 +3,21 @@ if [[ "${OSTYPE:-}" != "darwin"* ]]; then
 fi
 
 
+##### Homebrew #####
+
 if [[ ! -x "$(command -v brew)" && -f /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+if [[ -x "$(command -v brew)" ]]; then
+    brew() {
+        if [[ "${1:-}" == "purge" ]]; then
+            brew list | xargs brew uninstall --force
+            brew list --cask | xargs brew uninstall --force
+            return
+        fi
+        command brew "$@"
+    }
 fi
 
 
