@@ -37,3 +37,10 @@ __python_pyenv() {
     }
 }
 __python_pyenv
+
+__python_pip() {
+    if [[ ! -x "$(command -v pip)" && -x "$(command -v pip3)" ]]; then
+        alias pip=pip3
+    fi
+}
+__python_pip

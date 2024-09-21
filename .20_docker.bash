@@ -36,7 +36,7 @@ __docker_funcs() {
     fi
 
     # Execute `sh` interactively in an Alpine container
-    alias dalpine="docker run --interactive --tty alpine:latest sh --"
+    alias dalpine="docker run --interactive --tty --rm alpine:latest sh --"
 
     # Execute `bash` interactively in the Docker container
     # @param {string} $1 Container name
@@ -119,22 +119,22 @@ __docker_funcs
 
 __docker_containers() {
     # Execute `bash` interactively in a Debian container
-    alias ddebian="docker run --interactive --tty debian:latest bash --"
+    alias ddebian="docker run --interactive --tty --rm debian:latest bash --"
 
     # Execute `sh` interactively in a Flink container
     # @param {string=} $1 Image tag
     dflink() {
-        docker run --interactive --tty "flink:${1:-latest}" sh --
+        docker run --interactive --tty --rm "${@:2}" "flink:${1:-latest}" sh --
     }
 
     # Execute `gremlin` interactively in a TinkerPop container
     # @param {string=} $1 Image tag
     dgremlin() {
-        docker run --interactive --tty "tinkerpop/gremlin-console:${1:-latest}" gremlin --
+        docker run --interactive --tty --rm "${@:2}" "tinkerpop/gremlin-console:${1:-latest}" gremlin --
     }
 
     # Execute `sh` interactively in a Docker-in-Docker container
-    alias dind="docker run --interactive --tty docker:dind sh --"
+    alias dind="docker run --interactive --tty --rm docker:dind sh --"
 
     # Execute `jshell` interactively in a Java JDK container
     # @param {string=} $1 Image tag
@@ -144,9 +144,9 @@ __docker_containers() {
         fi
 
         if [[ -z "$1" || "${1:-}" -ge 9 ]]; then
-            docker run --interactive --tty "openjdk:${1:-latest}" jshell
+            docker run --interactive --tty --rm "${@:2}" "openjdk:${1:-latest}" jshell
         else
-            docker run --interactive --tty "openjdk:$1" bash -c "wget --quiet https://github.com/beanshell/beanshell/releases/download/2.1.0/bsh-2.1.0.jar && java -cp bsh-*.jar bsh.Interpreter"
+            docker run --interactive --tty --rm "${@:2}" "openjdk:$1" bash -c "wget --quiet https://github.com/beanshell/beanshell/releases/download/2.1.0/bsh-2.1.0.jar && java -cp bsh-*.jar bsh.Interpreter"
         fi
     }
 
@@ -165,13 +165,13 @@ __docker_containers() {
     # REPL: mysql --host=127.0.0.1 --port 3306 --user=root --password=password --database=mysql
     # @param {string=} $1 Image tag
     dmysqld() {
-        docker run --env MYSQL_ROOT_PASSWORD=password --publish 3306:3306 --detach "mysql:${1:-latest}"
+        docker run --rm --env MYSQL_ROOT_PASSWORD=password --publish 3306:3306 --detach "${@:2}" "mysql:${1:-latest}"
     }
 
     # Execute `bash` interactively in a Node.js container
     # @param {string=} $1 Image tag
     dnode() {
-        docker run --interactive --tty "node:${1:-latest}" bash --
+        docker run --interactive --tty --rm "${@:2}" "node:${1:-latest}" bash --
     }
 
     # Execute `psql` interactively in a PostgreSQL server container
@@ -188,11 +188,11 @@ __docker_containers() {
     # Run a detached instance of the PostgreSQL server container (username: postgres)
     # @param {string=} $1 Image tag
     dpostgresd() {
-        docker run --env POSTGRES_PASSWORD=password --publish 5432:5432 --detach "postgres:${1:-latest}"
+        docker run --rm --env POSTGRES_PASSWORD=password --publish 5432:5432 --detach "${@:2}" "postgres:${1:-latest}"
     }
     alias dpostgresqld="dpostgres"
 
     # Execute `bash` interactively in a Ubuntu container
-    alias dubuntu="docker run --interactive --tty ubuntu:latest bash --"
+    alias dubuntu="docker run --interactive --tty --rm ubuntu:latest bash --"
 }
 __docker_containers
