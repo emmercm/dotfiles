@@ -15,7 +15,7 @@ if [[ -d ~/Library/Fonts && "$(find ~/Library/Fonts -maxdepth 1 -follow -type f 
 fi
 
 # If installed run it
-if [[ -x "$(command -v powerline-daemon)" ]]; then
+if command -v powerline-daemon &> /dev/null; then
     powerline-daemon --quiet
     export POWERLINE_BASH_CONTINUATION=1
     export POWERLINE_BASH_SELECT=1
