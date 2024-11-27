@@ -26,7 +26,7 @@ __git_funcs() {
     fi
 
     # Shell alias Git aliases from the .gitconfig
-    for al in $(git --list-cmds=alias); do
+    for al in $(git --list-cmds=alias; git --list-cmds=main); do
         # shellcheck disable=SC2139
         alias g${al}="git ${al}"
         if type __git_aliased_command &> /dev/null; then
