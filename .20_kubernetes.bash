@@ -4,7 +4,7 @@ __kube_completions() {
 
     # NOTE: `autoload -Uz compinit && compinit` will need to happen before sourcing any of these!
 
-    if [[ -x "$(command -v helm)" ]]; then
+    if command -v helm &> /dev/null; then
         helm() {
             unset -f "$0"
             # shellcheck disable=SC1090
@@ -13,7 +13,7 @@ __kube_completions() {
         }
     fi
 
-    if [[ -x "$(command -v kops)" ]]; then
+    if command -v kops &> /dev/null; then
         kops() {
             unset -f "$0"
             # shellcheck disable=SC1090
@@ -22,7 +22,7 @@ __kube_completions() {
         }
     fi
 
-    if [[ -x "$(command -v kubectl)" ]]; then
+    if command -v kubectl &> /dev/null; then
         kubectl() {
             unset -f "$0"
             # shellcheck disable=SC1090
@@ -31,7 +31,7 @@ __kube_completions() {
         }
     fi
 
-    if [[ -x "$(command -v minikube)" ]]; then
+    if command -v minikube &> /dev/null; then
         minikube() {
             unset -f "$0"
             # shellcheck disable=SC1090
@@ -40,7 +40,7 @@ __kube_completions() {
         }
     fi
 
-    if [[ -x "$(command -v stern)" ]]; then
+    if command -v stern &> /dev/null; then
         stern() {
             unset -f "$0"
             # shellcheck disable=SC1090
@@ -163,7 +163,7 @@ __kube_funcs() {
     # @param {number=} $2 Tail length
     # @param {...string} Additional kubectl options
     klogs() {
-        if [[ -x "$(command -v stern)" ]]; then
+        if command -v stern &> /dev/null; then
             stern --timestamps --tail "${2:-0}" --selector "app=$1"
         else
             kubectl logs --all-containers --timestamps --follow --max-log-requests=9999 "--tail=${2:-0}" --selector="app=$1"

@@ -62,6 +62,6 @@ find "${HOME}" -maxdepth 1 -name ".*.bash" -type l ! -exec test -e {} \; -delete
 link "$(pwd)" ".*"
 
 # Reload powerline if installed
-if [[ -x "$(command -v powerline-daemon)" ]]; then
+if command -v powerline-daemon &> /dev/null; then
     powerline-daemon --quiet --replace
 fi

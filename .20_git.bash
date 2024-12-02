@@ -1,17 +1,17 @@
 # Don't use the git from macOS, use the Homebrew version instead
-if [[ -x "$(command -v brew)" && ! -f "$(brew --prefix)/bin/git" ]]; then
+if command -v brew &> /dev/null && [[ ! -f "$(brew --prefix)/bin/git" ]]; then
     brew install git
     brew link --overwrite git
 fi
 
-if [[ ! -x "$(command -v git)" ]]; then
+if ! command -v git &> /dev/null; then
     return 0
 fi
 
 
 __git_completions() {
     # Bash completions
-    if [[ -x "$(command -v brew)" && -f "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" && ! -f "$(brew --prefix)/etc/bash_completion.d/git-completion.bash" ]]; then
+    if command -v brew &> /dev/null && [[ -f "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" && ! -f "$(brew --prefix)/etc/bash_completion.d/git-completion.bash" ]]; then
         ln -sf "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" "$(brew --prefix)/etc/bash_completion.d/"
     fi
 }
@@ -26,7 +26,7 @@ __git_funcs() {
     fi
 
     # Shell alias Git aliases from the .gitconfig
-    for al in $(git --list-cmds=alias); do
+    for al in $(git --list-cmds=alias; git --list-cmds=main); do
         # shellcheck disable=SC2139
         alias g${al}="git ${al}"
         if type __git_aliased_command &> /dev/null; then

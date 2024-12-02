@@ -5,7 +5,7 @@ set -euo pipefail
 
 
 # Git settings
-if [[ -x "$(command -v git)" && -s ~/.gitignore_global ]]; then
+if command -v git &> /dev/null && [[ -s ~/.gitignore_global ]]; then
     git config --global core.excludesfile ~/.gitignore_global
 fi
 

@@ -3,7 +3,7 @@ export PROGRESS_NO_TRUNC=1
 
 
 __docker_completions() {
-    if [[ -x "$(command -v brew)" && -d "/Applications/Docker.app" && -z "$(find "$(brew --prefix)/etc/bash_completion.d" -maxdepth 1 -name "docker*")" ]]; then
+    if command -v brew &> /dev/null && [[ -d "/Applications/Docker.app" && -z "$(find "$(brew --prefix)/etc/bash_completion.d" -maxdepth 1 -name "docker*")" ]]; then
         find "/Applications/Docker.app" -follow -type f -name "*.bash-completion" -exec ln -sf "{}" "$(brew --prefix)/etc/bash_completion.d/" \;
     fi
 }
@@ -12,7 +12,7 @@ __docker_completions
 
 __docker_funcs() {
     # Auto/lazy-start Docker if it's not running
-    if [[ -x "$(command -v docker)" ]]; then
+    if command -v docker &> /dev/null; then
         docker() {
             if [[ "${OSTYPE:-}" == "darwin"* ]]; then
                 # macOS
@@ -28,7 +28,7 @@ __docker_funcs() {
         }
 
         alias docker-compose="docker compose --compatibility"
-    elif [[ -x "$(command -v docker-compose)" ]]; then
+    elif command -v docker-compose &> /dev/null; then
         docker-compose() {
             docker ps &> /dev/null # start
             command docker-compose "$@"
@@ -47,7 +47,7 @@ __docker_funcs() {
     # Get the digest hash of a Docker image
     # @param {string} $1 name[:tag][@digest]
     ddigest() {
-        if [[ -x "$(command -v skopeo)" ]]; then
+        if command -v skopeo &> /dev/null; then
             skopeo inspect --raw "docker://$1" | shasum --algorithm 256 | awk '{print "sha256:"$1}'
         else
             docker pull "$1" &> /dev/null || true
@@ -139,7 +139,7 @@ __docker_containers() {
     # Execute `jshell` interactively in a Java JDK container
     # @param {string=} $1 Image tag
     djava() {
-        if [[ "${1:-}" == "" && -x "$(command -v java)" ]]; then
+        if [[ "${1:-}" == "" ]] && command -v java &> /dev/null; then
             set -- "$(java --version | head -1 | sed 's/"//g' | sed -E 's/(.* )?([0-9]+)\.[0-9]+\.[0-9]+.*/\2/')"
         fi
 

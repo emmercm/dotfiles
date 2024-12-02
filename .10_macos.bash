@@ -24,7 +24,7 @@ fi
 ##### App installs #####
 
 # Homebrew packages
-if [[ -x "$(command -v brew)" ]]; then
+if command -v brew &> /dev/null; then
     command -v gawk   > /dev/null || brew install gawk
     command -v gdate  > /dev/null || brew install coreutils
     command -v gsed   > /dev/null || brew install gnu-sed
@@ -34,18 +34,18 @@ if [[ -x "$(command -v brew)" ]]; then
     command -v watch  > /dev/null || brew install watch
     command -v wget   > /dev/null || brew install wget
 
-    if [[ ! -x "$(command -v hstr)" ]]; then
+    if ! command -v hstr &> /dev/null; then
         brew install hstr
         hstr --show-configuration >> ~/.bashrc
     fi
 fi
 
 # App store applications
-if [[ -x "$(command -v brew)" && ! -x "$(command -v mas)" ]]; then
+if command -v brew &> /dev/null && ! command -v mas &> /dev/null; then
     brew install mas
     # Installed applications aren't enumerated immediately, `mas list` may return nothing
 fi
-# if [[ -x "$(command -v mas)" ]]; then
+# if command -v mas &> /dev/null; then
 #     mas_list=$(mas list)
 #     # 1Password for Safari
 #     # echo "${mas_list}" | grep '^1569813296 ' &> /dev/null || mas install 1569813296

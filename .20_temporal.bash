@@ -1,5 +1,5 @@
 # Reset back to non-beta functionality
-if [[ -x "$(command -v tctl)" ]]; then
+if command -v tctl &> /dev/null; then
     tctl config set version current
 fi
 
@@ -11,7 +11,7 @@ fi
 __temporal_completions() {
     # NOTE: `autoload -Uz compinit && compinit` will need to happen before sourcing any of these!
 
-    if [[ -x "$(command -v tctl)" ]]; then
+    if command -v tctl &> /dev/null; then
         tctl() {
             unset -f "$0"
             # shellcheck disable=SC1090
