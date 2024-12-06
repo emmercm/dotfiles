@@ -41,7 +41,7 @@ __docker_funcs() {
     # Execute `bash` interactively in the Docker container
     # @param {string} $1 Container name
     dbash() {
-        docker exec --interactive --tty --rm "$1" bash --
+        docker exec --interactive --tty "$1" bash --
     }
 
     # Get the digest hash of a Docker image
@@ -57,9 +57,7 @@ __docker_funcs() {
 
     # Kill a Docker container
     # @param {string} $1 Container name
-    dkill() {
-        docker kill "$1"
-    }
+    alias dkill="docker kill"
 
     # Kill all running Docker containers
     dkillall() {
@@ -89,9 +87,7 @@ __docker_funcs() {
 
     # Remove a Docker container
     # @param {string} $1 Container name
-    drm() {
-        docker rm --force "$1" 
-    }
+    alias drm="docker rm --force"
 
     # Remove all Docker containers
     drmall() {
@@ -100,9 +96,7 @@ __docker_funcs() {
 
     # Remove a Docker container and its volumes
     # @param {string} $1 Container name
-    drmv() {
-        docker rm --force --volumes "$1"
-    }
+    alias drmv="docker rm --force --volumes"
 
     # Execute `sh` interactively in the Docker container
     # @param {string} $1 Container name
@@ -154,10 +148,10 @@ __docker_containers() {
     # @param {string=} $1 Image tag
     dmysql() {
         local container_id
-        container_id=$(docker run --env MYSQL_ROOT_PASSWORD=password --detach "mysql:${1:-latest}") &&
-            docker exec --rm "${container_id}" mysqladmin ping --wait &&
-            until docker exec --rm "${container_id}" mysqladmin --password=password status &> /dev/null ; do sleep 1 ; done &&
-            docker exec --interactive --tty --rm "${container_id}" mysql --password=password --database=mysql &&
+        container_id=$(docker run --rm --env MYSQL_ROOT_PASSWORD=password --detach "mysql:${1:-latest}") &&
+            docker exec "${container_id}" mysqladmin ping --wait &&
+            until docker exec "${container_id}" mysqladmin --password=password status &> /dev/null ; do sleep 1 ; done &&
+            docker exec --interactive --tty "${container_id}" mysql --password=password --database=mysql &&
             docker rm --force --volumes "${container_id}" > /dev/null
     }
 
@@ -178,9 +172,9 @@ __docker_containers() {
     # @param {string=} $1 Image tag
     dpostgres() {
         local container_id
-        container_id=$(docker run --env POSTGRES_PASSWORD=password --detach "postgres:${1:-latest}") &&
-            until docker exec --rm "${container_id}" pg_isready ; do sleep 1 ; done &&
-            docker exec --interactive --tty --rm "${container_id}" psql --username postgres &&
+        container_id=$(docker run --rm --env POSTGRES_PASSWORD=password --detach "postgres:${1:-latest}") &&
+            until docker exec "${container_id}" pg_isready ; do sleep 1 ; done &&
+            docker exec --interactive --tty "${container_id}" psql --username postgres &&
             docker rm --force --volumes "${container_id}" > /dev/null
     }
     alias dpostgresql="dpostgres"
