@@ -34,12 +34,15 @@ __docker_funcs() {
             command docker-compose "$@"
         }
     fi
-    if command -v tilt &> /dev/null; then
-        tilt() {
+    for command in \
+        dive \
+        tilt \
+    ; do if command -v "${command}" &> /dev/null; then
+        "${command}"() {
             docker ps &> /dev/null # start
-            command tilt "$@"
+            command "${command}" "$@"
         }
-    fi
+    fi; done
 
     # Execute `sh` interactively in an Alpine container
     alias dalpine="docker run --interactive --tty --rm alpine:latest sh --"
