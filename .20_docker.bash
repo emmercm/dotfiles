@@ -34,14 +34,12 @@ __docker_funcs() {
             command docker-compose "$@"
         }
     fi
+    # Start docker before commands that need it
     for command in \
         dive \
         tilt \
     ; do if command -v "${command}" &> /dev/null; then
-        ${command}() {
-            docker ps &> /dev/null # start
-            command "${command}" "$@"
-        }
+        alias "${command}"="docker ps &> /dev/null; command \"${command}\""
     fi; done
 
     # Execute `sh` interactively in an Alpine container
