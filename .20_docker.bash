@@ -39,6 +39,7 @@ __docker_funcs() {
         dive \
         tilt \
     ; do if command -v "${command}" &> /dev/null; then
+        # shellcheck disable=SC2139
         alias "${command}"="docker ps &> /dev/null; command \"${command}\""
     fi; done
 
