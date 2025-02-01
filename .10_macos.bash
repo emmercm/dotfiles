@@ -59,6 +59,13 @@ flush() {
     sudo killall -HUP mDNSResponder
 }
 
+# macOS DHCP renew
+# @link https://apple.stackexchange.com/a/17429
+renew() {
+    sudo ipconfig set en0 BOOTP
+    sudo ipconfig set en0 DHCP
+}
+
 
 ##### Aliases #####
 
