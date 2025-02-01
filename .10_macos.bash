@@ -25,6 +25,7 @@ fi
 
 # Homebrew packages
 if command -v brew &> /dev/null; then
+    command -v dive   > /dev/null || brew install dive
     command -v gawk   > /dev/null || brew install gawk
     command -v gdate  > /dev/null || brew install coreutils
     command -v gsed   > /dev/null || brew install gnu-sed
@@ -57,6 +58,13 @@ fi
 flush() {
     sudo dscacheutil -flushcache
     sudo killall -HUP mDNSResponder
+}
+
+# macOS DHCP renew
+# @link https://apple.stackexchange.com/a/17429
+renew() {
+    sudo ipconfig set en0 BOOTP
+    sudo ipconfig set en0 DHCP
 }
 
 
