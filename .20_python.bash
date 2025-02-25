@@ -17,7 +17,7 @@ __python_pyenv() {
     export PATH
     PYENV_SHELL=$(basename "${SHELL}")
     export PYENV_SHELL
-    source "$(dirname "$(readlink -f "$(which pyenv)")")/../completions/pyenv.zsh"
+    # source "$(dirname "$(readlink -f "$(which pyenv)")")/../completions/pyenv.zsh"
     command pyenv rehash 2>/dev/null
     pyenv() {
         local command

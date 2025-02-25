@@ -1,27 +1,3 @@
-__nodejs_nvm() {
-    # Lazy load nvm because it is notoriously slow
-    export NVM_DIR="$HOME/.nvm"
-    if [[ -s "$NVM_DIR/nvm.sh" ]]; then
-        nvm() {
-            # Unset this function so it's never called again in this session
-            unset -f "$0"
-
-            # Load nvm
-            . "$NVM_DIR/nvm.sh"
-
-            # Load nvm's bash completions
-            if [[ -s "$NVM_DIR/bash_completion" ]]; then
-                . "$NVM_DIR/bash_completion"
-            fi
-
-            # Execute the intended command
-            $0 "$@"
-        }
-    fi
-}
-__nodejs_nvm
-
-
 __nodejs_volta() {
     if [[ -d "$HOME/.volta" ]]; then
         export VOLTA_HOME="$HOME/.volta"
