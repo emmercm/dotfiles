@@ -9,15 +9,6 @@ if ! command -v git &> /dev/null; then
 fi
 
 
-__git_completions() {
-    # Bash completions
-    if command -v brew &> /dev/null && [[ -f "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" && ! -f "$(brew --prefix)/etc/bash_completion.d/git-completion.bash" ]]; then
-        ln -sf "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" "$(brew --prefix)/etc/bash_completion.d/"
-    fi
-}
-__git_completions
-
-
 __git_funcs() {
     # Short alias
     alias g="git"

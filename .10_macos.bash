@@ -46,13 +46,19 @@ if command -v brew &> /dev/null && ! command -v mas &> /dev/null; then
     brew install mas
     # Installed applications aren't enumerated immediately, `mas list` may return nothing
 fi
-# if command -v mas &> /dev/null; then
-#     mas_list=$(mas list)
-#     # 1Password for Safari
-#     # echo "${mas_list}" | grep '^1569813296 ' &> /dev/null || mas install 1569813296
-#     # Menu World Time
-#     # echo "${mas_list}" | grep '^1446377255 ' &> /dev/null || mas install 1446377255
-# fi
+if command -v mas &> /dev/null; then
+    mas_list=$(mas list)
+    for app_id in $(
+        # 1Password for Safari
+        # echo "1569813296"
+        # Kindle
+        echo "302584613"
+        # Menu World Time
+        # echo "1446377255"
+    ); do
+        echo "${mas_list}" | grep "^${app_id} " &> /dev/null || mas install "${app_id}"
+    done
+fi
 
 # macOS DNS flush
 flush() {

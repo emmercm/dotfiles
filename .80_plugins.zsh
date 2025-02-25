@@ -1,9 +1,14 @@
 ##### Plugin Manager #####
 
 # Install Antidote
-if [[ ! -d ${ZDOTDIR:-~}/.antidote ]]; then
+if [[ ! -d ${ZDOTDIR:-$HOME}/.antidote ]]; then
     git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-~}/.antidote
 fi
+
+# Allow loading some plugins for macOS only
+is-macos() {
+  [[ $OSTYPE == darwin* ]]
+}
 
 # Load Antidote
 source ${ZDOTDIR:-~}/.antidote/antidote.zsh
@@ -27,11 +32,11 @@ if [[ -d ~/Library/Fonts && "$(find ~/Library/Fonts -maxdepth 1 -follow -type f 
     cd ..
     rm -rf powerlevel10k-media
 fi
-osascript <<- EOF
-	tell application "Terminal"
-		set ProfileNames to name of every settings set
-		repeat with ProfileName in ProfileNames
-			set font name of settings set ProfileName to "MesloLGS NF"
-		end repeat
-	end tell
-EOF
+#osascript <<- EOF
+#	tell application "Terminal"
+#		set ProfileNames to name of every settings set
+#		repeat with ProfileName in ProfileNames
+#			set font name of settings set ProfileName to "MesloLGS NF"
+#		end repeat
+#	end tell
+#EOF

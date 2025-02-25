@@ -44,7 +44,7 @@ function link() {
     # Delete broken symlinks
     while read -r FILE; do
         rm -f "${FILE}"
-    done <<< "$(find "${HOME}" -type l -maxdepth 1 ! -exec test -e {} \; -print)"
+    done <<< "$(find "${HOME}" -maxdepth 1 -type l ! -exec test -e {} \; -print)"
 }
 
 

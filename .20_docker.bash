@@ -2,14 +2,6 @@ export BUILDKIT_PROGRESS=plain
 export PROGRESS_NO_TRUNC=1
 
 
-__docker_completions() {
-    if command -v brew &> /dev/null && [[ -d "/Applications/Docker.app" && -z "$(find "$(brew --prefix)/etc/bash_completion.d" -maxdepth 1 -name "docker*")" ]]; then
-        find "/Applications/Docker.app" -follow -type f -name "*.bash-completion" -exec ln -sf "{}" "$(brew --prefix)/etc/bash_completion.d/" \;
-    fi
-}
-__docker_completions
-
-
 __docker_funcs() {
     # Auto/lazy-start Docker if it's not running
     if command -v docker &> /dev/null; then

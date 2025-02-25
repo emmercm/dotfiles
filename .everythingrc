@@ -13,40 +13,6 @@ fi
 
 ##### Bash #####
 
-if command -v brew &> /dev/null; then
-    # Load bash-completion
-    if [[ "$(basename "${SHELL}")" == "bash" ]]; then
-        __bash_completion() {
-            if [[ -f "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
-                # bash-completion@2
-                . "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
-            elif [[ -f "${HOMEBREW_PREFIX}/etc/bash_completion" ]]; then
-                # bash-completion@1
-                . "${HOMEBREW_PREFIX}/etc/bash_completion"
-            else
-                brew install bash-completion && __bash_completion
-            fi
-
-            # https://docs.brew.sh/Shell-Completion#configuring-completions-in-bash
-            for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
-                [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
-            done
-        }
-        __bash_completion
-    fi
-
-    # Load zsh/site-functions
-    if [[ "$(basename "${SHELL}")" == "zsh" ]]; then
-        __zsh_completion() {
-            # https://docs.brew.sh/Shell-Completion#configuring-completions-in-zsh
-            FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
-            # autoload -Uz compinit
-            # compinit
-        }
-        __zsh_completion
-    fi
-fi
-
 # Reload this file after change
 reload() {
     exec "${SHELL}"
@@ -158,7 +124,7 @@ __bashrc_golang() {
             mkdir "${GOPATH}/bin"
             mkdir "${GOPATH}/src"
         fi
-        PATH="$PATH:$(go env GOPATH)/bin"
+        PATH="${PATH}:${GOPATH}/bin"
         export PATH
     fi
 }
@@ -174,7 +140,7 @@ __bashrc_java() {
     if [[ "${JAVA_HOME:-}" == "" ]]; then
         while read -r DIR; do
             export JAVA_HOME="${DIR}"
-        done <<< "$((find /Library/Java/JavaVirtualMachines/*/Contents -type d -name Home) 2> /dev/null | sort --version-sort)"
+        done <<< "$((find /Library/Java/JavaVirtualMachines/*/Contents -maxdepth 1 -type d -name Home) 2> /dev/null | sort --version-sort)"
     fi
 
     jversion() {
@@ -193,7 +159,7 @@ __bashrc_mysql() {
             if [[ -d "${DIR}/bin" ]]; then
                 export PATH="${DIR}/bin:${PATH}"
             fi
-        done <<< "$(find "${HOMEBREW_PREFIX}/opt" -maxdepth 1 -name "mysql-client*")"
+        done <<< "$(find "${HOMEBREW_PREFIX}/opt" -maxdepth 1 -follow -type d -name "mysql-client*")"
     fi
 }
 __bashrc_mysql
@@ -204,7 +170,7 @@ __bashrc_mysql
 __bashrc_python() {
     while read -r DIR; do
         export PATH="${DIR}:${PATH}"
-    done <<< "$(find ~/Library/Python -type d -name bin 2> /dev/null)"
+    done <<< "$(find ~/Library/Python/* -maxdepth 1 -type d -name bin 2> /dev/null)"
 
     if [[ -d ~/grpc_tools ]]; then
         export PATH=~/grpc_tools:$PATH

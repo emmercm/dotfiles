@@ -40,8 +40,8 @@ Files are sourced in the following order:
 
 - [`.10_macos.bash`](./.10_macos.bash): macOS shortcuts and polyfills
 - [`.20_docker.bash`](./.20_docker.bash): [Docker](https://www.docker.com) shortcuts and aliases
-- [`.20_git.bash`](./.20_git.bash): [Git](https://git-scm.com/) completions, shortcuts, and aliases
-- [`.20_kubernetes.bash`](./.20_kubernetes.bash): [Kubernetes](https://kubernetes.io/) completions, shortcuts, and aliases
+- [`.20_git.bash`](./.20_git.bash): [Git](https://git-scm.com/) shortcuts and aliases
+- [`.20_kubernetes.bash`](./.20_kubernetes.bash): [Kubernetes](https://kubernetes.io/) shortcuts and aliases
 - [`.20_nodejs.bash`](./.20_nodejs.bash): [Node.js](https://nodejs.org/en/) shortcuts and aliases
 - [`.20_pulsar.bash`](./.20_pulsar.bash): [Apache Pulsar](https://pulsar.apache.org/) shortcuts and aliases
 - [`.20_python.bash`](./.20_python.bash): [Python](https://www.python.org/) shortcuts and aliases
