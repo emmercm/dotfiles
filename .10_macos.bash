@@ -33,6 +33,7 @@ if command -v brew &> /dev/null; then
     command -v rename > /dev/null || brew install rename
     command -v tree   > /dev/null || brew install tree
     command -v watch  > /dev/null || brew install watch
+    command -v wine   > /dev/null || brew install --cask --no-quarantine wine-stable
     command -v wget   > /dev/null || brew install wget
 
     if ! command -v hstr &> /dev/null; then
@@ -55,6 +56,8 @@ if command -v mas &> /dev/null; then
         echo "302584613"
         # Menu World Time
         # echo "1446377255"
+        # WhatsApp
+        # echo "310633997"
     ); do
         echo "${mas_list}" | grep "^${app_id} " &> /dev/null || mas install "${app_id}"
     done
@@ -111,10 +114,12 @@ command -v realpath > /dev/null || realpath() {
 
 ##### JetBrains #####
 
-if [[ "$(mdfind -name 'kMDItemFSName == "IntelliJ IDEA.app"')" != "" ]]; then
-    intellij() {
+intellij() {
+    if [[ "$(mdfind -name 'kMDItemFSName == "IntelliJ IDEA.app"')" != "" ]]; then
         open -na "IntelliJ IDEA.app" --args "$@"
-    }
-    alias ij=intellij
-    alias idea=intellij
-fi
+    else
+        command intellij "$@"
+    fi
+}
+alias ij=intellij
+alias idea=intellij
