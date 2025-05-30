@@ -104,8 +104,14 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # defaults write com.apple.screensaver askForPasswordDelay -int 0
 
     # ***** Settings > Battery *****
-    # Options... prevent automatic sleeping on power adapter when the display is off
+    # Low Power Mode: Only on Battery
+    sudo pmset -b lowpowermode 1
+    sudo pmset -c lowpowermode 0
+    # Options... prevent automatic sleeping on power adapter when the display is off: on
     sudo pmset -c sleep 0
+    # Options... wake for network access: only on power adapter
+    sudo pmset -b womp 0
+    sudo pmset -c womp 1
 
     # ***** Settings > Lock Screen *****
     # Start screen saver when inactive for X seconds

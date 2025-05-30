@@ -27,7 +27,7 @@ ohmyzsh/ohmyzsh path:plugins/deno kind:fpath
 ohmyzsh/ohmyzsh path:plugins/docker kind:fpath
 ohmyzsh/ohmyzsh path:plugins/docker-compose kind:fpath
 ohmyzsh/ohmyzsh path:plugins/gem kind:fpath
-ohmyzsh/ohmyzsh path:plugins/gh kind:fpath
+#ohmyzsh/ohmyzsh path:plugins/gh kind:fpath
 ohmyzsh/ohmyzsh path:plugins/git kind:fpath
 ohmyzsh/ohmyzsh path:plugins/golang kind:fpath
 ohmyzsh/ohmyzsh path:plugins/gradle kind:fpath

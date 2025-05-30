@@ -88,11 +88,6 @@ __bashrc_misc() {
 __bashrc_misc
 
 
-##### 1Password #####
-
-[[ -f "$HOME/.config/op/plugins.sh" ]] && builtin source "$HOME/.config/op/plugins.sh"
-
-
 ##### IDEs #####
 
 __bashrc_ides() {

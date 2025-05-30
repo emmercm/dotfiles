@@ -37,7 +37,7 @@ __git_funcs() {
         local stash_name
         stash_name="$(cat /dev/urandom | base32 | tr -dc 'A-Z0-9' | head -c 16)"
         git stash push --message "${stash_name}" || return 1
-        if [[ $(git branch --list main) ]]; then
+        if git branch --list main > /dev/null; then
             git fetch origin main:main
             git rebase origin/main
         else
@@ -61,9 +61,9 @@ __git_funcs() {
     }
 
     gupdate() {
-        git pull
+        git pull > /dev/null
 
-        if [[ $(git branch --list main) ]]; then
+        if git branch --list main > /dev/null; then
             git fetch origin main:main
             git merge --no-edit origin/main
         else
