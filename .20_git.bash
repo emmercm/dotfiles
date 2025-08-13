@@ -37,7 +37,7 @@ __git_funcs() {
         local stash_name
         stash_name="$(cat /dev/urandom | base32 | tr -dc 'A-Z0-9' | head -c 16)"
         git stash push --message "${stash_name}" || return 1
-        if git branch --list main > /dev/null; then
+        if [[ $(git branch --list main) ]]; then
             git fetch origin main:main
             git rebase origin/main
         else
@@ -60,10 +60,35 @@ __git_funcs() {
         fi
     }
 
+    # Copy changes from one clone to another
+    # @param {string} $1 The original/old git root
+    # @param {string} $2 The new git root
+    gcopy() {
+        git -C "$1" status --porcelain=v1 | while read -r state file; do
+            if [[ "${state}" == *D* ]]; then
+                # Copy deletions
+                echo -e "\033[91mX\033[0m ${file}"
+                rm -rf "${2:?}/${file}"
+            elif [[ "${state}" == *R* ]]; then
+                # Copy renames
+                before="${file% -> *}"
+                after="${file#* -> }"
+                echo -e "\033[95m>\033[0m ${before} -> ${after}"
+                git -C "$2" mv --force "${before}" "${after}"
+                cp "$1/${after}" "$2/${after}"
+            else
+                # Copy modifications
+                echo -e "\033[92m*\033[0m ${file}"
+                mkdir -p "$2/$(dirname "${file}")"
+                cp "$1/${file}" "$2/${file}"
+            fi
+        done
+    }
+
     gupdate() {
         git pull > /dev/null
 
-        if git branch --list main > /dev/null; then
+        if [[ $(git branch --list main) ]]; then
             git fetch origin main:main
             git merge --no-edit origin/main
         else
