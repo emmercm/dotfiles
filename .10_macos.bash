@@ -25,9 +25,15 @@ fi
 
 # Homebrew packages
 if command -v brew &> /dev/null; then
+    # Apps
+    [[ -d /Applications/LinearMouse.app ]] || brew install --cask linearmouse
+    [[ -d /Applications/Rectangle.app ]] || brew install --cask rectangle
+
+    # CLI tools
     command -v dive   > /dev/null || brew install dive
     command -v gawk   > /dev/null || brew install gawk
     command -v gdate  > /dev/null || brew install coreutils
+    command -v gh     > /dev/null || brew install gh
     command -v gsed   > /dev/null || brew install gnu-sed
     command -v jq     > /dev/null || brew install jq
     command -v rename > /dev/null || brew install rename
@@ -47,21 +53,32 @@ if command -v brew &> /dev/null && ! command -v mas &> /dev/null; then
     brew install mas
     # Installed applications aren't enumerated immediately, `mas list` may return nothing
 fi
-if command -v mas &> /dev/null; then
-    mas_list=$(mas list)
-    for app_id in $(
-        # 1Password for Safari
-        # echo "1569813296"
-        # Kindle
-        echo "302584613"
-        # Menu World Time
-        # echo "1446377255"
-        # WhatsApp
-        # echo "310633997"
-    ); do
-        echo "${mas_list}" | grep "^${app_id} " &> /dev/null || mas install "${app_id}"
-    done
-fi
+# if command -v mas &> /dev/null; then
+#     mas_list=$(mas list)
+#     for app_id in $(
+#         # ----- Applications -----
+#         # TODO: Keka (paid)
+#         # Kindle
+#         echo "302584613"
+#         # TODO: LibreOffice (paid)
+#         # TODO: Maccy (paid)
+#         # Menu World Time
+#         # echo "1446377255"
+#         # NordVPN
+#         # echo "905953485"
+#         # Telegram
+#         # echo "747648890"
+#         # WhatsApp
+#         # echo "310633997"
+#         # ----- Safari Extensions -----
+#         # 1Password for Safari
+#         echo "1569813296"
+#         # Grammarly for Safari
+#         echo "1462114288"
+#     ); do
+#         echo "${mas_list}" | grep "^${app_id} " &> /dev/null || mas install "${app_id}"
+#     done
+# fi
 
 # macOS DNS flush
 flush() {

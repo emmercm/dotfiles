@@ -26,14 +26,23 @@ __nodejs_bun
 
 
 __nodejs_funcs() {
-    # @link https://github.com/npm/npm/issues/15536#issuecomment-392657820
+    # @param {string=} $1 npm list depth
+    # @see https://github.com/npm/npm/issues/15536#issuecomment-392657820
     ndeprecated() {
-        jq -r '.dependencies,.devDependencies|keys[] as $k|"\($k)@\(.[$k])"' package.json | while read -r line; do \
+        npm list "--depth=${1:-0}" | awk '{ print $NF }' | tail -n +2 | grep -v 'deduped' | while read -r line; do \
             printf "%s: " "${line}"
-            [ "$(npm show "${line}" | grep --count --extended-regexp '^DEPRECATED')" != "0" ] && \
+            [ "$(npm view "${line}" | grep --count --extended-regexp '^DEPRECATED')" != "0" ] && \
             printf "\e[1;31m""DEPRECATED\n""\e[0m" || \
             printf "\e[1;32m""not deprecated\n""\e[0m"
         done
+    }
+
+    # @param {string=} $1 npm list depth
+    # @see https://stackoverflow.com/a/70591428
+    nmodified() {
+        npm list "--depth=${1:-0}" | awk '{ print $NF }' | tail -n +2 | grep -v 'deduped' | \
+            xargs -I {} bash -c "npm view {} time.modified _id | awk '{print \$3}' | sed -e \"s/'//g\" | tr '\n' ' ' && echo" | \
+            sort
     }
 
     # Find the minimum Node version supported by all package.json's engines
