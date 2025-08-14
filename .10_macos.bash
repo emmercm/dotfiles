@@ -20,6 +20,37 @@ if [[ -x "$(command -v brew)" ]]; then
     }
 fi
 
+__homebrew_funcs() {
+    # Install a specific version of a Homebrew formula
+    # @param {string} $1 Formula name
+    # @param {string} $2 Formula version
+    vintage() {
+        # Ensure homebrew/core is tapped and up to date
+        brew tap | grep -xq homebrew/core \
+            && brew update \
+            || brew tap --force homebrew/core
+
+        # Ensure homebrew/local is created
+        brew tap | grep -xq homebrew/local \
+            || brew tap homebrew/local
+
+        # Extract the formula
+        brew extract --force "--version=${2:?}" "${1:?}" homebrew/local
+
+        # If the formula is already installed, re-link it
+        if brew list -1 | grep -xq "${1:?}@${2:?}"; then
+            brew unlink "${1:?}@${2:?}"
+            brew link --overwrite "${1:?}@${2:?}"
+            return 0
+        fi
+
+        # Install the formula and ensure it's linked
+        brew install "homebrew/local/${1:?}@${2:?}" \
+            || brew link --overwrite "${1:?}@${2:?}"
+    }
+}
+__homebrew_funcs
+
 
 ##### App installs #####
 
@@ -49,36 +80,39 @@ if command -v brew &> /dev/null; then
 fi
 
 # App store applications
-if command -v brew &> /dev/null && ! command -v mas &> /dev/null; then
-    brew install mas
-    # Installed applications aren't enumerated immediately, `mas list` may return nothing
+if command -v brew &> /dev/null; then
+    if ! command -v mas &> /dev/null; then
+        brew install mas
+        # Installed applications aren't enumerated immediately, `mas list` may return nothing
+    else
+        # If there are no installed applications, it could be because a newer OS version needs a newer version of 'mas'
+        mas list | grep -Eq '^[0-9]+  ' || brew upgrade mas
+    fi
 fi
-# if command -v mas &> /dev/null; then
-#     mas_list=$(mas list)
-#     for app_id in $(
-#         # ----- Applications -----
-#         # TODO: Keka (paid)
-#         # Kindle
-#         echo "302584613"
-#         # TODO: LibreOffice (paid)
-#         # TODO: Maccy (paid)
-#         # Menu World Time
-#         # echo "1446377255"
-#         # NordVPN
-#         # echo "905953485"
-#         # Telegram
-#         # echo "747648890"
-#         # WhatsApp
-#         # echo "310633997"
-#         # ----- Safari Extensions -----
-#         # 1Password for Safari
-#         echo "1569813296"
-#         # Grammarly for Safari
-#         echo "1462114288"
-#     ); do
-#         echo "${mas_list}" | grep "^${app_id} " &> /dev/null || mas install "${app_id}"
-#     done
-# fi
+if command -v mas &> /dev/null; then
+    mas_list=$(mas list)
+    for app_id in $(
+        # ----- Applications -----
+        # TODO: Keka (paid)
+        # Kindle
+        echo "302584613"
+        # TODO: LibreOffice (paid)
+        # TODO: Maccy (paid)
+        # Menu World Time
+        # echo "1446377255"
+        # NordVPN
+        echo "905953485"
+        # Telegram
+        # echo "747648890"
+        # ----- Safari Extensions -----
+        # 1Password for Safari
+        echo "1569813296"
+        # Grammarly for Safari
+        echo "1462114288"
+    ); do
+        echo "${mas_list}" | grep "^${app_id} " &> /dev/null || mas install "${app_id}"
+    done
+fi
 
 # macOS DNS flush
 flush() {

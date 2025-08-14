@@ -31,7 +31,7 @@ __nodejs_funcs() {
     ndeprecated() {
         npm list "--depth=${1:-0}" | awk '{ print $NF }' | tail -n +2 | grep -v 'deduped' | while read -r line; do \
             printf "%s: " "${line}"
-            [ "$(npm view "${line}" | grep --count --extended-regexp '^DEPRECATED')" != "0" ] && \
+            [ "$(npm view "${line}" | grep -Ec '^DEPRECATED')" != "0" ] && \
             printf "\e[1;31m""DEPRECATED\n""\e[0m" || \
             printf "\e[1;32m""not deprecated\n""\e[0m"
         done

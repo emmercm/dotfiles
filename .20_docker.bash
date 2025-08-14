@@ -8,7 +8,7 @@ __docker_funcs() {
         docker() {
             if [[ "${OSTYPE:-}" == "darwin"* ]]; then
                 # macOS
-                ps axo pid,command | grep -v grep | grep --quiet /Applications/Docker.app/Contents/MacOS/Docker || (
+                ps axo pid,command | grep -v grep | grep -q /Applications/Docker.app/Contents/MacOS/Docker || (
                     open --background -a Docker
                     while true; do
                         command docker ps &> /dev/null && break
