@@ -20,7 +20,8 @@ function backup() {
 function link() {
     # Create symlinks
     while read -r file; do
-        local link="${HOME}/$(basename "${file}")"
+        local link
+        link="${HOME}/$(basename "${file}")"
 
         # Ensure symlink is actually a dotfile
         if [[ "$(basename "${link}")" != .* ]]; then
@@ -35,7 +36,8 @@ function link() {
 
         # Back up the existing file
         if [[ -e "${link}" ]]; then
-            local backup="$(backup "${link}")"
+            local backup
+            backup="$(backup "${link}")"
             echo "Moving: ${link} -> ${backup}"
             mv "${link}" "${backup}"
         fi
