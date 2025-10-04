@@ -25,7 +25,7 @@ __kube_funcs() {
     # @param {string=} $1 App label
     # @param {...string} Additional kubectl options
     kcontainers() {
-        kubectl get pods --output=jsonpath="{.items[*].spec.containers[*].name}" ${1:+--selector="app=$1"} "${@:2}" | tr -s '[[:space:]]' '\n' | sort -u
+        kubectl get pods --output=jsonpath="{.items[*].spec.containers[*].name}" ${1:+--selector="app=$1"} "${@:2}" | tr -s '[:space:]' '\n' | sort -u
     }
 
     # Change to a kubectl context
@@ -49,7 +49,7 @@ __kube_funcs() {
     # @param {string} $1 Deployment name
     # @param {...string} Additional kubectl options
     kdcontainers() {
-        kubectl get deployment --output=jsonpath="{.spec.template.spec.containers[*].name}" "$1" "${@:2}" | tr -s '[[:space:]]' '\n' | sort -u
+        kubectl get deployment --output=jsonpath="{.spec.template.spec.containers[*].name}" "$1" "${@:2}" | tr -s '[:space:]' '\n' | sort -u
     }
 
     # Delete a Kubernetes pod
@@ -63,7 +63,7 @@ __kube_funcs() {
     # @param {string=} $1 App label
     # @param {...string} Additional kubectl options
     kdeployments() {
-        kubectl get deployments --output=jsonpath="{.items[*].metadata.name}" ${1:+--selector="app=$1"} "${@:2}" | tr -s '[[:space:]]' '\n' | sort -u
+        kubectl get deployments --output=jsonpath="{.items[*].metadata.name}" ${1:+--selector="app=$1"} "${@:2}" | tr -s '[:space:]' '\n' | sort -u
     }
 
     # Open a port forward session to a remote Kubernetes deployment
@@ -87,7 +87,7 @@ __kube_funcs() {
     # @param {string=} $1 App label
     # @param {...string} Additional kubectl options
     kimages() {
-        kubectl get pods --output=jsonpath="{.items[*].spec.containers[*].image}" ${1:+--selector="app=$1"} "${@:2}" | tr -s '[[:space:]]' '\n' | sort -u
+        kubectl get pods --output=jsonpath="{.items[*].spec.containers[*].image}" ${1:+--selector="app=$1"} "${@:2}" | tr -s '[:space:]' '\n' | sort -u
     }
 
     # List all Kubernetes ingresses, optionally filtering to an application
