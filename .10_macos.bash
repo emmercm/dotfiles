@@ -59,15 +59,18 @@ __homebrew_funcs() {
                 || brew link --overwrite "${1:?}@${2:?}"
         else (
             # Sub shell to make `cd` safe
-            cd "$(brew --repository "${brew_tap}")"
+            cd "$(brew --repository "${brew_tap}")" || return 1
 
             # Emulate `brew extract` for casks
-            local cask_path=$(git ls-files 'Casks/*' | grep -E "/${1:?}\.rb$")
-            local version_match=$(git rev-list --all "${cask_path}" \
+            local cask_path
+            cask_path=$(git ls-files 'Casks/*' | grep -E "/${1:?}\.rb$")
+            local version_match
+            version_match=$(git rev-list --all "${cask_path}" \
                 | xargs -n1 -I% git --no-pager grep --fixed-strings "version \"${2:?}\"" % -- "${cask_path}" \
                 2> /dev/null | head -1)
             local commit_hash="${version_match%%:*}"
-            local local_cask_dir="$(brew --repository homebrew/local)/Casks"
+            local local_cask_dir
+            local_cask_dir="$(brew --repository homebrew/local)/Casks"
             if [ ! -d "${local_cask_dir}" ]; then
                 mkdir -p "${local_cask_dir}"
             fi
