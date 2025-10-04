@@ -14,4 +14,4 @@ jobs:
         severity: warning
       env:
         # SC2148: ignore missing shebang, it's not appropriate here
-        SHELLCHECK_OPTS: -e SC2148
+        SHELLCHECK_OPTS: --shell=bash --exclude=SC2148

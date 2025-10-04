@@ -23,30 +23,62 @@ fi
 __homebrew_funcs() {
     # Install a specific version of a Homebrew formula
     # @param {string} $1 Formula name
-    # @param {string} $2 Formula version
+    # @param {string} $2 Formula version (exact)
     vintage() {
-        # Ensure homebrew/core is tapped and up to date
-        brew tap | grep -xq homebrew/core \
-            && brew update \
-            || brew tap --force homebrew/core
+        # Figure out the relevant tap
+        local brew_tap
+        local is_cask=false
+        if brew search --cask "/^${1:?}$/" &> /dev/null; then
+            brew_tap="homebrew/cask"
+            is_cask=true
+        else
+            brew_tap="homebrew/core"
+        fi
+
+        # Ensure the appropriate tap is tapped and up to date
+        if brew tap | grep -xq "${brew_tap}"; then
+            brew update
+        else
+            brew tap --force "${brew_tap}"
+        fi
 
         # Ensure homebrew/local is created
         brew tap | grep -xq homebrew/local \
             || brew tap homebrew/local
 
-        # Extract the formula
-        brew extract --force "--version=${2:?}" "${1:?}" homebrew/local
+        if [ "${is_cask}" = false ]; then
+            # If the formula is already installed, re-link it
+            if brew list -1 | grep -xq "${1:?}@${2:?}"; then
+                brew unlink "${1:?}@${2:?}"
+                brew link --overwrite "${1:?}@${2:?}"
+                return 0
+            fi
 
-        # If the formula is already installed, re-link it
-        if brew list -1 | grep -xq "${1:?}@${2:?}"; then
-            brew unlink "${1:?}@${2:?}"
-            brew link --overwrite "${1:?}@${2:?}"
-            return 0
-        fi
+            # Install the formula and ensure it's linked
+            brew install "homebrew/local/${1:?}@${2:?}" \
+                || brew link --overwrite "${1:?}@${2:?}"
+        else (
+            # Sub shell to make `cd` safe
+            cd "$(brew --repository "${brew_tap}")"
 
-        # Install the formula and ensure it's linked
-        brew install "homebrew/local/${1:?}@${2:?}" \
-            || brew link --overwrite "${1:?}@${2:?}"
+            # Emulate `brew extract` for casks
+            local cask_path=$(git ls-files 'Casks/*' | grep -E "/${1:?}\.rb$")
+            local version_match=$(git rev-list --all "${cask_path}" \
+                | xargs -n1 -I% git --no-pager grep --fixed-strings "version \"${2:?}\"" % -- "${cask_path}" \
+                2> /dev/null | head -1)
+            local commit_hash="${version_match%%:*}"
+            local local_cask_dir="$(brew --repository homebrew/local)/Casks"
+            if [ ! -d "${local_cask_dir}" ]; then
+                mkdir -p "${local_cask_dir}"
+            fi
+            local local_cask_file="${local_cask_dir}/${1:?}@${2:?}.rb"
+            git show "${commit_hash}:${cask_path}" \
+                | sed "s/cask \"${1:?}\"/cask \"${1:?}@${2:?}\"/" \
+                > "${local_cask_file}"
+
+            # Install the formula
+            brew install --cask "homebrew/local/${1:?}@${2:?}"
+        ) fi
     }
 }
 __homebrew_funcs
@@ -56,9 +88,29 @@ __homebrew_funcs
 
 # Homebrew packages
 if command -v brew &> /dev/null; then
-    # Apps
-    [[ -d /Applications/LinearMouse.app ]] || brew install --cask linearmouse
-    [[ -d /Applications/Rectangle.app ]] || brew install --cask rectangle
+    # Apps (only install if shell is interactive, in case of admin password prompt)
+    if [[ $- == *i* ]]; then
+        for cask in $(
+            echo "1password"
+            #echo "discord"
+            echo "firefox"
+            echo "github"
+            #echo "inkscape"
+            echo "libreoffice"
+            echo "linearmouse"
+            echo "rectangle"
+            #echo "signal"
+            echo "spotify"
+            #echo "steam"
+            echo "visual-studio-code"
+            echo "wine-stable"
+        ); do
+            local app_artifact=$(brew info --json=v2 --cask "${cask}" \
+                | jq --raw-output ".casks[] | select(.token==\"${cask}\") | .artifacts[] | .app // empty | .[]" \
+                | head -1)
+            [[ -d "/Applications/${app_artifact}" ]] || echo brew install --cask "${cask}"
+        done
+    fi
 
     # CLI tools
     command -v dive   > /dev/null || brew install dive
@@ -70,7 +122,6 @@ if command -v brew &> /dev/null; then
     command -v rename > /dev/null || brew install rename
     command -v tree   > /dev/null || brew install tree
     command -v watch  > /dev/null || brew install watch
-    command -v wine   > /dev/null || brew install --cask --no-quarantine wine-stable
     command -v wget   > /dev/null || brew install wget
 
     if ! command -v hstr &> /dev/null; then
@@ -110,7 +161,7 @@ if command -v mas &> /dev/null; then
         # Grammarly for Safari
         echo "1462114288"
     ); do
-        echo "${mas_list}" | grep "^${app_id} " &> /dev/null || mas install "${app_id}"
+        echo "${mas_list}" | grep -Eq "^${app_id} " || mas install "${app_id}"
     done
 fi
 

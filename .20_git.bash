@@ -19,7 +19,7 @@ __git_funcs() {
     # Shell alias Git aliases from the .gitconfig
     for al in $(git --list-cmds=alias; git --list-cmds=main); do
         # shellcheck disable=SC2139
-        alias g${al}="git ${al}"
+        alias "g${al}"="git ${al}"
         if type __git_aliased_command &> /dev/null; then
             complete_func=_git_$(__git_aliased_command "${al}")
             type "${complete_func}" &> /dev/null && __git_complete "g${al}" "${complete_func}"
@@ -35,7 +35,7 @@ __git_funcs() {
         git pull
 
         local stash_name
-        stash_name="$(cat /dev/urandom | base32 | tr -dc 'A-Z0-9' | head -c 16)"
+        stash_name="$(base32 < /dev/urandom | tr -dc 'A-Z0-9' | head -c 16)"
         git stash push --message "${stash_name}" || return 1
         if [[ $(git branch --list main) ]]; then
             git fetch origin main:main
@@ -51,7 +51,7 @@ __git_funcs() {
         local origin_old
         origin_old="$(git remote get-url origin)"
         local origin_new
-        origin_new="$(echo "${origin_old}" | sed 's#https://github.com/#git@github.com:#')"
+        origin_new="${origin_old/https:\/\/github.co\//git@github.com:}"
         if [[ "${origin_new}" != "${origin_old}" && "${origin_new}" != "" ]]; then
             echo "Changing $(pwd) remote origin to: ${origin_new}"
             git remote set-url origin "${origin_new}"
