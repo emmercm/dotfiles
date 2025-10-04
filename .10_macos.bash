@@ -108,7 +108,7 @@ if command -v brew &> /dev/null; then
             echo "visual-studio-code"
             echo "wine-stable"
         ); do
-            local app_artifact=$(brew info --json=v2 --cask "${cask}" \
+            app_artifact=$(brew info --json=v2 --cask "${cask}" \
                 | jq --raw-output ".casks[] | select(.token==\"${cask}\") | .artifacts[] | .app // empty | .[]" \
                 | head -1)
             [[ -d "/Applications/${app_artifact}" ]] || echo brew install --cask "${cask}"
