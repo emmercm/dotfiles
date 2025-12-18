@@ -2,11 +2,18 @@
 
 A collection of personal dotfiles.
 
-## Installing
+## Installing dotfiles to `$HOME`
 
 `git clone` this repository and then run [`./install.sh`](./install.sh).
 
 All dotfiles are symlinked to the user's home directory to keep them up to date with this repo. Files that would be overwritten are backed-up first.
+
+## Other setup
+
+These files are not installed into `$HOME` and should be run as necessary:
+
+- [`./packages.sh`](./packages.sh) installs commonly used tools and applications from package managers
+- [`./settings.sh`](./settings.sh) updates OS settings to preferred defaults
 
 ## Shells
 

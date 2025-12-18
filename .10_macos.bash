@@ -87,101 +87,6 @@ __homebrew_funcs() {
 __homebrew_funcs
 
 
-##### App installs #####
-
-# Homebrew packages
-if command -v brew &> /dev/null; then
-    # Apps (only install if shell is interactive, in case of admin password prompt)
-    if [[ $- == *i* ]]; then
-        for cask in $(
-            echo "1password"
-            #echo "discord"
-            echo "firefox"
-            echo "github"
-            #echo "inkscape"
-            echo "libreoffice"
-            echo "linearmouse"
-            echo "rectangle"
-            #echo "signal"
-            echo "spotify"
-            #echo "steam"
-            echo "visual-studio-code"
-            echo "wine-stable"
-        ); do
-            app_artifact=$(brew info --json=v2 --cask "${cask}" \
-                | jq --raw-output ".casks[] | select(.token==\"${cask}\") | .artifacts[] | .app // empty | .[]" \
-                | head -1)
-            [[ -d "/Applications/${app_artifact}" ]] || echo brew install --cask "${cask}"
-        done
-    fi
-
-    # CLI tools
-    command -v dive   > /dev/null || brew install dive
-    command -v gawk   > /dev/null || brew install gawk
-    command -v gdate  > /dev/null || brew install coreutils
-    command -v gh     > /dev/null || brew install gh
-    command -v gsed   > /dev/null || brew install gnu-sed
-    command -v jq     > /dev/null || brew install jq
-    command -v rename > /dev/null || brew install rename
-    command -v tree   > /dev/null || brew install tree
-    command -v watch  > /dev/null || brew install watch
-    command -v wget   > /dev/null || brew install wget
-
-    if ! command -v hstr &> /dev/null; then
-        brew install hstr
-        hstr --show-configuration >> ~/.bashrc
-    fi
-fi
-
-# App store applications
-if command -v brew &> /dev/null; then
-    if ! command -v mas &> /dev/null; then
-        brew install mas
-        # Installed applications aren't enumerated immediately, `mas list` may return nothing
-    else
-        # If there are no installed applications, it could be because a newer OS version needs a newer version of 'mas'
-        mas list | grep -Eq '^[0-9]+  ' || brew upgrade mas
-    fi
-fi
-if command -v mas &> /dev/null; then
-    mas_list=$(mas list)
-    for app_id in $(
-        # ----- Applications -----
-        # TODO: Keka (paid)
-        # Kindle
-        echo "302584613"
-        # TODO: LibreOffice (paid)
-        # TODO: Maccy (paid)
-        # Menu World Time
-        # echo "1446377255"
-        # NordVPN
-        echo "905953485"
-        # Telegram
-        # echo "747648890"
-        # ----- Safari Extensions -----
-        # 1Password for Safari
-        echo "1569813296"
-        # Grammarly for Safari
-        echo "1462114288"
-    ); do
-        echo "${mas_list}" | grep -Eq "^${app_id} " || mas install "${app_id}"
-    done
-fi
-
-# macOS DNS flush
-flush() {
-    sudo dscacheutil -flushcache
-    sudo killall -HUP mDNSResponder
-}
-
-# macOS DHCP renew
-# @link https://apple.stackexchange.com/a/17429
-renew() {
-    sudo ipconfig set en0 BOOTP
-    sudo ipconfig set en0 DHCP
-}
-
-
 ##### Aliases #####
 
 # Prefer GNU's coreutils binaries
@@ -200,6 +105,19 @@ alias dt="cd ~/Desktop"
 
 alias lsports="sudo lsof -iTCP -sTCP:LISTEN -n -P"
 alias lsp=lsports
+
+# macOS DNS flush
+flush() {
+    sudo dscacheutil -flushcache
+    sudo killall -HUP mDNSResponder
+}
+
+# macOS DHCP renew
+# @link https://apple.stackexchange.com/a/17429
+renew() {
+    sudo ipconfig set en0 BOOTP
+    sudo ipconfig set en0 DHCP
+}
 
 # macOS has no `realpath` by default, so emulate it
 # @link https://stackoverflow.com/a/18443300

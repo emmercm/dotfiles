@@ -1,3 +1,22 @@
+__kube_lazy_install() {
+    if ! command -v k9s &> /dev/null && command -v brew &> /dev/null; then
+        k9s() {
+            brew install k9s
+            unset -f "$0"
+            $0 "$@"
+        }
+    fi
+    if ! command -v kubectl &> /dev/null && command -v brew &> /dev/null; then
+        kubectl() {
+            brew install kubectl
+            unset -f "$0"
+            $0 "$@"
+        }
+    fi
+}
+__kube_lazy_install
+
+
 __kube_minikube() {
     kminikube() {
         minikube update-context || kubectl config use-context minikube
