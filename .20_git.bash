@@ -1,9 +1,3 @@
-# Don't use the git from macOS, use the Homebrew version instead
-if command -v brew &> /dev/null && [[ ! -f "$(brew --prefix)/bin/git" ]]; then
-    brew install git
-    brew link --overwrite git
-fi
-
 if ! command -v git &> /dev/null; then
     return 0
 fi

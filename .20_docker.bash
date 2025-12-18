@@ -2,6 +2,18 @@ export BUILDKIT_PROGRESS=plain
 export PROGRESS_NO_TRUNC=1
 
 
+__docker_lazy_install() {
+    if ! command -v dive &> /dev/null && command -v brew &> /dev/null; then
+        dive() {
+            brew install dive
+            unset -f "$0"
+            $0 "$@"
+        }
+    fi
+}
+__docker_lazy_install
+
+
 __docker_funcs() {
     # Auto/lazy-start Docker if it's not running
     if command -v docker &> /dev/null; then

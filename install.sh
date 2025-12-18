@@ -30,7 +30,7 @@ function link() {
 
         # Assume symlinks are ok
         if [[ -h "${link}" ]]; then
-            echo "Ignoring: ${link}"
+            echo -e "\033[93mIgnoring:\033[0m ${link}"
             continue
         fi
 
@@ -43,12 +43,13 @@ function link() {
         fi
 
         # Symlink the file
-        echo "Linking: ${link} -> ${file}"
+        echo -e "\033[92mLinking:\033[0m ${link} -> ${file}"
         ln -s "${file}" "${link}"
     done <<< "$(find "$1" -maxdepth 1 -name "$2" ! -name ".git" ! -name ".github" ! -name ".gitignore")"
 
     # Delete broken symlinks
     while read -r file; do
+        echo -e "\033[91mDeleting:\033[0m ${file}"
         rm -f "${file}"
     done <<< "$(find "${HOME}" -maxdepth 1 -type l ! -exec test -e {} \; -print)"
 }

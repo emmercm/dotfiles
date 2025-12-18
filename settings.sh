@@ -11,12 +11,8 @@ fi
 
 # macOS settings
 if [[ "${OSTYPE:-}" == "darwin"* ]]; then
-    # https://rectangleapp.com/
-    # https://linearmouse.app/
-    # https://brew.sh/
-
     if ! sudo -n true &> /dev/null; then
-        echo -e "\033[1;33mWARN:\033[0m you will be asked for your password to run 'pmset', 'chflags', and other utilities\n"
+        echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'pmset', 'chflags', and other utilities\n"
     fi
 
     # ***** Settings > Wi-Fi *****
@@ -65,6 +61,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     defaults -currentHost write com.apple.controlcenter BatteryShowPercentage -bool true
     # Clock options... show AM/PM: false
     defaults write com.apple.menuextra.clock Show24Hour -int 1
+    defaults write .GlobalPreferences AppleICUForce24HourTime -int 1
     # Siri: don't show in menu bar
     defaults write com.apple.Siri StatusMenuVisible -int 0
     killall SystemUIServer
