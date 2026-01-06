@@ -1,5 +1,6 @@
 __nodejs_setup() {
-    export PATH="$(npm get prefix --global)/bin:$PATH"
+    PATH="$(npm get prefix --global)/bin:$PATH"
+    export PATH
 }
 
 
