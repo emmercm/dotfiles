@@ -34,6 +34,8 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     command -v wget   > /dev/null || brew install wget
 
     # Install Homebrew casks (only install if shell is interactive, in case of admin password prompt)
+    brew tap emmercm/igir
+    brew tap nahive/spotify-notify
     if ! sudo -n true &> /dev/null; then
         echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'brew install --cask'\n"
     fi
@@ -42,6 +44,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
         echo "charmstone"
         #echo "discord"
         echo "docker-desktop"
+        echo "feedflow"
         echo "firefox"
         echo "github"
         echo "hiddenbar"
@@ -57,9 +60,11 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
         #echo "signal"
         #echo "slack"
         echo "spotify"
+        echo "spotify-notify"
         #echo "steam"
         #echo "telegram"
         echo "visual-studio-code"
+        #echo "whatsapp"
         echo "wine-stable"
     ); do
         printf "Checking for cask '${cask}' ... "
