@@ -48,10 +48,10 @@ function link() {
     done <<< "$(find "$1" -maxdepth 1 -name "$2" ! -name ".git" ! -name ".github" ! -name ".gitignore")"
 
     # Delete broken symlinks
-    while read -r file; do
+    find "${HOME}" -maxdepth 1 -type l ! -exec test -e {} \; -print | while read -r file; do
         echo -e "\033[91mDeleting:\033[0m ${file}"
         rm -f "${file}"
-    done <<< "$(find "${HOME}" -maxdepth 1 -type l ! -exec test -e {} \; -print)"
+    done
 }
 
 

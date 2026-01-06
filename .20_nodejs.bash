@@ -1,3 +1,9 @@
+__nodejs_setup() {
+    PATH="$(npm get prefix --global)/bin:$PATH"
+    export PATH
+}
+
+
 __nodejs_volta() {
     if [[ -d "$HOME/.volta" ]]; then
         export VOLTA_HOME="$HOME/.volta"

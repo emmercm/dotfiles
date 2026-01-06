@@ -11,17 +11,11 @@ set -euo pipefail
 # squash merge. This hook cannot affect the outcome of git merge and is not executed, if the merge
 # failed due to conflicts.
 
-echo -e "\033[47m↓↓↓↓↓ emmercm/dotfiles post-merge ↓↓↓↓↓\033[0m"
-
-
-echo -e "\033[47m>>>>> Running install.sh >>>>>\033[0m"
+echo -e "\033[7m>>>>>>>>>> Running install.sh >>>>>>>>>>\033[0m"
 ./install.sh
 
-echo -e "\033[47m>>>>> Running packages.sh >>>>>\033[0m"
+echo -e "\033[7m>>>>>>>>>> Running packages.sh >>>>>>>>>>\033[0m"
 ./packages.sh
 
-echo -e "\033[47m>>>>> Running settings.sh >>>>>\033[0m"
+echo -e "\033[7m>>>>>>>>>> Running settings.sh >>>>>>>>>>\033[0m"
 ./settings.sh
-
-
-echo -e "\033[47m↑↑↑↑↑ emmercm/dotfiles post-merge ↑↑↑↑↑\033[0m"

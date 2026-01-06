@@ -11,6 +11,14 @@ fi
 
 # macOS settings
 if [[ "${OSTYPE:-}" == "darwin"* ]]; then
+    if ! command -v plistwatch &> /dev/null && command -v go &> /dev/null; then
+        plistwatch() {
+            go install github.com/catilac/plistwatch@latest
+            unset -f "$0"
+            $0 "$@"
+        }
+    fi
+
     if ! sudo -n true &> /dev/null; then
         echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'pmset', 'chflags', and other utilities\n"
     fi
@@ -21,38 +29,41 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
 
     # ***** Settings > Network *****
 
-    # ***** Settings > Notifications *****
+    # ***** Settings > Battery *****
+    # Low Power Mode: Only on Battery
+    sudo pmset -b lowpowermode 1
+    sudo pmset -c lowpowermode 0
+    # Options... prevent automatic sleeping on power adapter when the display is off: on
+    sudo pmset -c sleep 0
+    # Options... wake for network access: only on power adapter
+    sudo pmset -b womp 0
+    sudo pmset -c womp 1
 
-    # ***** Settings > Sound *****
-    # Alert sound: Boop
-    defaults write .GlobalPreferences com.apple.sound.beep.sound -string "/System/Library/Sounds/Tink.aiff"
-    # Alert volume
-    defaults write .GlobalPreferences com.apple.sound.beep.volume -float 0.5
-    # Play feedback when volume is changed
-    defaults write .GlobalPreferences com.apple.sound.beep.feedback -bool true
-
-    # ***** Settings > Focus *****
-    # TODO: remove DND schedules / disable DND
-
-    # ***** Settings > Screen Time *****
+    # ***** Settings > Apple Intelligence & Siri *****
+    # Siri: off
+    defaults write com.apple.assistant.support "Assistant Enabled" -int 0
 
     # ***** Settings > General > Software Update *****
     # sudo softwareupdate --schedule ON
     # sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate.plist AutomaticCheckEnabled -bool YES
+
+    # ***** Settings > General > Date & Time *****
+    # 24-hour time: on
+    defaults write .GlobalPreferences AppleICUForce24HourTime -int 1
+
+    # ***** Settings > Accessibility *****
 
     # ***** Settings > Appearance *****
     # NOTE: appearance change requires restart
     # Appearance
     defaults write .GlobalPreferences AppleInterfaceStyle -string "Dark"
     defaults write .GlobalPreferences AppleInterfaceStyleSwitchesAutomatically -bool false
-    # Accent color: orange
+    # Color: orange
     defaults write .GlobalPreferences AppleAccentColor 1
     # Show scroll bars: always
     defaults write .GlobalPreferences AppleShowScrollBars -string "Always"
 
-    # ***** Settings > Accessibility *****
-
-    # ***** Settings > Control Center *****
+    # ***** Settings > Menu Bar *****
     # Bluetooth: always show in menu bar
     defaults -currentHost write com.apple.controlcenter Bluetooth -int 18
     # Sound: always show in menu bar
@@ -61,16 +72,9 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     defaults -currentHost write com.apple.controlcenter BatteryShowPercentage -bool true
     # Clock options... show AM/PM: false
     defaults write com.apple.menuextra.clock Show24Hour -int 1
-    defaults write .GlobalPreferences AppleICUForce24HourTime -int 1
     # Siri: don't show in menu bar
     defaults write com.apple.Siri StatusMenuVisible -int 0
     killall SystemUIServer
-
-    # ***** Settings > Siri & Spotlight *****
-    # Ask Siri: false
-    defaults write com.apple.assistant.support "Assistant Enabled" -int 0
-
-    # ***** Settings > Privacy & Security *****
 
     # ***** Settings > Desktop & Dock *****
     # Size: smaller
@@ -94,23 +98,40 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # TODO: True Tone off
     # TODO: Night Shift... schedule: sunset to sunrise
 
+    # ***** Settings > Spotlight *****
+    # Disable Spotlight indexing on external volumes
+    while read -r volume; do
+        if mdutil -s "${volume}" | grep -xq "enabled"; then
+            sudo mdutil -i off -d "${volume}"
+            sudo killall DesktopServicesHelper
+            sudo killall mds
+            sudo killall mdsync
+        fi
+        if [[ ! -f "${volume}/.metadata_never_index" ]]; then
+            touch "${volume}/.metadata_never_index" || true
+        fi
+    done <<< "$(find /Volumes -type d -mindepth 1 -maxdepth 1)"
+
     # ***** Settings > Wallpaper *****
 
-    # ***** Settings > Screen Saver *****
-    # defaults -currentHost write com.apple.screensaver idleTime -int 1800
-    # defaults write com.apple.screensaver askForPasswordDelay -int 0
+    # ***** Settings > Notifications *****
 
-    # ***** Settings > Battery *****
-    # Low Power Mode: Only on Battery
-    sudo pmset -b lowpowermode 1
-    sudo pmset -c lowpowermode 0
-    # Options... prevent automatic sleeping on power adapter when the display is off: on
-    sudo pmset -c sleep 0
-    # Options... wake for network access: only on power adapter
-    sudo pmset -b womp 0
-    sudo pmset -c womp 1
+    # ***** Settings > Sound *****
+    # Alert sound: Boop
+    defaults write .GlobalPreferences com.apple.sound.beep.sound -string "/System/Library/Sounds/Tink.aiff"
+    # Alert volume
+    defaults write .GlobalPreferences com.apple.sound.beep.volume -float 0.5
+    # Play feedback when volume is changed
+    defaults write .GlobalPreferences com.apple.sound.beep.feedback -bool true
+
+    # ***** Settings > Focus *****
+    # TODO: remove DND schedules / disable DND
+
+    # ***** Settings > Screen Time *****
 
     # ***** Settings > Lock Screen *****
+    # defaults -currentHost write com.apple.screensaver idleTime -int 1800
+    # defaults write com.apple.screensaver askForPasswordDelay -int 0
     # Start screen saver when inactive for X seconds
     defaults -currentHost write com.apple.screensaver -int 300
     # Turn display off on battery when inctive for X minutes
@@ -120,13 +141,15 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # TODO: Require password after screen saver begins or display is turned off: 1min
     killall "System Settings" || true
 
+    # ***** Settings > Privacy & Security *****
+
     # ***** Settings > Touch ID & Password *****
 
     # ***** Settings > Users & Groups *****
 
-    # ***** Settings > Passwords *****
-
     # ***** Settings > Internet Accounts *****
+
+    # ***** Settings > Game Center *****
 
     # ***** Settings > Game Center *****
 
@@ -153,6 +176,10 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # ***** Settings > Trackpad *****
     # More gestures... app exposé: swipe down with three fingers
     defaults write com.apple.dock showAppExposeGestureEnabled -bool true
+
+    # ***** Settings > Game Controllers *****
+
+    # ***** Settings > Printers & Scanners *****
 
     # ***** Activity Monitor *****
     # Columns & sorting preferences

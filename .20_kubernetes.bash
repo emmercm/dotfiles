@@ -6,9 +6,19 @@ __kube_lazy_install() {
             $0 "$@"
         }
     fi
+
     if ! command -v kubectl &> /dev/null && command -v brew &> /dev/null; then
+        # Note: Docker Desktop provides kubectl, this shouldn't be necessary
         kubectl() {
             brew install kubectl
+            unset -f "$0"
+            $0 "$@"
+        }
+    fi
+
+    if ! command -v stern &> /dev/null && command -v brew &> /dev/null; then
+        stern() {
+            brew install stern
             unset -f "$0"
             $0 "$@"
         }
