@@ -1,11 +1,12 @@
 __java_setup() {
     if [[ "${JAVA_HOME:-}" == "" && -x /usr/libexec/java_home ]]; then
-        export JAVA_HOME=$(/usr/libexec/java_home 2> /dev/null)
+        JAVA_HOME=$(/usr/libexec/java_home 2> /dev/null)
+        export JAVA_HOME
     fi
     if [[ "${JAVA_HOME:-}" == "" ]]; then
         while read -r DIR; do
             export JAVA_HOME="${DIR}"
-        done <<< "$((find /Library/Java/JavaVirtualMachines/*/Contents -maxdepth 1 -type d -name Home) 2> /dev/null | sort --version-sort)"
+        done <<< "$(find /Library/Java/JavaVirtualMachines/*/Contents -maxdepth 1 -type d -name Home 2> /dev/null | sort --version-sort)"
     fi
 
     jversion() {
