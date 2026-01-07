@@ -17,6 +17,8 @@ function backup() {
 }
 
 # Given a path and expression, safely link all files to the home directory
+# @param {string} $1 Directory where dotfiles live (the root of the Git repo)
+# @param {string} $1 Wildcard to find dotfiles
 function link() {
     # Create symlinks
     while read -r file; do
@@ -45,7 +47,7 @@ function link() {
         # Symlink the file
         echo -e "\033[92mLinking:\033[0m ${link} -> ${file}"
         ln -s "${file}" "${link}"
-    done <<< "$(find "$1" -maxdepth 1 -name "$2" ! -name ".git" ! -name ".github" ! -name ".gitignore")"
+    done <<< "$(find "$1" -maxdepth 1 -name "$2" ! -name ".git" ! -name ".githooks" ! -name ".github" ! -name ".gitignore")"
 
     # Delete broken symlinks
     find "${HOME}" -maxdepth 1 -type l ! -exec test -e {} \; -print | while read -r file; do
@@ -67,6 +69,12 @@ find "${HOME}" -maxdepth 1 -name ".*.bash" -type l ! -exec test -e {} \; -delete
 
 # Link dotfiles to home directory
 link "$(pwd)" ".*"
+if [[ -e ~/.dotpack && ! -L ~/.dotpack ]]; then
+    rm -rf ~/.dotpack
+fi
+if [[ ! -L ~/.dotpack ]]; then
+    ln -s "$(pwd)/dotpack" "${HOME}/.dotpack"
+fi
 
 # Reload powerline if installed
 if command -v powerline-daemon &> /dev/null; then
