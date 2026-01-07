@@ -8,26 +8,6 @@ if [[ -d "${HOME}/.temporalio/bin" ]]; then
 fi
 
 
-__temporal_lazy_install() {
-    if ! command -v tctl &> /dev/null && command -v brew &> /dev/null; then
-        tctl() {
-            brew install tctl
-            unset -f "$0"
-            $0 "$@"
-        }
-    fi
-
-    if ! command -v temporal &> /dev/null && command -v brew &> /dev/null; then
-        temporal() {
-            brew install temporal
-            unset -f "$0"
-            $0 "$@"
-        }
-    fi
-}
-__temporal_lazy_install
-
-
 __temporal_completions() {
     # NOTE: `autoload -Uz compinit && compinit` will need to happen before sourcing any of these!
 
@@ -48,6 +28,26 @@ __temporal_completions() {
     fi
 }
 __temporal_completions
+
+
+__temporal_lazy_install() {
+    if ! command -v tctl &> /dev/null && command -v brew &> /dev/null; then
+        tctl() {
+            brew install tctl
+            unset -f "$0"
+            $0 "$@"
+        }
+    fi
+
+    if ! command -v temporal &> /dev/null && command -v brew &> /dev/null; then
+        temporal() {
+            brew install temporal
+            unset -f "$0"
+            $0 "$@"
+        }
+    fi
+}
+__temporal_lazy_install
 
 
 __tctl_funcs() {

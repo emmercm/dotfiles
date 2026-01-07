@@ -1,16 +1,27 @@
-__nodejs_setup() {
-    PATH="$(npm get prefix --global)/bin:$PATH"
-    export PATH
-}
+__nodejs_version_managers() {
+    # nvm
+    NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+    export NVM_DIR
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-
-__nodejs_volta() {
+    # Volta
     if [[ -d "$HOME/.volta" ]]; then
         export VOLTA_HOME="$HOME/.volta"
         export PATH="$VOLTA_HOME/bin:$PATH"
     fi
+
+    # nodenv
+    if command -v nodenv &> /dev/null; then
+        eval "$(nodenv init - "$(basename "${SHELL}")")"
+    fi
 }
-__nodejs_volta
+__nodejs_version_managers
+
+
+if command -v npm &> /dev/null; then
+    PATH="$(npm get prefix --global)/bin:$PATH"
+    export PATH
+fi
 
 
 __nodejs_bun() {

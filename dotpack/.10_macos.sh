@@ -9,6 +9,9 @@ if [[ ! -x "$(command -v brew)" && -f /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+# https://docs.brew.sh/Shell-Completion
+: ${HOMEBREW_PREFIX:=$(if type brew &> /dev/null; then brew --prefix; fi)}
+
 if [[ -x "$(command -v brew)" ]]; then
     brew() {
         if [[ "${1:-}" == "purge" ]]; then

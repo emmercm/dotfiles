@@ -27,9 +27,9 @@ Files are sourced in the following order:
 2. [`~/.profile`](./.profile): Ubuntu default entry point, mostly empty
 3. [`~/.bashrc`](./.bashrc): mostly empty
 4. [`~/.everythingrc`](./.everythingrc): general functions and aliases
-5. `~/.*.bash`: specific functions and aliases
-   1. Files described below
-   2. [`~/.90_powerline.bash`](./.powerline.bash): [Powerline](https://github.com/powerline/powerline) shell theme
+5. `~/.dotpack/.*.sh`: functions and aliases
+6. `~/.dotpack/.*.bash`: Bash-specific functions and aliases, including:
+   1. [`~/.dotpack/.90_powerline.bash`](./dotpack/.90_powerline.bash): [Powerline](https://github.com/powerline/powerline) shell theme
 
 **Zsh (Z shell):**
 
@@ -37,20 +37,7 @@ Files are sourced in the following order:
 
 1. [`~/.zshrc`](./.zshrc): default entry point, mostly empty
 2. [`~/.everythingrc`](./.everythingrc): general functions and aliases
-3. `~/.*.bash`: specific functions and aliases
-   1. Files described below
-4. `~/.*.zsh`:
-   1. [`.80_plugins.zsh`](./.80_plugins.zsh): [Antidote](https://github.com/mattmc3/antidote) Zsh plugin management
-   2. [`.90_powerlevel10k.zsh`](./.90_powerlevel10k.zsh): [Powerlevel10k](https://github.com/romkatv/powerlevel10k) shell theme configuration
-
-## `.*.bash` files
-
-- [`.10_macos.bash`](./.10_macos.bash): macOS shortcuts and polyfills
-- [`.20_docker.bash`](./.20_docker.bash): [Docker](https://www.docker.com) shortcuts and aliases
-- [`.20_git.bash`](./.20_git.bash): [Git](https://git-scm.com/) shortcuts and aliases
-- [`.20_kubernetes.bash`](./.20_kubernetes.bash): [Kubernetes](https://kubernetes.io/) shortcuts and aliases
-- [`.20_nodejs.bash`](./.20_nodejs.bash): [Node.js](https://nodejs.org/en/) shortcuts and aliases
-- [`.20_pulsar.bash`](./.20_pulsar.bash): [Apache Pulsar](https://pulsar.apache.org/) shortcuts and aliases
-- [`.20_python.bash`](./.20_python.bash): [Python](https://www.python.org/) shortcuts and aliases
-- [`.20_temporal.bash`](./.20_temporal.bash): [Temporal](https://docs.temporal.io/tctl-v1/) shortcuts and aliases
-- [`.20_terraform.bash`](./.20_terraform.bash): [Terraform](https://www.terraform.io/) shortcuts and aliases
+3. `~/.dotpack/.*.sh`: functions and aliases
+4. `~/.dotpack/.*.zsh`: Zsh-specific functions and aliases, including:
+   1. [`~/.dotpack/.80_plugins.zsh`](./dotpack/.80_plugins.zsh): [Antidote](https://github.com/mattmc3/antidote) Zsh plugin management
+   2. [`~/.dotpack/.90_powerlevel10k.zsh`](./dotpack/.90_powerlevel10k.zsh): [Powerlevel10k](https://github.com/romkatv/powerlevel10k) shell theme configuration

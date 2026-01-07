@@ -3,13 +3,6 @@
 
 SHELL=$(which "$(ps -o comm= $$ | sed 's/^-*//')")
 
-# https://docs.brew.sh/Shell-Completion
-: ${HOMEBREW_PREFIX:=$(if type brew &> /dev/null; then brew --prefix; fi)}
-
-if ! command -v brew &> /dev/null && [[ -f /opt/homebrew/bin/brew ]]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
-
 
 ##### Bash #####
 
@@ -102,112 +95,23 @@ __bashrc_ides() {
 __bashrc_ides
 
 
-##### Golang #####
-
-__bashrc_golang() {
-    # Set path environment variables
-    if command -v go &> /dev/null; then
-        if [[ ! -d "${GOROOT}" ]]; then
-            GOROOT=$(realpath "$(which go)" | sed 's/\/bin\/go$//')
-            export GOROOT
-        fi
-
-        GOPATH=$(go env GOPATH)
-        export GOPATH
-        if [[ ! -d "${GOPATH}" ]]; then
-            mkdir -p "${GOPATH}"
-            mkdir "${GOPATH}/bin"
-            mkdir "${GOPATH}/src"
-        fi
-        PATH="${PATH}:${GOPATH}/bin"
-        export PATH
-    fi
-}
-__bashrc_golang
-
-
-##### Java #####
-
-__bashrc_java() {
-    if [[ "${JAVA_HOME:-}" == "" && -x /usr/libexec/java_home ]]; then
-        export JAVA_HOME=$(/usr/libexec/java_home 2> /dev/null)
-    fi
-    if [[ "${JAVA_HOME:-}" == "" ]]; then
-        while read -r DIR; do
-            export JAVA_HOME="${DIR}"
-        done <<< "$((find /Library/Java/JavaVirtualMachines/*/Contents -maxdepth 1 -type d -name Home) 2> /dev/null | sort --version-sort)"
-    fi
-
-    jversion() {
-        java --version | head -1 | sed 's/"//g' | sed -E 's/(.* )?([0-9]+\.[0-9]+\.[0-9]+[^ ]+).*/\2/'
-    }
-}
-__bashrc_java
-
-
-##### MySQL #####
-
-__bashrc_mysql() {
-    # Set path environment variables
-    if command -v brew &> /dev/null; then
-        while read -r DIR; do
-            if [[ -d "${DIR}/bin" ]]; then
-                export PATH="${DIR}/bin:${PATH}"
-            fi
-        done <<< "$(find "${HOMEBREW_PREFIX}/opt" -maxdepth 1 -follow -type d -name "mysql-client*")"
-    fi
-}
-__bashrc_mysql
-
-
-##### Python #####
-
-__bashrc_python() {
-    while read -r DIR; do
-        export PATH="${DIR}:${PATH}"
-    done <<< "$(find ~/Library/Python/* -maxdepth 1 -type d -name bin 2> /dev/null)"
-
-    if [[ -d ~/grpc_tools ]]; then
-        export PATH=~/grpc_tools:$PATH
-    fi
-    if [[ -d ~/grpc_tools/grpc/bins/opt ]]; then
-        export PATH=~/grpc_tools/grpc/bins/opt:$PATH
-    fi
-}
-__bashrc_python
-
-
-##### Ruby #####
-
-__bashrc_ruby() {
-    # Lazy load chruby
-    if [[ -d "${HOMEBREW_PREFIX}/opt/chruby/share/chruby" ]]; then
-        chruby() {
-            unset -f "$0"
-            source "${HOMEBREW_PREFIX}/opt/chruby/share/chruby/chruby.sh"
-            source "${HOMEBREW_PREFIX}/opt/chruby/share/chruby/auto.sh"
-            $0 "$@"
-        }
-    fi
-
-    # Auto-load the latest Ruby version
-    if command -v chruby &> /dev/null && [[ -d ~/.rubies ]]; then
-        chruby "$(ls -1 ~/.rubies/ | sort | tail -1)"
-    fi
-}
-__bashrc_ruby
-
-
 ##### Everything Else #####
 
 while read -r FILE; do
     # shellcheck disable=SC1090
     source "${FILE}"
-done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.bash" | sort --version-sort)"
+done <<< "$(find ~/.dotpack -maxdepth 1 -follow -type f -name ".*.sh" | sort --version-sort)"
+
+if [[ "$(basename "${SHELL}")" == "bash" ]]; then
+    while read -r FILE; do
+        # shellcheck disable=SC1090
+        source "${FILE}"
+    done <<< "$(find ~/.dotpack -maxdepth 1 -follow -type f -name ".*.bash" | sort --version-sort)"
+fi
 
 if [[ "$(basename "${SHELL}")" == "zsh" ]]; then
     while read -r FILE; do
         # shellcheck disable=SC1090
         source "${FILE}"
-    done <<< "$(find ~ -maxdepth 1 -follow -type f -name ".*.zsh" | sort --version-sort)"
+    done <<< "$(find ~/.dotpack -maxdepth 1 -follow -type f -name ".*.zsh" | sort --version-sort)"
 fi
