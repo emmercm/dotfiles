@@ -47,7 +47,7 @@ function link() {
         # Symlink the file
         echo -e "\033[92mLinking:\033[0m ${link} -> ${file}"
         ln -s "${file}" "${link}"
-    done <<< "$(find "$1" -maxdepth 1 -name "$2" ! -name ".git" ! -name ".githooks" ! -name ".github" ! -name ".gitignore")"
+    done <<< "$(find "$1" -maxdepth 1 -name "$2" ! -name ".editorconfig" ! -name ".git" ! -name ".githooks" ! -name ".github" ! -name ".gitignore")"
 
     # Delete broken symlinks
     find "${HOME}" -maxdepth 1 -type l ! -exec test -e {} \; -print | while read -r file; do
