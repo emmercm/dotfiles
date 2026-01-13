@@ -97,21 +97,10 @@ __bashrc_ides
 
 ##### Everything Else #####
 
-while read -r FILE; do
-    # shellcheck disable=SC1090
-    source "${FILE}"
-done <<< "$(find ~/.dotpack -maxdepth 1 -follow -type f -name ".*.sh" | sort --version-sort)"
-
-if [[ "$(basename "${SHELL}")" == "bash" ]]; then
-    while read -r FILE; do
+shell_basename="$(basename "${SHELL}")"
+while read -r file; do
+    if [[ "${file}" == *".sh" || "${file}" == *".${shell_basename}" ]]; then
         # shellcheck disable=SC1090
-        source "${FILE}"
-    done <<< "$(find ~/.dotpack -maxdepth 1 -follow -type f -name ".*.bash" | sort --version-sort)"
-fi
-
-if [[ "$(basename "${SHELL}")" == "zsh" ]]; then
-    while read -r FILE; do
-        # shellcheck disable=SC1090
-        source "${FILE}"
-    done <<< "$(find ~/.dotpack -maxdepth 1 -follow -type f -name ".*.zsh" | sort --version-sort)"
-fi
+        source "${file}"
+    fi
+done <<< "$(find ~/.dotpack -maxdepth 1 -follow -type f -name ".*" | sort --version-sort)"

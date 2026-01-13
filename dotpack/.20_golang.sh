@@ -1,3 +1,5 @@
+##### https://go.dev/
+
 __golang_setup() {
     # Set path environment variables
     if command -v go &> /dev/null; then

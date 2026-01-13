@@ -1,3 +1,5 @@
+##### https://kubernetes.io/
+
 __kube_lazy_install() {
     if ! command -v k9s &> /dev/null && command -v brew &> /dev/null; then
         k9s() {

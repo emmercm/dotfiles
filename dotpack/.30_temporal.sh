@@ -1,3 +1,5 @@
+##### https://docs.temporal.io/tctl-v1/
+
 # Reset back to non-beta functionality
 #if command -v tctl &> /dev/null; then
 #    tctl config set version current

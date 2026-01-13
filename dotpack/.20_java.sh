@@ -1,3 +1,5 @@
+##### https://www.java.com/en/
+
 __java_setup() {
     if [[ "${JAVA_HOME:-}" == "" && -x /usr/libexec/java_home ]]; then
         JAVA_HOME=$(/usr/libexec/java_home 2> /dev/null)

@@ -10,7 +10,17 @@ if [[ ! -x "$(command -v brew)" && -f /opt/homebrew/bin/brew ]]; then
 fi
 
 # https://docs.brew.sh/Shell-Completion
-: ${HOMEBREW_PREFIX:=$(if type brew &> /dev/null; then brew --prefix; fi)}
+if type brew &>/dev/null; then
+  HOMEBREW_PREFIX="$(brew --prefix)"
+  if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
+    source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+  else
+    for COMPLETION in "${HOMEBREW_PREFIX}/etc/bash_completion.d/"*; do
+      [[ -r "${COMPLETION}" ]] && source "${COMPLETION}"
+    done
+  fi
+fi
+
 
 if [[ -x "$(command -v brew)" ]]; then
     brew() {
