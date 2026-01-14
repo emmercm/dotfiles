@@ -27,8 +27,7 @@ Files are sourced in the following order:
 2. [`~/.profile`](./.profile): Ubuntu default entry point, mostly empty
 3. [`~/.bashrc`](./.bashrc): mostly empty
 4. [`~/.everythingrc`](./.everythingrc): general functions and aliases
-5. `~/.dotpack/.*.sh`: functions and aliases
-6. `~/.dotpack/.*.bash`: Bash-specific functions and aliases, including:
+5. `~/.dotpack/.*.sh` and `~/.dotpack/.*.bash`: functions and aliases, including:
    1. [`~/.dotpack/.90_powerline.bash`](./dotpack/.90_powerline.bash): [Powerline](https://github.com/powerline/powerline) shell theme
 
 **Zsh (Z shell):**
@@ -37,7 +36,6 @@ Files are sourced in the following order:
 
 1. [`~/.zshrc`](./.zshrc): default entry point, mostly empty
 2. [`~/.everythingrc`](./.everythingrc): general functions and aliases
-3. `~/.dotpack/.*.sh`: functions and aliases
-4. `~/.dotpack/.*.zsh`: Zsh-specific functions and aliases, including:
+3. `~/.dotpack/.*.sh` and `~/.dotpack/.*.zsh`: functions and aliases, including:
    1. [`~/.dotpack/.80_plugins.zsh`](./dotpack/.80_plugins.zsh): [Antidote](https://github.com/mattmc3/antidote) Zsh plugin management
    2. [`~/.dotpack/.90_powerlevel10k.zsh`](./dotpack/.90_powerlevel10k.zsh): [Powerlevel10k](https://github.com/romkatv/powerlevel10k) shell theme configuration

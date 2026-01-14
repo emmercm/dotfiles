@@ -1,3 +1,5 @@
+##### https://code.claude.com/docs/en/overview
+
 __claude_lazy_install() {
     if ! command -v claude &> /dev/null; then
         claude() {

@@ -1,3 +1,5 @@
+##### https://www.python.org/
+
 __python_setup() {
     while read -r DIR; do
         export PATH="${DIR}:${PATH}"
