@@ -35,3 +35,5 @@
     cob = checkout -b
     b = "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
     la = "!git config -l | grep alias | cut -c 7-"
+[push]
+	autoSetupRemote = true
