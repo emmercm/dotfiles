@@ -43,6 +43,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
         echo "1password"
         echo "charmstone"
         #echo "discord"
+        echo "disk-expert"
         echo "docker-desktop"
         echo "feedflow"
         echo "firefox"
@@ -87,8 +88,12 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
         # If there are no installed applications, it could be because a newer OS version needs a newer version of 'mas'
         mas list | grep -Eq '^[0-9]+  ' || brew upgrade mas
     fi
+    mas upgrade
     mas_list=$(mas list)
     for app_id in $(
+        # ----- Developer Tools -----
+        # Xcode
+        # echo "497799835"
         # ----- Applications -----
         # Kindle
         echo "302584613"
@@ -102,4 +107,12 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     ); do
         echo "${mas_list}" | grep -Eq "^${app_id} " || mas install "${app_id}"
     done
+
+    # Accept Xcode license
+    if command -v xcodebuild &> /dev/null; then
+        if ! sudo -n true &> /dev/null; then
+            echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'xcodebuild -license'\n"
+        fi
+        sudo xcodebuild -license status || sudo xcodebuild -license accept
+    fi
 fi

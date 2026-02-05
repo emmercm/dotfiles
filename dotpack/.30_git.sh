@@ -5,6 +5,15 @@ if ! command -v git &> /dev/null; then
 fi
 
 
+__git_addons() {
+    # https://developer.1password.com/docs/ssh/get-started/#step-4-configure-your-ssh-or-git-client
+    if [[ -e "${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ]]; then
+        export SSH_AUTH_SOCK="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+    fi
+}
+__git_addons
+
+
 __git_funcs() {
     # Short alias
     alias g="git"
