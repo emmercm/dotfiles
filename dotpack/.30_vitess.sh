@@ -6,6 +6,7 @@ __vitess_completions() {
         pscale() {
             unset -f "$0"
             # https://planetscale.com/docs/cli/completion
+            # shellcheck disable=SC1090
             source <(pscale completion "$(basename "${SHELL}")")
             $0 "$@"
         }
