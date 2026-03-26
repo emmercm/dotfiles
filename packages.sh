@@ -29,6 +29,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     fi
     command -v jq     > /dev/null || brew install jq
     command -v rename > /dev/null || brew install rename
+    command -v terminal-notifier > /dev/null || brew install terminal-notifier
     command -v tree   > /dev/null || brew install tree
     command -v watch  > /dev/null || brew install watch
     command -v wget   > /dev/null || brew install wget
