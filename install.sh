@@ -36,18 +36,24 @@ function link() {
             continue
         fi
 
-        # Back up the existing file
+        # Back up the existing directory/file
+        local backup
         if [[ -e "${link}" ]]; then
-            local backup
             backup="$(backup "${link}")"
-            echo "Moving: ${link} -> ${backup}"
+            echo -e "\033[34mMoving:\033[0m ${link} -> ${backup}"
             mv "${link}" "${backup}"
         fi
 
         # Symlink the file
         echo -e "\033[92mLinking:\033[0m ${link} -> ${file}"
         ln -s "${file}" "${link}"
-    done <<< "$(find "$1" -maxdepth 1 -name "$2" ! -name ".editorconfig" ! -name ".git" ! -name ".githooks" ! -name ".github" ! -name ".gitignore")"
+
+        # Restore existing directory files
+        if [[ -n "${backup}" && -d "${backup}" ]]; then
+            echo -e "\033[34mRestoring:\033[0m ${backup}/* -> ${link}/"
+            cp -r "${backup}/." "${link}/"
+        fi
+    done <<< "$(find "$1" -maxdepth 1 -name "$2" ! -name ".editorconfig" ! -name ".git" ! -name ".githooks" ! -name ".github" ! -name ".gitignore" ! -name ".DS_Store")"
 
     # Delete broken symlinks
     find "${HOME}" -maxdepth 1 -type l ! -exec test -e {} \; -print | while read -r file; do

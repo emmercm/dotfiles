@@ -1,5 +1,25 @@
 ##### https://code.claude.com/docs/en/overview
 
+__claude_auto_update() {
+    if command -v claude &> /dev/null; then
+        claude() {
+            if [[ "${1:-}" != "update" ]]; then
+                command claude update
+            fi
+
+            #if [[ " $@ " != *" --resume "* && " $@ " != *" --session-id "* ]]; then
+            #    command claude "$@" --continue
+            #else
+            #    command claude "$@"
+            #fi
+
+            command claude "$@"
+        }
+    fi
+}
+__claude_auto_update
+
+
 __claude_lazy_install() {
     if ! command -v claude &> /dev/null; then
         claude() {
