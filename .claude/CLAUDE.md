@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+@RTK.md
+
 ## After every change
 
 Always execute tasks in this order:

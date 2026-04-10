@@ -29,6 +29,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     fi
     command -v jq     > /dev/null || brew install jq
     command -v rename > /dev/null || brew install rename
+    command -v rtk > /dev/null    || brew install rtk
     command -v terminal-notifier > /dev/null || brew install terminal-notifier
     command -v tree   > /dev/null || brew install tree
     command -v watch  > /dev/null || brew install watch
@@ -58,6 +59,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
         #echo "nordvpn"
         #echo "postman"
         echo "rectangle"
+        echo "resilio-sync"
         #echo "sdformatter"
         #echo "signal"
         #echo "slack"
@@ -74,10 +76,29 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
             | jq --raw-output ".casks[] | select(.token==\"${cask}\") | .artifacts[] | .app // empty | .[]" \
             | xargs -I {} sh -c 'test ! -d "/Applications/{}" && echo "{}"' || true)
         if [[ -n "${missing_apps}" ]]; then
-            echo "missing, installing ..."
+            echo -e "\033[33mmissing, installing ...\033[0m"
             brew install --cask "${cask}"
         else
-            echo "found"
+            echo -e "\033[92mfound\033[0m"
+        fi
+    done
+
+    # Uninstall old Homebrew casks
+    if ! sudo -n true &> /dev/null; then
+        echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'brew uninstall --cask'\n"
+    fi
+    for cask in $(
+        echo "messenger"
+    ); do
+        printf "Checking for cask '${cask}' ... "
+        existing_apps=$(brew info --json=v2 --cask "${cask}" \
+            | jq --raw-output ".casks[] | select(.token==\"${cask}\") | .artifacts[] | .app // empty | .[]" \
+            | xargs -I {} sh -c 'test -d "/Applications/{}" && echo "{}"' || true)
+        if [[ -n "${existing_apps}" ]]; then
+            echo -e "\033[33mfound, uninstalling ...\033[0m"
+            brew uninstall --cask "${cask}"
+        else
+            echo -e "\033[92mnot found\033[0m"
         fi
     done
 
@@ -114,6 +135,6 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
         if ! sudo -n true &> /dev/null; then
             echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'xcodebuild -license'\n"
         fi
-        sudo xcodebuild -license status || sudo xcodebuild -license accept
+        sudo xcodebuild -license status || sudo xcodebuild -license accept || true
     fi
 fi

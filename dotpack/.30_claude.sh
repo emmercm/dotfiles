@@ -1,5 +1,7 @@
 ##### https://code.claude.com/docs/en/overview
 
+export RTK_TELEMETRY_DISABLED=1
+
 __claude_auto_update() {
     if command -v claude &> /dev/null; then
         claude() {
