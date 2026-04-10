@@ -32,7 +32,7 @@ function link() {
 
         # Assume symlinks are ok
         if [[ -h "${link}" ]]; then
-            echo -e "\033[93mIgnoring:\033[0m ${link}"
+            echo -e "\033[33mIgnoring:\033[0m ${link}"
             continue
         fi
 

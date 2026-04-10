@@ -1,5 +1,5 @@
 # Secrets
-*secrets.bash
+*secrets.*
 id_rsa*
 *kubeconfig*
 *.pem
@@ -9,7 +9,8 @@ id_rsa*
 !.config/powerline
 
 .claude/*
+!.claude/hooks
 !.claude/skills
 .claude/skills/githuman
-!.claude/CLAUDE.md
+!.claude/*.md
 !.claude/settings.json

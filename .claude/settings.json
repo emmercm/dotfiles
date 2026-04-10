@@ -1,5 +1,5 @@
 {
-  "model": "us.anthropic.claude-opus-4-6-v1",
+  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -19,6 +19,17 @@
           {
             "type": "command",
             "command": "terminal-notifier -title \"✅ Claude Code\" -message \"Claude has finished the task\" -sound Blow"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/cemmer/.claude/hooks/rtk-rewrite.sh"
           }
         ]
       }
