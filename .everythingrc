@@ -1,7 +1,8 @@
 # Bash: .bash_profile (macOS default) -> .profile (Ubuntu default) -> .bashrc -> .everythingrc
 # zsh:  .zshrc (always executed) -> .everythingrc
 
-SHELL=$(which "$(ps -o comm= $$ | sed 's/^-*//')")
+: "${SHELL:=$(which "$(ps -o comm= $$ | sed 's/^-*//')" 2>/dev/null)}"
+export SHELL
 
 
 ##### Bash #####
@@ -24,6 +25,25 @@ __bashrc_misc() {
                 return 0
             fi
         done <<< "$(echo "${PATH}" | tr ':' '\n')"
+        return 1
+    }
+
+    # @param {string} $1 Name of the throttle key
+    # @param {number} $2 Cooldown duration in seconds
+    throttle() {
+        local state_dir="${XDG_STATE_HOME:-${HOME}/.local/state}/throttle"
+        local state_file="${state_dir}/$1"
+        local now
+        now=$(date +%s)
+        local last_run=0
+        if [[ -f "${state_file}" ]]; then
+            last_run=$(cat "${state_file}" 2>/dev/null || echo 0)
+        fi
+        if (( now - last_run > $2 )); then
+            mkdir -p "${state_dir}"
+            echo "${now}" > "${state_file}"
+            return 0
+        fi
         return 1
     }
 

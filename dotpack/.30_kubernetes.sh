@@ -4,8 +4,8 @@ __kube_lazy_install() {
     if ! command -v k9s &> /dev/null && command -v brew &> /dev/null; then
         k9s() {
             brew install k9s
-            unset -f "$0"
-            $0 "$@"
+            unset -f k9s
+            k9s "$@"
         }
     fi
 
@@ -13,16 +13,16 @@ __kube_lazy_install() {
         # Note: Docker Desktop provides kubectl, this shouldn't be necessary
         kubectl() {
             brew install kubectl
-            unset -f "$0"
-            $0 "$@"
+            unset -f kubectl
+            kubectl "$@"
         }
     fi
 
     if ! command -v stern &> /dev/null && command -v brew &> /dev/null; then
         stern() {
             brew install stern
-            unset -f "$0"
-            $0 "$@"
+            unset -f stern
+            stern "$@"
         }
     fi
 }

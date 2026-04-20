@@ -4,10 +4,10 @@ __ruby_chruby() {
     # Lazy load chruby
     if [[ -d "${HOMEBREW_PREFIX}/opt/chruby/share/chruby" ]]; then
         chruby() {
-            unset -f "$0"
+            unset -f chruby
             source "${HOMEBREW_PREFIX}/opt/chruby/share/chruby/chruby.sh"
             source "${HOMEBREW_PREFIX}/opt/chruby/share/chruby/auto.sh"
-            $0 "$@"
+            chruby "$@"
         }
     fi
 

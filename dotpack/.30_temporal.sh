@@ -15,17 +15,17 @@ __temporal_completions() {
 
     if command -v tctl &> /dev/null; then
         tctl() {
-            unset -f "$0"
+            unset -f tctl
             # shellcheck disable=SC1090
             source <(tctl completion "$(basename "${SHELL}")")
-            $0 "$@"
+            tctl "$@"
         }
 
         temporal() {
-            unset -f "$0"
+            unset -f temporal
             # shellcheck disable=SC1090
             source <(temporal completion "$(basename "${SHELL}")")
-            $0 "$@"
+            temporal "$@"
         }
     fi
 }
@@ -36,16 +36,16 @@ __temporal_lazy_install() {
     if ! command -v tctl &> /dev/null && command -v brew &> /dev/null; then
         tctl() {
             brew install tctl
-            unset -f "$0"
-            $0 "$@"
+            unset -f tctl
+            tctl "$@"
         }
     fi
 
     if ! command -v temporal &> /dev/null && command -v brew &> /dev/null; then
         temporal() {
             brew install temporal
-            unset -f "$0"
-            $0 "$@"
+            unset -f temporal
+            temporal "$@"
         }
     fi
 }

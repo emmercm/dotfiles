@@ -56,7 +56,7 @@ __git_funcs() {
         local origin_old
         origin_old="$(git remote get-url origin)"
         local origin_new
-        origin_new="${origin_old/https:\/\/github.co\//git@github.com:}"
+        origin_new="${origin_old/https:\/\/github.com\//git@github.com:}"
         if [[ "${origin_new}" != "${origin_old}" && "${origin_new}" != "" ]]; then
             echo "Changing $(pwd) remote origin to: ${origin_new}"
             git remote set-url origin "${origin_new}"

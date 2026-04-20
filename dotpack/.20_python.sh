@@ -2,6 +2,7 @@
 
 __python_setup() {
     while read -r DIR; do
+        [[ -z "${DIR}" ]] && continue
         export PATH="${DIR}:${PATH}"
     done <<< "$(find ~/Library/Python/* -maxdepth 1 -type d -name bin 2> /dev/null)"
 }

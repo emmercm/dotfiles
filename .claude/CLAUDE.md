@@ -21,3 +21,12 @@ Always execute tasks in this order:
 ## Git
 
 - Do not ever commit to the default, `main`, or `master` Git branches. Always ask if a new branch should be created instead.
+- Always prefix git branch names with "emmercm/".
+
+## Superpowers
+
+- Do not ever commit specs, plans, or any other documents produced by the "superpowers" plugin.
+
+## Writing style
+
+- Use American English spelling in comments and documentation

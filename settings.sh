@@ -14,8 +14,8 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     if ! command -v plistwatch &> /dev/null && command -v go &> /dev/null; then
         plistwatch() {
             go install github.com/catilac/plistwatch@latest
-            unset -f "$0"
-            $0 "$@"
+            unset -f plistwatch
+            plistwatch "$@"
         }
     fi
 
@@ -101,6 +101,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # ***** Settings > Spotlight *****
     # Disable Spotlight indexing on external volumes
     while read -r volume; do
+        [[ -z "${volume}" ]] && continue
         if mdutil -s "${volume}" | grep -xq "enabled"; then
             sudo mdutil -i off -d "${volume}"
             sudo killall DesktopServicesHelper
@@ -133,7 +134,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # defaults -currentHost write com.apple.screensaver idleTime -int 1800
     # defaults write com.apple.screensaver askForPasswordDelay -int 0
     # Start screen saver when inactive for X seconds
-    defaults -currentHost write com.apple.screensaver -int 300
+    defaults -currentHost write com.apple.screensaver idleTime -int 300
     # Turn display off on battery when inctive for X minutes
     sudo pmset -b displaysleep 10
     # Turn display off on power adapter when inctive for X minutes
