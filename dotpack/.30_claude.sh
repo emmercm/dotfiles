@@ -20,7 +20,7 @@ __claude_auto_update() {
     if command -v claude &> /dev/null; then
         claude() {
             # Commands to skip updating before
-            if [[ " $@ " = *" -h "* || " $@ " == *" --help "* || " $@ " == *" -p "* || " $@ " == *" --print "* ]]; then
+            if [[ " $* " = *" -h "* || " $* " == *" --help "* || " $* " == *" -p "* || " $* " == *" --print "* ]]; then
                 command claude "$@"
                 return $?
             fi
