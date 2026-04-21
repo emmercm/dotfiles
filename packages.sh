@@ -10,10 +10,22 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
 
+    # Update Command Line Tools (some Homebrew packages require it)
+    if softwareupdate --list | grep -q "Label: Command Line Tools"; then
+        if ! sudo -n true &> /dev/null; then
+            echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'xcode-select --install' or 'softwareupdate --install'"
+        fi
+        CLT_LABEL=$(softwareupdate --list | grep "Label: Command Line Tools" | head -n 1 | sed 's/^.*Label: //')
+        if [[ -n "${CLT_LABEL}" ]]; then
+            sudo xcode-select --install || sudo softwareupdate --install "${CLT_LABEL}"
+        fi
+    fi
+
     brew update
     brew upgrade
 
     # Install Homebrew formulas
+    command -v agent-deck > /dev/null || brew install asheshgoplani/tap/agent-deck
     command -v gawk   > /dev/null || brew install gawk
     command -v gdate  > /dev/null || brew install coreutils
     command -v gh     > /dev/null || brew install gh
@@ -36,14 +48,13 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     command -v wget   > /dev/null || brew install wget
 
     # Install Homebrew casks (only install if shell is interactive, in case of admin password prompt)
-    brew tap emmercm/igir
-    brew tap nahive/spotify-notify
     if ! sudo -n true &> /dev/null; then
-        echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'brew install --cask'\n"
+        echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'brew install --cask'"
     fi
     for cask in $(
         echo "1password"
         echo "charmstone"
+        echo "claude"
         #echo "discord"
         echo "disk-expert"
         echo "docker-desktop"
@@ -64,7 +75,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
         #echo "signal"
         #echo "slack"
         echo "spotify"
-        echo "spotify-notify"
+        echo "nahive/spotify-notify/spotify-notify"
         #echo "steam"
         #echo "telegram"
         echo "visual-studio-code"
@@ -74,7 +85,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
         printf "Checking for cask '${cask}' ... "
         missing_apps=$(brew info --json=v2 --cask "${cask}" \
             | jq --raw-output ".casks[] | select(.token==\"${cask}\") | .artifacts[] | .app // empty | .[]" \
-            | xargs -I {} sh -c 'test ! -d "/Applications/{}" && echo "{}"' || true)
+            | xargs -I {} sh -c 'test ! -d "/Applications/$1" && echo "$1"' _ {} || true)
         if [[ -n "${missing_apps}" ]]; then
             echo -e "\033[33mmissing, installing ...\033[0m"
             brew install --cask "${cask}"
@@ -85,7 +96,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
 
     # Uninstall old Homebrew casks
     if ! sudo -n true &> /dev/null; then
-        echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'brew uninstall --cask'\n"
+        echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'brew uninstall --cask'"
     fi
     for cask in $(
         echo "messenger"
@@ -93,7 +104,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
         printf "Checking for cask '${cask}' ... "
         existing_apps=$(brew info --json=v2 --cask "${cask}" \
             | jq --raw-output ".casks[] | select(.token==\"${cask}\") | .artifacts[] | .app // empty | .[]" \
-            | xargs -I {} sh -c 'test -d "/Applications/{}" && echo "{}"' || true)
+            | xargs -I {} sh -c 'test -d "/Applications/$1" && echo "$1"' _ {} || true)
         if [[ -n "${existing_apps}" ]]; then
             echo -e "\033[33mfound, uninstalling ...\033[0m"
             brew uninstall --cask "${cask}"
@@ -133,7 +144,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # Accept Xcode license
     if command -v xcodebuild &> /dev/null; then
         if ! sudo -n true &> /dev/null; then
-            echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'xcodebuild -license'\n"
+            echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'xcodebuild -license'"
         fi
         sudo xcodebuild -license status || sudo xcodebuild -license accept || true
     fi

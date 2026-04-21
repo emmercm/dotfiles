@@ -7,6 +7,7 @@ __java_setup() {
     fi
     if [[ "${JAVA_HOME:-}" == "" ]]; then
         while read -r DIR; do
+            [[ -z "${DIR}" ]] && continue
             export JAVA_HOME="${DIR}"
         done <<< "$(find /Library/Java/JavaVirtualMachines/*/Contents -maxdepth 1 -type d -name Home 2> /dev/null | sort --version-sort)"
     fi
@@ -22,8 +23,8 @@ __java_lazy_install() {
     if ! command -v flyway &> /dev/null && command -v brew &> /dev/null; then
         flyway() {
             brew install flyway
-            unset -f "$0"
-            $0 "$@"
+            unset -f flyway
+            flyway "$@"
         }
     fi
 }

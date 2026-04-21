@@ -2,6 +2,7 @@ __mysql_setup() {
     # Set path environment variables
     if command -v brew &> /dev/null; then
         while read -r DIR; do
+            [[ -z "${DIR}" ]] && continue
             if [[ -d "${DIR}/bin" ]]; then
                 export PATH="${DIR}/bin:${PATH}"
             fi

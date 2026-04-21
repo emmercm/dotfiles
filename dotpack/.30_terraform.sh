@@ -10,8 +10,8 @@ __terraform_install() {
             brew tap hashicorp/tap
             brew install hashicorp/tap/terraform
         fi
-        unset -f "$0"
-        $0 "$@"
+        unset -f terraform
+        terraform "$@"
     }
 }
 __terraform_install
@@ -29,8 +29,8 @@ __tflint_install() {
             docker run --rm --volume "$(pwd):/data" --tty "ghcr.io/terraform-linters/tflint" "$@"
             return $?
         fi
-        unset -f "$0"
-        $0 "$@"
+        unset -f tflint
+        tflint "$@"
     }
 }
 __tflint_install

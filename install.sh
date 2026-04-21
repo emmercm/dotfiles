@@ -21,7 +21,7 @@ function backup() {
 # @param {string} $1 Wildcard to find dotfiles
 function link() {
     # Create symlinks
-    while read -r file; do
+    find "$1" -maxdepth 1 -name "$2" ! -name ".editorconfig" ! -name ".git" ! -name ".githooks" ! -name ".github" ! -name ".gitignore" ! -name ".DS_Store" | while read -r file; do
         local link
         link="${HOME}/$(basename "${file}")"
 
@@ -37,7 +37,7 @@ function link() {
         fi
 
         # Back up the existing directory/file
-        local backup
+        local backup=""
         if [[ -e "${link}" ]]; then
             backup="$(backup "${link}")"
             echo -e "\033[34mMoving:\033[0m ${link} -> ${backup}"
@@ -53,7 +53,7 @@ function link() {
             echo -e "\033[34mRestoring:\033[0m ${backup}/* -> ${link}/"
             cp -r "${backup}/." "${link}/"
         fi
-    done <<< "$(find "$1" -maxdepth 1 -name "$2" ! -name ".editorconfig" ! -name ".git" ! -name ".githooks" ! -name ".github" ! -name ".gitignore" ! -name ".DS_Store")"
+    done
 
     # Delete broken symlinks
     find "${HOME}" -maxdepth 1 -type l ! -exec test -e {} \; -print | while read -r file; do

@@ -4,11 +4,11 @@
 __vitess_completions() {
     if command -v pscale &> /dev/null; then
         pscale() {
-            unset -f "$0"
+            unset -f pscale
             # https://planetscale.com/docs/cli/completion
             # shellcheck disable=SC1090
             source <(pscale completion "$(basename "${SHELL}")")
-            $0 "$@"
+            pscale "$@"
         }
     fi
 }
@@ -20,15 +20,15 @@ __vitess_lazy_install() {
     if ! command -v pscale &> /dev/null && command -v brew &> /dev/null; then
         pscale() {
             brew install planetscale/tap/pscale
-            unset -f "$0"
-            $0 "$@"
+            unset -f pscale
+            pscale "$@"
         }
     fi
     if ! command -v mysql &> /dev/null && command -v brew &> /dev/null; then
         mysql() {
             brew install mysql-client
-            unset -f "$0"
-            $0 "$@"
+            unset -f mysql
+            mysql "$@"
         }
     fi
 }

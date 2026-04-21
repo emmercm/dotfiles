@@ -8,16 +8,16 @@ __docker_lazy_install() {
     if ! command -v dive &> /dev/null && command -v brew &> /dev/null; then
         dive() {
             brew install dive
-            unset -f "$0"
-            $0 "$@"
+            unset -f dive
+            dive "$@"
         }
     fi
 
     if ! command -v skopeo &> /dev/null && command -v brew &> /dev/null; then
         skopeo() {
             brew install skopeo
-            unset -f "$0"
-            $0 "$@"
+            unset -f skopeo
+            skopeo "$@"
         }
     fi
 }

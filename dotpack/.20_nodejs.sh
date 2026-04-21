@@ -35,9 +35,9 @@ __nodejs_bun() {
     # Lazy-load shell completions
     if [[ -d "$HOME/.bun/_bun" ]]; then
         bun() {
-            unset -f "$0"
+            unset -f bun
             source "$HOME/.bun/_bun"
-            $0 "$@"
+            bun "$@"
         }
     fi
 }
