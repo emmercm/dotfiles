@@ -48,6 +48,11 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate.plist AutomaticCheckEnabled -bool YES
 
     # ***** Settings > General > Date & Time *****
+    # Set time and date automatically: on
+    sudo systemsetup -setusingnetworktime off
+    sudo systemsetup -setusingnetworktime on
+    # Source
+    sudo systemsetup -setnetworktimeserver time.apple.com
     # 24-hour time: on
     defaults write .GlobalPreferences AppleICUForce24HourTime -int 1
 
@@ -94,9 +99,10 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # ***** Settings > Displays *****
     # Enable subpixel font rendering on non-Apple LCDs
     defaults write NSGlobalDomain AppleFontSmoothing -int 1
-    # TODO: Automatically adjust brightness off
-    # TODO: True Tone off
-    # TODO: Night Shift... schedule: sunset to sunrise
+    # Automatically adjust brightness: off
+    sudo defaults write /Library/Preferences/com.apple.iokit.AmbientLightSensor "Automatic Display Enabled" -int 0
+    # TODO: True Tone: off (set manually; stored under user-specific UUID in com.apple.CoreBrightness)
+    # TODO: Night Shift schedule: sunset to sunrise (set manually; stored under user-specific UUID in com.apple.CoreBrightness)
 
     # ***** Settings > Spotlight *****
     # Disable Spotlight indexing on external volumes
@@ -126,20 +132,20 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     defaults write .GlobalPreferences com.apple.sound.beep.feedback -bool true
 
     # ***** Settings > Focus *****
-    # TODO: remove DND schedules / disable DND
+    # TODO: Focus schedules & Do Not Disturb: disable (set manually; Focus profiles have complex per-user state)
 
     # ***** Settings > Screen Time *****
 
     # ***** Settings > Lock Screen *****
-    # defaults -currentHost write com.apple.screensaver idleTime -int 1800
-    # defaults write com.apple.screensaver askForPasswordDelay -int 0
+    # Turn display off on battery when inctive: for 10 minutes
+    sudo pmset -b displaysleep 10
+    # Turn display off on power adapter when inctive: for 10 minutes
+    sudo pmset -c displaysleep 10
     # Start screen saver when inactive for X seconds
     defaults -currentHost write com.apple.screensaver idleTime -int 300
-    # Turn display off on battery when inctive for X minutes
-    sudo pmset -b displaysleep 10
-    # Turn display off on power adapter when inctive for X minutes
-    sudo pmset -c displaysleep 10
-    # TODO: Require password after screen saver begins or display is turned off: 1min
+    # Require password after screen saver begins or display is turned off: 1 minute
+    defaults write com.apple.screensaver askForPassword -int 1
+    defaults write com.apple.screensaver askForPasswordDelay -int 60
     killall "System Settings" || true
 
     # ***** Settings > Privacy & Security *****
@@ -166,7 +172,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     defaults write .GlobalPreferences NSAutomaticPeriodSubstitutionEnabled -bool false
     # Turn off text replacements (requires restart?)
     defaults write .GlobalPreferences WebAutomaticTextReplacementEnabled -bool false
-    # TODO: keyboard brightness
+    # TODO: Keyboard brightness (set manually; hardware-controlled; no defaults equivalent)
     # macOS Sonoma v14 "redesigned insertion point"
     sudo defaults write /Library/Preferences/FeatureFlags/Domain/UIKit.plist redesigned_text_cursor -dict-add Enabled -bool YES
 
