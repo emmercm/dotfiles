@@ -118,9 +118,10 @@ __bashrc_ides
 ##### Everything Else #####
 
 shell_basename="$(basename "${SHELL}")"
-while read -r file; do
+for file in ~/.dotpack/.*; do
+    [[ -f "${file}" ]] || continue
     if [[ "${file}" == *".sh" || "${file}" == *".${shell_basename}" ]]; then
         # shellcheck disable=SC1090
         source "${file}"
     fi
-done <<< "$(find ~/.dotpack -maxdepth 1 -follow -type f -name ".*" | sort --version-sort)"
+done

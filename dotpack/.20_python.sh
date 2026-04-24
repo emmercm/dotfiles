@@ -1,10 +1,10 @@
 ##### https://www.python.org/
 
 __python_setup() {
-    while read -r DIR; do
-        [[ -z "${DIR}" ]] && continue
+    for DIR in ~/Library/Python/*/bin; do
+        [[ -d "${DIR}" ]] || continue
         export PATH="${DIR}:${PATH}"
-    done <<< "$(find ~/Library/Python/* -maxdepth 1 -type d -name bin 2> /dev/null)"
+    done
 }
 __python_setup
 

@@ -1,6 +1,11 @@
 ##### https://www.ruby-lang.org/en/
 
 __ruby_chruby() {
+    # Auto-load the latest Ruby version
+    if command -v chruby &> /dev/null && [[ -d ~/.rubies ]]; then
+        chruby "$(ls -1 ~/.rubies/ | sort | tail -1)"
+    fi
+
     # Lazy load chruby
     if [[ -d "${HOMEBREW_PREFIX}/opt/chruby/share/chruby" ]]; then
         chruby() {
@@ -9,11 +14,6 @@ __ruby_chruby() {
             source "${HOMEBREW_PREFIX}/opt/chruby/share/chruby/auto.sh"
             chruby "$@"
         }
-    fi
-
-    # Auto-load the latest Ruby version
-    if command -v chruby &> /dev/null && [[ -d ~/.rubies ]]; then
-        chruby "$(ls -1 ~/.rubies/ | sort | tail -1)"
     fi
 }
 __ruby_chruby
