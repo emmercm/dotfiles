@@ -20,7 +20,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     fi
 
     if ! sudo -n true &> /dev/null; then
-        echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'pmset', 'chflags', and other utilities\n"
+        echo -e "\033[33mWARN:\033[0m you may be asked for your password to run 'pmset', 'chflags', and other utilities\n"
     fi
 
     # ***** Settings > Wi-Fi *****

@@ -1,0 +1,186 @@
+# Agent Deck Configuration
+# Edit this file or use Settings (press S) in the TUI
+
+default_tool = "claude"
+theme = "system"
+mcp_default_scope = ""
+
+[tools]
+
+[mcps]
+
+[plugins]
+
+[claude]
+  command = ""
+  config_dir = ""
+  dangerous_mode = false
+  allow_dangerous_mode = false
+  auto_mode = false
+  use_chrome = false
+  use_teammate_mode = false
+  env_file = ""
+
+[gemini]
+  yolo_mode = false
+  default_model = ""
+  env_file = ""
+
+[opencode]
+  default_model = ""
+  default_agent = ""
+  env_file = ""
+
+[codex]
+  command = ""
+  yolo_mode = false
+
+[copilot]
+  env_file = ""
+
+[worktree]
+  auto_cleanup = false
+  default_enabled = false
+  default_location = ""
+
+[global_search]
+  enabled = true
+  tier = "auto"
+  memory_limit_mb = 0
+  recent_days = 90
+  index_rate_limit = 0
+
+[logs]
+  max_size_mb = 10
+  max_lines = 10000
+  remove_orphans = true
+  debug_level = ""
+  debug_format = ""
+  debug_max_mb = 0
+  debug_backups = 0
+  debug_retention_days = 0
+  debug_compress = false
+  ring_buffer_mb = 0
+  pprof_enabled = false
+  aggregate_interval_secs = 0
+
+[mcp_pool]
+  enabled = false
+  auto_start = false
+  port_start = 0
+  port_end = 0
+  start_on_demand = false
+  shutdown_on_exit = false
+  fallback_to_stdio = true
+  show_pool_status = false
+  pool_all = false
+  socket_wait_timeout = 0
+
+[updates]
+  auto_update = true
+  check_enabled = true
+  check_interval_hours = 0
+  notify_in_cli = false
+
+[preview]
+  show_output = true
+  show_analytics = false
+  show_notes = false
+  notes_output_split = 0.33
+  [preview.analytics]
+
+[experiments]
+  directory = ""
+  date_prefix = false
+  default_tool = ""
+
+[notifications]
+  enabled = false
+  max_shown = 0
+  show_all = false
+  minimal = false
+
+[instances]
+
+[shell]
+  init_script = ""
+
+[maintenance]
+  enabled = false
+
+[status]
+
+[conductor]
+  enabled = false
+  heartbeat_interval = 0
+  [conductor.telegram]
+    token = ""
+    user_id = 0
+  [conductor.slack]
+    bot_token = ""
+    app_token = ""
+    channel_id = ""
+    listen_mode = ""
+  [conductor.discord]
+    bot_token = ""
+    guild_id = 0
+    channel_id = 0
+    user_id = 0
+    listen_mode = ""
+    ignore_replies_to_others = false
+
+[tmux]
+  launch_in_user_scope = false
+  window_style_override = ""
+  clear_on_restart = false
+  detach_key = ""
+  socket_name = ""
+
+[docker]
+  default_image = ""
+  default_enabled = false
+  cpu_limit = ""
+  memory_limit = ""
+  mount_ssh = false
+
+[openclaw]
+  gateway_url = ""
+  password = ""
+  auto_sync = false
+  group_name = ""
+
+[display]
+  full_repaint = false
+  default_filter = ""
+  active_filter_label = ""
+
+[costs]
+  currency = ""
+  timezone = ""
+  retention_days = 0
+  [costs.budgets]
+    daily_limit = 0.0
+    weekly_limit = 0.0
+    monthly_limit = 0.0
+  [costs.pricing]
+
+[system_stats]
+  enabled = true
+  refresh_seconds = 5
+  format = "full"
+  show = ["cpu", "ram"]
+
+[watcher]
+  max_events_per_watcher = 0
+  max_silence_minutes = 0
+  health_check_interval_seconds = 0
+  [watcher.alerts]
+    enabled = false
+    debounce_minutes = 0
+
+[feedback]
+  disabled = false
+
+[terminal]
+
+[web]

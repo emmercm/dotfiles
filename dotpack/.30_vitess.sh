@@ -24,12 +24,5 @@ __vitess_lazy_install() {
             pscale "$@"
         }
     fi
-    if ! command -v mysql &> /dev/null && command -v brew &> /dev/null; then
-        mysql() {
-            brew install mysql-client
-            unset -f mysql
-            mysql "$@"
-        }
-    fi
 }
 __vitess_lazy_install
