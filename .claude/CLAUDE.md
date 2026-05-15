@@ -29,8 +29,7 @@ Always execute tasks in this order:
 
 ## Pull requests
 
-- Always respect any existing PULL_REQUEST_TEMPLATE and follow its instructions
-- Do not include lists of individual filename and function changes, those lists are obvious from the diff; instead, focus on the spirit of the change and any risks associated with it
+- Always use the `writing-pull-requests` skill when creating pull requests
 
 ## Superpowers
 

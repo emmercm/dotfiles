@@ -10,7 +10,6 @@ id_rsa*
 
 .agent-deck/*
 !.agent-deck/config.toml
-!.agent-deck/worktree-setup.sh
 .claude/*
 !.claude/hooks
 !.claude/skills

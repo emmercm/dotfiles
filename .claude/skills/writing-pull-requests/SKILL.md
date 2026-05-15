@@ -90,7 +90,7 @@ For changes with production behavior, cover up to three things — only the ones
 - **Metrics expected to stay flat that would signal a problem if they moved.** Cover error rates, throughput, downstream dependency call counts, queue depth, retry counts. Name the dashboards or queries when they exist.
 - **New logs, traces, or stats added by this PR.**
 
-Skip categories that don't apply. A bug fix that adds no metrics and changes no expected directions can be **1-2 sentences** naming the signal that would confirm the fix worked (e.g. "The `cdTest` job for `BulkProcessSubscriptionFlow` should return to passing.").
+Skip categories that don't apply. A bug fix that adds no metrics and changes no expected directions can be **1-2 sentences** naming the signal that would confirm the fix worked (e.g. "The `integrationTest` task should return to passing for the affected module.").
 
 Do not write `N/A`. For changes with no production-runtime impact (proto-only, test-only, doc changes), state that fact directly and name what would signal a problem if the assumption is wrong — e.g. "No runtime behavior changes; CI build and proto-consumer compilation are the relevant signals." There is always *something* to watch.
 
