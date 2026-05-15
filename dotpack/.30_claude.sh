@@ -19,12 +19,22 @@ __claude_update() {
 __claude_auto_update() {
     if command -v claude &> /dev/null; then
         claude() {
+            # Uninstall non-native copies
+            if npm list --global @anthropic-ai/claude-code > /dev/null; then
+                npm uninstall --global @anthropic-ai/claude-code > /dev/null
+            fi
+            if command -v volta &> /dev/null && volta list --format plain | grep -q "@anthropic-ai/claude-code"; then
+                volta uninstall @anthropic-ai/claude-code > /dev/null
+            fi
+            if command -v brew &> /dev/null && brew list claude-code &> /dev/null; then
+                brew uninstall claude-code > /dev/null
+            fi
+
             # Commands to skip updating before
             if [[ " $* " = *" -h "* || " $* " == *" --help "* || " $* " == *" -p "* || " $* " == *" --print "* ]]; then
                 command claude "$@"
                 return $?
             fi
-
             __claude_update
 
             command claude "$@"

@@ -13,7 +13,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # Update Command Line Tools (some Homebrew packages require it)
     if softwareupdate --list | grep -q "Label: Command Line Tools"; then
         if ! sudo -n true &> /dev/null; then
-            echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'xcode-select --install' or 'softwareupdate --install'"
+            echo -e "\033[33mWARN:\033[0m you may be asked for your password to run 'xcode-select --install' or 'softwareupdate --install'"
         fi
         CLT_LABEL=$(softwareupdate --list | grep "Label: Command Line Tools" | head -n 1 | sed 's/^.*Label: //')
         if [[ -n "${CLT_LABEL}" ]]; then
@@ -49,7 +49,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
 
     # Install Homebrew casks (only install if shell is interactive, in case of admin password prompt)
     if ! sudo -n true &> /dev/null; then
-        echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'brew install --cask'"
+        echo -e "\033[33mWARN:\033[0m you may be asked for your password to run 'brew install --cask'"
     fi
     for cask in $(
         echo "1password"
@@ -96,7 +96,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
 
     # Uninstall old Homebrew casks
     if ! sudo -n true &> /dev/null; then
-        echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'brew uninstall --cask'"
+        echo -e "\033[33mWARN:\033[0m you may be asked for your password to run 'brew uninstall --cask'"
     fi
     for cask in $(
         echo "messenger"
@@ -144,7 +144,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     # Accept Xcode license
     if command -v xcodebuild &> /dev/null; then
         if ! sudo -n true &> /dev/null; then
-            echo -e "\033[1;33mWARN:\033[0m you may be asked for your password to run 'xcodebuild -license'"
+            echo -e "\033[33mWARN:\033[0m you may be asked for your password to run 'xcodebuild -license'"
         fi
         sudo xcodebuild -license status || sudo xcodebuild -license accept || true
     fi

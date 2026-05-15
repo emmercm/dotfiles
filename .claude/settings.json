@@ -1,24 +1,77 @@
 {
-  "model": "opus",
+  "permissions": {
+    "allow": [
+      "Bash(git* ls-tree *)",
+      "Bash(git* rebase --continue)",
+      "Bash(git* reset)",
+      "Bash(git* rev-parse *)",
+      "Bash(gh run list *)",
+      "Bash(./gradlew *)",
+      "Bash(grep *)",
+      "Bash(rtk diff *)",
+      "Bash(rtk find *)",
+      "Bash(rtk git* branch)",
+      "Bash(rtk git* diff *)",
+      "Bash(rtk git* fetch origin *)",
+      "Bash(rtk git* log *)",
+      "Bash(rtk git* show *)",
+      "Bash(rtk git* status)",
+      "Bash(rtk git* status *)",
+      "Bash(rtk grep *)",
+      "Bash(rtk ls *)",
+      "Bash(rtk ps *)",
+      "Bash(rtk read *)",
+      "Bash(rtk tree *)",
+      "Bash(rtk wc *)",
+      "Bash(tee *)",
+      "Bash(xargs ls *)",
+      "Bash(xargs sed *)",
+      "Read(~/.claude/plugins/cache)",
+      "Read(~/.claude/projects)"
+    ],
+    "additionalDirectories": [
+      "~/.claude/plugins/cache",
+      "~/.claude/projects"
+    ]
+  },
+  "model": "us.anthropic.claude-opus-4-6-v1",
   "hooks": {
     "Notification": [
       {
-        "matcher": "",
         "hooks": [
           {
             "type": "command",
             "command": "terminal-notifier -title \"🔔 Claude Code\" -message \"Claude needs your input\" -sound Blow"
           }
         ]
-      }
-    ],
-    "Stop": [
+      },
       {
-        "matcher": "",
+        "matcher": "permission_prompt|elicitation_dialog",
         "hooks": [
           {
             "type": "command",
-            "command": "terminal-notifier -title \"✅ Claude Code\" -message \"Claude has finished the task\" -sound Blow"
+            "command": "agent-deck hook-handler",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-deck hook-handler"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-deck hook-handler"
           }
         ]
       }
@@ -30,6 +83,54 @@
           {
             "type": "command",
             "command": "/Users/cemmer/.claude/hooks/rtk-rewrite.sh"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-deck hook-handler",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-deck hook-handler",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifier -title \"✅ Claude Code\" -message \"Claude has finished the task\" -sound Blow"
+          },
+          {
+            "type": "command",
+            "command": "agent-deck hook-handler",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-deck hook-handler",
+            "async": true
           }
         ]
       }

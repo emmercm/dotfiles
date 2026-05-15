@@ -3,6 +3,34 @@ if [[ "${OSTYPE:-}" != "darwin"* ]]; then
 fi
 
 
+__macos_keychain_validation() {
+    keychain_list="$(security list-keychains | awk -F'"' '/\// {print $2}')"
+
+    echo "$keychain_list" | while read -r keychain_path; do
+        if [[ -f "$keychain_path" ]]; then
+            if ! security dump-keychain "$keychain_path" > /dev/null 2>&1; then
+                echo -e "\033[91mCRITICAL:\033[0m macOS keychain file is corrupted: $keychain_path"
+            fi
+        else
+            echo -e "\033[33mWARN:\033[0m macOS keychain file doesn't exist: $keychain_path"
+            #security list-keychains \
+            #    | awk -F'"' '/\// {print $2}' \
+            #    | sort -u \
+            #    | while read -r p; do [[ -f "$p" ]] && echo "$p"; done \
+            #    | xargs security list-keychains -s
+        fi
+    done
+
+    if ! echo "$keychain_list" | grep -q "/login.keychain-db$"; then
+        echo -e "\033[91mCRITICAL:\033[0m macOS keychain search list is missing login.keychain-db"
+    fi
+    if ! echo "$keychain_list" | grep -q "^/Library/Keychains/System.keychain$"; then
+        echo -e "\033[91mCRITICAL:\033[0m macOS keychain search list is missing System.keychain"
+    fi
+}
+__macos_keychain_validation
+
+
 ##### Homebrew #####
 
 if [[ ! -x "$(command -v brew)" && -f /opt/homebrew/bin/brew ]]; then
