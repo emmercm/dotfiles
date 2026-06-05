@@ -23,19 +23,19 @@ The following shells are supported by these dotfiles:
 
 Files are sourced in the following order:
 
-1. [`~/.bash_profile`](./.bash_profile): macOS default entry point, mostly empty
-2. [`~/.profile`](./.profile): Ubuntu default entry point, mostly empty
-3. [`~/.bashrc`](./.bashrc): mostly empty
-4. [`~/.everythingrc`](./.everythingrc): general functions and aliases
+1. [`~/.bash_profile`](./home/.bash_profile): macOS default entry point, mostly empty
+2. [`~/.profile`](./home/.profile): Ubuntu default entry point, mostly empty
+3. [`~/.bashrc`](./home/.bashrc): mostly empty
+4. [`~/.everythingrc`](./home/.everythingrc): general functions and aliases
 5. `~/.dotpack/.*.sh` and `~/.dotpack/.*.bash`: functions and aliases, including:
-   1. [`~/.dotpack/.90_powerline.bash`](./dotpack/.90_powerline.bash): [Powerline](https://github.com/powerline/powerline) shell theme
+   1. [`~/.dotpack/.90_powerline.bash`](./home/.dotpack/.90_powerline.bash): [Powerline](https://github.com/powerline/powerline) shell theme
 
 **Zsh (Z shell):**
 
 Files are sourced in the following order:
 
-1. [`~/.zshrc`](./.zshrc): default entry point, mostly empty
-2. [`~/.everythingrc`](./.everythingrc): general functions and aliases
+1. [`~/.zshrc`](./home/.zshrc): default entry point, mostly empty
+2. [`~/.everythingrc`](./home/.everythingrc): general functions and aliases
 3. `~/.dotpack/.*.sh` and `~/.dotpack/.*.zsh`: functions and aliases, including:
-   1. [`~/.dotpack/.80_plugins.zsh`](./dotpack/.80_plugins.zsh): [Antidote](https://github.com/mattmc3/antidote) Zsh plugin management
-   2. [`~/.dotpack/.90_powerlevel10k.zsh`](./dotpack/.90_powerlevel10k.zsh): [Powerlevel10k](https://github.com/romkatv/powerlevel10k) shell theme configuration
+   1. [`~/.dotpack/.80_plugins.zsh`](./home/.dotpack/.80_plugins.zsh): [Antidote](https://github.com/mattmc3/antidote) Zsh plugin management
+   2. [`~/.dotpack/.90_powerlevel10k.zsh`](./home/.dotpack/.90_powerlevel10k.zsh): [Powerlevel10k](https://github.com/romkatv/powerlevel10k) shell theme configuration
