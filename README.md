@@ -6,7 +6,7 @@ A collection of personal dotfiles.
 
 `git clone` this repository and then run [`./install.sh`](./install.sh).
 
-All dotfiles are symlinked to the user's home directory to keep them up to date with this repo. Files that would be overwritten are backed-up first.
+All files and directories in [`./home`](./home) are symlinked to the user's home directory to keep them in sync with this repo. Files that would be overwritten are backed-up first.
 
 ## Other setup
 
