@@ -4,15 +4,15 @@ id_rsa*
 *kubeconfig*
 *.pem
 
-.config/*
-!.config/ccstatusline
-!.config/powerline
+home/.config/*
+!home/.config/ccstatusline
+!home/.config/powerline
 
-.agent-deck/*
-!.agent-deck/config.toml
-.claude/*
-!.claude/hooks
-!.claude/skills
-.claude/skills/githuman
-!.claude/*.md
-!.claude/settings.json
+home/.agent-deck/*
+!home/.agent-deck/config.toml
+home/.claude/*
+!home/.claude/hooks
+!home/.claude/skills
+home/.claude/skills/githuman
+!home/.claude/*.md
+!home/.claude/settings.json

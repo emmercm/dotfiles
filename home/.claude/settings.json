@@ -3,6 +3,7 @@
     "allow": [
       "Bash(git* ls-tree *)",
       "Bash(git* rebase --continue)",
+      "Bash(git* remote get-url *)",
       "Bash(git* reset)",
       "Bash(git* rev-parse *)",
       "Bash(gh run list *)",
@@ -17,6 +18,7 @@
       "Bash(rtk git* show *)",
       "Bash(rtk git* status)",
       "Bash(rtk git* status *)",
+      "Bash(rtk gradlew *)",
       "Bash(rtk grep *)",
       "Bash(rtk ls *)",
       "Bash(rtk ps *)",
@@ -118,8 +120,7 @@
           },
           {
             "type": "command",
-            "command": "agent-deck hook-handler",
-            "async": true
+            "command": "agent-deck hook-handler"
           }
         ]
       }

@@ -17,6 +17,7 @@ mcp_default_scope = ""
   dangerous_mode = false
   allow_dangerous_mode = false
   auto_mode = false
+  default_model = ""
   use_chrome = false
   use_teammate_mode = false
   env_file = ""
@@ -25,18 +26,35 @@ mcp_default_scope = ""
   yolo_mode = false
   default_model = ""
   env_file = ""
+  command = ""
 
 [opencode]
   default_model = ""
   default_agent = ""
   env_file = ""
+  command = ""
 
 [codex]
   command = ""
+  config_dir = ""
   yolo_mode = false
+  env_file = ""
 
 [copilot]
   env_file = ""
+  command = ""
+  default_model = ""
+  allow_all = false
+
+[crush]
+  command = ""
+  env_file = ""
+  yolo_mode = false
+
+[hermes]
+  command = ""
+  env_file = ""
+  yolo_mode = false
 
 [worktree]
   auto_cleanup = false
@@ -184,3 +202,9 @@ mcp_default_scope = ""
 [terminal]
 
 [web]
+
+[ui]
+  preview_pct = 0
+  iterm_open_as = ""
+  remote_latency_refresh_secs = 0
+  remote_session_refresh_secs = 0

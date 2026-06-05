@@ -21,7 +21,7 @@ function backup() {
 # @param {string} $1 Wildcard to find dotfiles
 function link() {
     # Create symlinks
-    find "$1" -maxdepth 1 -name "$2" ! -name ".editorconfig" ! -name ".git" ! -name ".githooks" ! -name ".github" ! -name ".gitignore" ! -name ".DS_Store" | while read -r file; do
+    find "$1" -maxdepth 1 -name "$2" ! -name ".DS_Store" | while read -r file; do
         local link
         link="${HOME}/$(basename "${file}")"
 
@@ -30,10 +30,15 @@ function link() {
             link="$(dirname "${link}")/.$(basename "${link}")"
         fi
 
-        # Assume symlinks are ok
+        # Delete broken symlinks, skip valid ones
         if [[ -h "${link}" ]]; then
-            echo -e "\033[33mIgnoring:\033[0m ${link}"
-            continue
+            if [[ ! -e "${link}" ]]; then
+                echo -e "\033[91mDeleting broken symlink:\033[0m ${link}"
+                rm -f "${link}"
+            else
+                echo -e "\033[33mIgnoring:\033[0m ${link}"
+                continue
+            fi
         fi
 
         # Back up the existing directory/file
@@ -57,7 +62,7 @@ function link() {
 
     # Delete broken symlinks
     find "${HOME}" -maxdepth 1 -type l ! -exec test -e {} \; -print | while read -r file; do
-        echo -e "\033[91mDeleting:\033[0m ${file}"
+        echo -e "\033[91mDeleting broken symlink:\033[0m ${file}"
         rm -f "${file}"
     done
 }
@@ -74,13 +79,7 @@ chmod +x "$(pwd)/.git/hooks"/*
 find "${HOME}" -maxdepth 1 -name ".*.bash" -type l ! -exec test -e {} \; -delete
 
 # Link dotfiles to home directory
-link "$(pwd)" ".*"
-if [[ -e ~/.dotpack && ! -L ~/.dotpack ]]; then
-    rm -rf ~/.dotpack
-fi
-if [[ ! -L ~/.dotpack ]]; then
-    ln -s "$(pwd)/dotpack" "${HOME}/.dotpack"
-fi
+link "$(pwd)/home" ".*"
 
 # Reload powerline if installed
 if command -v powerline-daemon &> /dev/null; then
