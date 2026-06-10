@@ -35,6 +35,9 @@ function link() {
             if [[ ! -e "${link}" ]]; then
                 echo -e "\033[91mDeleting broken symlink:\033[0m ${link}"
                 rm -f "${link}"
+            elif [[ -d "${link}" && ! -z "$(find "${link}" -mindepth 1 -print -quit)" ]]; then
+                echo -e "\033[91mDeleting symlink to empty directory:\033[0m ${link}"
+                rm -f "${link}"
             else
                 echo -e "\033[33mIgnoring:\033[0m ${link}"
                 continue
