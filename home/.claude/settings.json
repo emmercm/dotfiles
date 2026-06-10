@@ -31,12 +31,17 @@
       "Read(~/.claude/plugins/cache)",
       "Read(~/.claude/projects)"
     ],
+    "deny": [
+      "Bash(*git* clean *-f*)",
+      "Bash(*git* clean *--force*)",
+      "Bash(*git* reset *--hard*)"
+    ],
     "additionalDirectories": [
       "~/.claude/plugins/cache",
       "~/.claude/projects"
     ]
   },
-  "model": "us.anthropic.claude-opus-4-6-v1",
+  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -84,7 +89,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/cemmer/.claude/hooks/rtk-rewrite.sh"
+            "command": "rtk hook claude"
           }
         ]
       }

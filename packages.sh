@@ -41,7 +41,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     fi
     command -v jq     > /dev/null || brew install jq
     command -v rename > /dev/null || brew install rename
-    command -v rtk > /dev/null    || brew install rtk
+    command -v rtk    > /dev/null || brew install rtk
     command -v terminal-notifier > /dev/null || brew install terminal-notifier
     command -v tree   > /dev/null || brew install tree
     command -v watch  > /dev/null || brew install watch
@@ -58,7 +58,6 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
         #echo "discord"
         echo "disk-expert"
         echo "docker-desktop"
-        echo "feedflow"
         echo "firefox"
         echo "github"
         echo "hiddenbar"
@@ -99,6 +98,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
         echo -e "\033[33mWARN:\033[0m you may be asked for your password to run 'brew uninstall --cask'"
     fi
     for cask in $(
+        echo "feedflow"
         echo "messenger"
     ); do
         printf "Checking for cask '${cask}' ... "
@@ -124,10 +124,9 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     mas upgrade
     mas_list=$(mas list)
     for app_id in $(
-        # ----- Developer Tools -----
-        # Xcode
-        # echo "497799835"
         # ----- Applications -----
+        # Amphetamine
+        echo "937984704"
         # Kindle
         echo "302584613"
         # Menu World Time
