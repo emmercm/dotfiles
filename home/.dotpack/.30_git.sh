@@ -94,10 +94,10 @@ __git_funcs() {
         git pull > /dev/null
 
         if [[ $(git branch --list main) ]]; then
-            git fetch origin main:main
+            git fetch origin main
             git merge --no-edit origin/main
         else
-            git fetch origin master:master
+            git fetch origin master
             git merge --no-edit origin/master
         fi
     }
@@ -128,7 +128,26 @@ __git_hooks() {
             fi
         fi
 
+        # Detect and update branches of the same name but different casing
+        if [[ " $* " = *" fetch "* || " $* " = *" pull "* ]]; then
+            command git for-each-ref --format='%(refname)' refs/remotes/origin | \
+                awk '{
+                        lowercase_ref = tolower($0)
+                        reference_map[lowercase_ref] = reference_map[lowercase_ref] $0 "\n"
+                        clash_count[lowercase_ref]++
+                    }
+                    END {
+                        for (ref_key in clash_count) {
+                            if (clash_count[ref_key] > 1) {
+                                printf "%s", reference_map[ref_key]
+                            }
+                        }
+                    }' | \
+                xargs -n 1 command git update-ref -d
+        fi
+
         command git "$@"
+        return $?
     }
 }
 __git_hooks

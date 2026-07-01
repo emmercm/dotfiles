@@ -1,6 +1,7 @@
 {
   "env": {
-    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1"
+    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
+    "CLAUDE_CODE_ENABLE_AUTO_MODE": "1"
   },
   "permissions": {
     "allow": [
@@ -8,6 +9,7 @@
       "Bash(git* rebase --continue)",
       "Bash(git* remote get-url *)",
       "Bash(git* reset)",
+      "Bash(git* rev-list *)",
       "Bash(git* rev-parse *)",
       "Bash(gh run list *)",
       "Bash(./gradlew *)",
@@ -44,7 +46,13 @@
       "~/.claude/projects"
     ]
   },
-  "model": "opus",
+  "autoMode": {
+    "environment": [
+      "$defaults"
+    ]
+  },
+  "model": "us.anthropic.claude-opus-4-8",
+  "effortLevel": "high",
   "hooks": {
     "Notification": [
       {
