@@ -25,7 +25,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
     brew upgrade
 
     # Install Homebrew formulas
-    command -v agent-deck > /dev/null || brew install asheshgoplani/tap/agent-deck
+    command -v agent-deck > /dev/null || (brew trust asheshgoplani/tap && brew install asheshgoplani/tap/agent-deck)
     command -v gawk   > /dev/null || brew install gawk
     command -v gdate  > /dev/null || brew install coreutils
     command -v gh     > /dev/null || brew install gh
@@ -87,6 +87,7 @@ if [[ "${OSTYPE:-}" == "darwin"* ]]; then
             | xargs -I {} sh -c 'test ! -d "/Applications/$1" && echo "$1"' _ {} || true)
         if [[ -n "${missing_apps}" ]]; then
             echo -e "\033[33mmissing, installing ...\033[0m"
+            brew trust "${cask%/*}"
             brew install --cask "${cask}"
         else
             echo -e "\033[92mfound\033[0m"

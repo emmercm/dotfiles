@@ -73,3 +73,8 @@ __agent_deck_auto_update() {
     fi
 }
 __agent_deck_auto_update
+
+
+if ! command -v githuman &> /dev/null; then
+    alias githuman="npx --yes githuman@latest"
+fi
