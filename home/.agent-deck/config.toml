@@ -6,6 +6,7 @@ theme = "system"
 
 [claude]
   dangerous_mode = false
+  auto_mode = true
 
 [worktree]
   auto_cleanup = false

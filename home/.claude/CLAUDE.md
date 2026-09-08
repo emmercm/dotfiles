@@ -22,14 +22,16 @@ Always execute tasks in this order:
 
 - Retry all git operations that fail because the lock file exists; do not ever delete the lock file
 - Always run `git reset` before `git add`; do not ever commit unintended files
+- Always check if the current branch has diverged from upstream/origin before committing; do not attempt to automatically resolve the divergence, just raise the issue
 - Do not commit to the default, `main`, or `master` Git branches. Always ask if a new branch should be created instead
-- Do not attempt to amend commits that are already pushed
+- Do not amend commits that are already pushed, do not force push amended commits
 - Always prefix git branch names with "emmercm/"
 - Always update/pull the base branch before creating a new branch; do not create a branch off of a stale default branch
 
 ## Pull requests
 
 - Always use the `writing-pull-requests` skill when creating pull requests
+- Always create new pull requests as drafts; existing pull requests should be left alone
 
 ## Superpowers
 
