@@ -15,29 +15,21 @@ __git_addons
 
 
 __git_funcs() {
-    # Short alias
-    alias g="git"
-    if [[ "$(basename "${SHELL}")" == "bash" ]] && type _git &> /dev/null; then
-        complete -o default -o nospace -F _git g
-    fi
-
-    # Shell alias Git aliases from the .gitconfig
-    for al in $(git --list-cmds=alias; git --list-cmds=main); do
-        # shellcheck disable=SC2139
-        alias "g${al}"="git ${al}"
-        if type __git_aliased_command &> /dev/null; then
-            complete_func=_git_$(__git_aliased_command "${al}")
-            type "${complete_func}" &> /dev/null && __git_complete "g${al}" "${complete_func}"
-        fi
-    done
-
+    # Create an empty commit
     gempty() {
         git reset
         git commit --allow-empty --message='Empty commit'
     }
 
     grebase() {
-        git pull
+        if [[ "$(git branch --show-current)" == "(git symbolic-ref --short refs/remotes/origin/HEAD | sed 's@^origin/@@')" ]]; then
+            # We're on the default branch, just pull it
+            git pull
+            return 0
+        fi
+
+        # Update the current, non-default branch before we start the rebase
+        git pull || return 1
 
         local stash_name
         stash_name="$(base32 < /dev/urandom | tr -dc 'A-Z0-9' | head -c 16)"
@@ -91,13 +83,20 @@ __git_funcs() {
     }
 
     gupdate() {
-        git pull > /dev/null
+        if [[ "$(git branch --show-current)" == "(git symbolic-ref --short refs/remotes/origin/HEAD | sed 's@^origin/@@')" ]]; then
+            # We're on the default branch, just pull it
+            git pull
+            return 0
+        fi
+
+        # Update the current, non-default branch before we create a merge commit
+        git pull > /dev/null || return 1
 
         if [[ $(git branch --list main) ]]; then
-            git fetch origin main
+            git fetch origin main || return 1
             git merge --no-edit origin/main
         else
-            git fetch origin master
+            git fetch origin master || return 1
             git merge --no-edit origin/master
         fi
     }
@@ -114,6 +113,32 @@ __git_funcs() {
 __git_funcs
 
 
+__git_aliases() {
+    # Short alias
+    if ! command -v g &> /dev/null; then
+        alias g="git"
+        if [[ "$(basename "${SHELL}")" == "bash" ]] && type _git &> /dev/null; then
+            complete -o default -o nospace -F _git g
+        fi
+    fi
+
+    # Shell alias Git aliases from the .gitconfig
+    for al in $(git --list-cmds=alias; git --list-cmds=main); do
+        # Don't shadow anything with the same name, including functions above
+        if command -v "g${al}" &> /dev/null; then
+            continue
+        fi
+        # shellcheck disable=SC2139
+        alias "g${al}"="git ${al}"
+        if type __git_aliased_command &> /dev/null; then
+            complete_func=_git_$(__git_aliased_command "${al}")
+            type "${complete_func}" &> /dev/null && __git_complete "g${al}" "${complete_func}"
+        fi
+    done
+}
+__git_aliases
+
+
 __git_hooks() {
     git() {
         # Delete Resilio Sync placeholders before doing any git action
@@ -128,8 +153,9 @@ __git_hooks() {
             fi
         fi
 
-        # Detect and update branches of the same name but different casing
         if [[ " $* " = *" fetch "* || " $* " = *" pull "* ]]; then
+            # Detect and update branches of the same name but different casing
+            # e.g. you can't have both "origin/foo" and "origin/FOO"
             command git for-each-ref --format='%(refname)' refs/remotes/origin | \
                 awk '{
                         lowercase_ref = tolower($0)
@@ -140,6 +166,41 @@ __git_hooks() {
                         for (ref_key in clash_count) {
                             if (clash_count[ref_key] > 1) {
                                 printf "%s", reference_map[ref_key]
+                            }
+                        }
+                    }' | \
+                xargs -n 1 command git update-ref -d
+
+            # Detect and update branches whose forward slash nesting conflicts
+            # e.g. you can't have both "origin/lorem/ipsum" and "origin/lorem/ipsum/dolor"
+            {
+                command git for-each-ref --format='local %(refname:strip=3)' refs/remotes/origin
+                command git ls-remote --heads origin 2> /dev/null
+            } | \
+                awk '
+                    $1 == "local" {
+                        if ($2 != "HEAD") {
+                            locals[$2] = 1
+                        }
+                        next
+                    }
+                    {
+                        sub("^refs/heads/", "", $2)
+                        remote[$2] = 1
+                        ancestor = $2
+                        while (sub("/[^/]*$", "", ancestor)) {
+                            remote_prefixes[ancestor] = 1
+                        }
+                    }
+                    END {
+                        for (ref in locals) {
+                            clash = (ref in remote_prefixes)
+                            ancestor = ref
+                            while (!clash && sub("/[^/]*$", "", ancestor)) {
+                                clash = (ancestor in remote)
+                            }
+                            if (clash) {
+                                print "refs/remotes/origin/" ref
                             }
                         }
                     }' | \

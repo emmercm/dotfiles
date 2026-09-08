@@ -1,7 +1,8 @@
 {
   "env": {
     "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
-    "CLAUDE_CODE_ENABLE_AUTO_MODE": "1"
+    "CLAUDE_CODE_ENABLE_AUTO_MODE": "1",
+    "CLAUDE_CODE_USE_BEDROCK": "0"
   },
   "permissions": {
     "allow": [
