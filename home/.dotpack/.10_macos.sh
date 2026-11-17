@@ -37,6 +37,11 @@ if [[ ! -x "$(command -v brew)" && -f /opt/homebrew/bin/brew ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+HOMEBREW_PREFIX_BASH="$(brew --prefix bash)"
+if [[ -d "${HOMEBREW_PREFIX_BASH}/bin" ]]; then
+    export PATH="${HOMEBREW_PREFIX_BASH}/bin:$PATH"
+fi
+
 # https://docs.brew.sh/Shell-Completion
 if type brew &>/dev/null; then
     if [[ "$(basename "${SHELL}")" == "zsh" ]]; then
@@ -102,7 +107,7 @@ __homebrew_funcs() {
             fi
 
             # Install the formula and ensure it's linked
-            brew install "homebrew/local/${1:?}@${2:?}" \
+            brew install --yes "homebrew/local/${1:?}@${2:?}" \
                 || brew link --overwrite "${1:?}@${2:?}"
         else (
             # Sub shell to make `cd` safe
@@ -127,7 +132,7 @@ __homebrew_funcs() {
                 > "${local_cask_file}"
 
             # Install the formula
-            brew install --cask "homebrew/local/${1:?}@${2:?}"
+            brew install --yes --cask "homebrew/local/${1:?}@${2:?}"
         ) fi
     }
 }

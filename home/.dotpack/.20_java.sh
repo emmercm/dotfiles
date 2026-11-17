@@ -12,9 +12,10 @@ __java_setup() {
         done <<< "$(find /Library/Java/JavaVirtualMachines/*/Contents -maxdepth 1 -type d -name Home 2> /dev/null | sort --version-sort)"
     fi
 
-    jversion() {
-        java --version | head -1 | sed 's/"//g' | sed -E 's/(.* )?([0-9]+\.[0-9]+\.[0-9]+[^ ]+).*/\2/'
-    }
+    if [[ -d "$HOME/.sdkman" ]]; then
+        export SDKMAN_DIR="$HOME/.sdkman"
+        [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+    fi
 }
 __java_setup
 
@@ -22,9 +23,18 @@ __java_setup
 __java_lazy_install() {
     if ! command -v flyway &> /dev/null && command -v brew &> /dev/null; then
         flyway() {
-            brew install flyway
+            brew install --yes flyway
             unset -f flyway
             flyway "$@"
+        }
+    fi
+
+    if ! command -v sdk &> /dev/null; then
+        sdk() {
+            curl -s "https://get.sdkman.io" | bash
+            unset -f sdk
+            source "$HOME/.sdkman/bin/sdkman-init.sh"
+            sdk "$@"
         }
     fi
 }

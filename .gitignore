@@ -14,5 +14,6 @@ home/.claude/*
 !home/.claude/hooks
 !home/.claude/skills
 home/.claude/skills/githuman
+home/.claude/skills/synced
 !home/.claude/*.md
 !home/.claude/settings.json
