@@ -11,7 +11,14 @@ is-macos() {
 }
 
 # Load Antidote
-source ${ZDOTDIR:-~}/.antidote/antidote.zsh
+if [[ -d ${ZDOTDIR:-$HOME}/.antidote ]]; then
+    source ${ZDOTDIR:-~}/.antidote/antidote.zsh
+elif command -v brew &> /dev/null; then
+    HOMEBREW_PREFIX_ANTIDOTE="$(brew --prefix antidote)"
+    if [[ -d "${HOMEBREW_PREFIX_ANTIDOTE}/share/antidote" ]]; then
+        source "${HOMEBREW_PREFIX_ANTIDOTE}/share/antidote/antidote.zsh"
+    fi
+fi
 antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
 
 

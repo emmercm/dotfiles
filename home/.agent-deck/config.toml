@@ -10,6 +10,9 @@ theme = "system"
 
 [worktree]
   auto_cleanup = false
+  default_enabled = true
+  branch_prefix = "emmercm/"
+  sparse_checkout = "inherit"
 
 [global_search]
   enabled = true
@@ -29,8 +32,9 @@ theme = "system"
   show_pool_status = false
 
 [updates]
-  auto_update = true
-  check_enabled = true
+  auto_install = false
+  auto_restart = false
+  check_enabled = false
   notify_in_cli = false
 
 [preview]
@@ -56,6 +60,9 @@ theme = "system"
   refresh_seconds = 5
   format = "full"
   show = ["cpu", "ram"]
+
+[security]
+  auto_trust_folders = true
 
 [ui]
   new_session_enter_advances = false

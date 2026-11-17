@@ -35,7 +35,7 @@ __temporal_completions
 __temporal_lazy_install() {
     if ! command -v tctl &> /dev/null && command -v brew &> /dev/null; then
         tctl() {
-            brew install tctl
+            brew install --yes tctl
             unset -f tctl
             tctl "$@"
         }
@@ -43,7 +43,7 @@ __temporal_lazy_install() {
 
     if ! command -v temporal &> /dev/null && command -v brew &> /dev/null; then
         temporal() {
-            brew install temporal
+            brew install --yes temporal
             unset -f temporal
             temporal "$@"
         }

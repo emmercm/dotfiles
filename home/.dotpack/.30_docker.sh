@@ -7,7 +7,7 @@ export PROGRESS_NO_TRUNC=1
 __docker_lazy_install() {
     if ! command -v dive &> /dev/null && command -v brew &> /dev/null; then
         dive() {
-            brew install dive
+            brew install --yes dive
             unset -f dive
             dive "$@"
         }
@@ -15,7 +15,7 @@ __docker_lazy_install() {
 
     if ! command -v skopeo &> /dev/null && command -v brew &> /dev/null; then
         skopeo() {
-            brew install skopeo
+            brew install --yes skopeo
             unset -f skopeo
             skopeo "$@"
         }

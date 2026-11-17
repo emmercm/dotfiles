@@ -19,7 +19,7 @@ __vitess_lazy_install() {
     # https://planetscale.com/docs/cli/planetscale-environment-setup#macos-instructions
     if ! command -v pscale &> /dev/null && command -v brew &> /dev/null; then
         pscale() {
-            brew install planetscale/tap/pscale
+            brew install --yes planetscale/tap/pscale
             unset -f pscale
             pscale "$@"
         }

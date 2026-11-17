@@ -8,7 +8,7 @@ __terraform_install() {
     terraform() {
         if command -v brew &> /dev/null; then
             brew tap hashicorp/tap
-            brew install hashicorp/tap/terraform
+            brew install --yes hashicorp/tap/terraform
         fi
         unset -f terraform
         terraform "$@"
@@ -24,7 +24,7 @@ __tflint_install() {
     # Lazy install
     tflint() {
         if command -v brew &> /dev/null; then
-            brew install tflint
+            brew install --yes tflint
         elif command -v docker &> /dev/null; then
             docker run --rm --volume "$(pwd):/data" --tty "ghcr.io/terraform-linters/tflint" "$@"
             return $?

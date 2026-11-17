@@ -16,7 +16,7 @@ __aws_completions
 __aws_lazy_install() {
     if ! command -v aws &> /dev/null && command -v brew &> /dev/null; then
         aws() {
-            brew install awscli
+            brew install --yes awscli
             unset -f aws
             aws "$@"
         }

@@ -15,7 +15,7 @@ __mysql_setup
 __mysql_lazy_install() {
     if ! command -v mysql &> /dev/null && command -v brew &> /dev/null; then
         mysql() {
-            brew install mysql-client
+            brew install --yes mysql-client
             __mysql_setup
             unset -f mysql
             mysql "$@"
